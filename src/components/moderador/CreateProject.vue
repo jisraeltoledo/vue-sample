@@ -1,10 +1,10 @@
 <template>
   <div>
-    <h1>Create Project</h1>
+    <h1>Crear proyecto</h1>
     <div class="col-md-6 offset-md-3">
       <form id="app" @submit="guardar">
         <p v-if="errors.length">
-          <b>Please correct the following error(s):</b>
+          <b>Por favor corrige los errores:</b>
           <ul>
             <li v-for="(error, idx) in errors" :key="idx">{{ error }}</li>
           </ul>
@@ -88,10 +88,16 @@ export default {
       this.errors = [];
 
       if (!this.nombre) {
-        this.errors.push('Name required.');
+        this.errors.push('Nombre es requerido.');
       }
       if (!this.modelo) {
-        this.errors.push('Age required.');
+        this.errors.push('Modelo es requerido.');
+      }
+      if (!this.descripcion) {
+        this.errors.push('Descripción es requerido.');
+      }
+      if (!this.bio) {
+        this.errors.push('Biografía es requerido.');
       }
 
       e.preventDefault();
