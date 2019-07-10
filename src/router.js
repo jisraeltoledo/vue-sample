@@ -23,7 +23,10 @@ const router = new Router({
     {
       path: "/login",
       name: "Login",
-      component: Login
+      component: Login,
+      meta: {
+        plainLayout: true
+      }
     },
     {
       path: "/sign-up",
