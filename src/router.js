@@ -7,6 +7,7 @@ import Login from "@/views/Login";
 import SignUp from "@/views/Signup";
 import About from "@/views/About";
 import store from "@/store";
+import CreateProject from "@/components/moderador/CreateProject";
 
 Vue.use(Router);
 
@@ -44,10 +45,14 @@ const router = new Router({
     {
       path: "/about",
       name: "About",
-      component: About,
+      component: About
+    },
+    {
+      path: "/create-project",
+      name: "Create Project",
+      component: CreateProject,
       meta: {
-        //requiresAuth: true,
-        roles: ["other"]
+        roles: ["moderador"]
       }
     }
   ],
