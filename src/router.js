@@ -1,26 +1,60 @@
+/*jshint esversion: 6 */
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "./views/Home.vue";
+
+import Home from "@/views/Home";
+import Login from "@/views/Login";
+import SignUp from "@/views/Signup";
+import About from "@/views/About";
+import store from "@/store";
 
 Vue.use(Router);
 
-export default new Router({
-  mode: "history",
-  base: process.env.BASE_URL,
+const router = new Router({
   routes: [
     {
+      path: "*",
+      redirect: "/login"
+    },
+    {
       path: "/",
-      name: "home",
-      component: Home
+      redirect: "/login"
+    },
+    {
+      path: "/login",
+      name: "Login",
+      component: Login
+    },
+    {
+      path: "/sign-up",
+      name: "SignUp",
+      component: SignUp
+    },
+    {
+      path: "/home",
+      name: "Home",
+      component: Home,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/about",
-      name: "about",
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () =>
-        import(/* webpackChunkName: "about" */ "./views/About.vue")
+      name: "About",
+      component: About,
+      meta: {
+        //requiresAuth: true,
+        roles: ["other"]
+      }
     }
-  ]
+  ],
+  mode: "history"
 });
+
+router.beforeEach((to, from, next) => {
+  let roles = to.meta.roles ? to.meta.roles : ["guest"];
+  if (roles.includes(store.state.userRole) || roles.includes("guest")) next();
+  else next("login");
+});
+
+export default router;
