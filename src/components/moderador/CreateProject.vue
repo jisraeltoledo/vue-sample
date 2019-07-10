@@ -57,7 +57,7 @@
           <textarea v-model="bio" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
         </div>
         <button class="btn btn-success" @click="guardar">Guardar</button>
-        <button class="btn">Cancelar</button>
+        <button class="btn" @click="cancelar">Cancelar</button>
       </form>
     </div>
   </div>
@@ -80,6 +80,9 @@ export default {
     };
   },
   methods: {
+    cancelar (){
+      this.$router.push("/home");
+    },
     guardar(e) {
       if (this.name && this.age) {
         return true;

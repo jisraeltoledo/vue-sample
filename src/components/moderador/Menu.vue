@@ -16,7 +16,10 @@
       <div class="dropdown-menu" aria-labelledby="pagesDropdown">
         <h6 class="dropdown-header">Proyectos:</h6>
         <router-link tag="li" to="/create-project">
-        <a class="dropdown-item"  >Nuevo proyecto</a>
+          <a class="dropdown-item">Nuevo proyecto</a>
+        </router-link>
+        <router-link tag="li" to="/list-project">
+          <a class="dropdown-item">Listado proyectos</a>
         </router-link>
       </div>
     </li>
@@ -27,8 +30,6 @@
 <script>
 export default {
   name: "menu-moderador",
-  props: {
-    
-  }
+  props: {}
 };
 </script>

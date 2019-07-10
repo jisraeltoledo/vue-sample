@@ -8,6 +8,7 @@ import SignUp from "@/views/Signup";
 import About from "@/views/About";
 import store from "@/store";
 import CreateProject from "@/components/moderador/CreateProject";
+import ListProject from "@/components/moderador/ListProject";
 
 Vue.use(Router);
 
@@ -51,6 +52,14 @@ const router = new Router({
       path: "/create-project",
       name: "Create Project",
       component: CreateProject,
+      meta: {
+        roles: ["moderador"]
+      }
+    },
+    {
+      path: "/list-project",
+      name: "List Project",
+      component: ListProject,
       meta: {
         roles: ["moderador"]
       }
