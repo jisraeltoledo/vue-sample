@@ -2,7 +2,7 @@
   <div id="app">
     <div v-if="!$route.meta.plainLayout">
       <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
-        <a class="navbar-brand mr-1" href="index.html">. D E C I M A L</a>
+        <a class="navbar-brand mr-1" href="/home">. D E C I M A L</a>
 
         <button
           class="btn btn-link btn-sm text-white order-1 order-sm-0"

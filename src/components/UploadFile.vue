@@ -33,7 +33,7 @@
           style="width:0%"
         ></div>
       </div>
-      <a v-if="downloadUrl" :href="downloadUrl">{{downloadUrl}} </a>
+      <small><a target="blank" v-if="downloadUrl" :href="downloadUrl">{{downloadUrl}}</a></small>
     </div>
     <div class="col-md-4">
       <img :id="'img_'+id" :src="'https://via.placeholder.com/'+width" alt="your image" />
@@ -54,14 +54,16 @@ export default {
     width: Number
   },
   components: {},
-  data() {
+  data: function() {
     return {
       empty: true,
-      downloadURL: null
+      downloadUrl: null
     };
   },
   created() {
-    console.log("id", this.id);
+    console.log(this.downloadUrl);
+  },
+  watch: {
   },
   computed: {
     projectid() {
@@ -82,6 +84,7 @@ export default {
       this.empty = document.getElementById(this.id).files.length === 0;
     },
     upload() {
+      //var _this = this;
       var storageRef = firebase.storage().ref();
       var ref = storageRef.child(this.projectid + "/" + this.id + ".jpg");
       var file = document.getElementById(this.id).files[0];
@@ -104,9 +107,8 @@ export default {
         () => {
           // Handle successful uploads on complete
           // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-          uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-              this.downloadURL = downloadURL;
-            console.log("File available at", downloadURL);
+          uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
+            this.downloadUrl = downloadURL;
           });
         }
       );
