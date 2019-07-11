@@ -49,6 +49,22 @@
             class="form-text text-muted"
           >Lista de materiales</small>
         </div>
+
+        <div class="form-group">
+          <label for="cordLength">Cord length:</label>
+          <input
+            v-model="cordLength"
+            type="text"
+            class="form-control"
+            id="cordLength"
+            aria-describedby="cordHelp"
+            placeholder="Cord Length"
+          />
+          <small
+            id="cordHelp"
+            class="form-text text-muted"
+          >Cord Length</small>
+        </div>
         
         <button @click="guardar" class="btn btn-primary">Guardar</button>
       </div>
@@ -73,7 +89,8 @@ export default {
   data() {
     return {
         type: "",
-        materials: ""
+        materials: "",
+        cordLength: ""
     };
   },
   created() {
@@ -88,7 +105,8 @@ export default {
       guardar(){
           db.collection("projects").doc(this.projectid).update ({
               type: this.type,
-              materials: this.materials
+              materials: this.materials,
+              cordLength: this.cordLength
           }).then (()=>{
               alert ("Proyecto Actualizado");
               this.$router.push("/home");
