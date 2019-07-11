@@ -46,14 +46,16 @@ export default {
     console.log("proyectos", this.projects);
     db.collection("projects").onSnapshot(snap => {
       snap.forEach(element => {
-        this.projects.push(element.data());
+          let p = element.data();
+          p["id"] = element.id;
+        this.projects.push(p);
       });
     });
     console.log(this.projects);
   },
   methods: {
     clickList(project) {
-      alert(project);
+      this.$router.push('/'+this.$route.params.next_path+'/'+project.id);
     }
   }
 };

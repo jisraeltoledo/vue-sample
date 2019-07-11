@@ -13,7 +13,7 @@ const firebaseConfig = {
   authDomain: "decimal-fic-tec.firebaseapp.com",
   databaseURL: "https://decimal-fic-tec.firebaseio.com",
   projectId: "decimal-fic-tec",
-  storageBucket: "",
+  storageBucket: "decimal-fic-tec.appspot.com",
   messagingSenderId: "465869946229",
   appId: "1:465869946229:web:c7281894f9eafe0a"
 };
