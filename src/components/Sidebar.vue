@@ -43,7 +43,7 @@ export default {
   },
   methods: {
       hasRol (rol){
-          return store.state.userRole === rol; 
+          return store.state.userRole === rol || store.state.userRole=== 'super_admin'; 
       }
   }
 };

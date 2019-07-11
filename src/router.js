@@ -56,7 +56,7 @@ const router = new Router({
       name: "Create Project",
       component: CreateProject,
       meta: {
-        roles: ["moderador"]
+        roles: ["moderador", "super_admin"]
       }
     },
     {
@@ -68,7 +68,8 @@ const router = new Router({
           "moderador",
           "diseno_grafico",
           "diseno_industrial",
-          "ingenieria_electrica"
+          "ingenieria_electrica",
+          "super_admin"
         ]
       }
     },
@@ -77,7 +78,7 @@ const router = new Router({
       name: "Diseño Gráfico",
       component: DisenoGrafico,
       meta: {
-        roles: ["diseno_grafico"]
+        roles: ["diseno_grafico", "super_admin"]
       }
     },
     {
@@ -85,7 +86,7 @@ const router = new Router({
       name: "Diseño Industrial",
       component: DisenoIndustrial,
       meta: {
-        roles: ["diseno_industrial"]
+        roles: ["diseno_industrial", "super_admin"]
       }
     },
     {
@@ -93,7 +94,7 @@ const router = new Router({
       name: "Ingenieria Electrica",
       component: IngenieriaElectrica,
       meta: {
-        roles: ["ingenieria_electrica"]
+        roles: ["ingenieria_electrica", "super_admin"]
       }
     }
   ],
