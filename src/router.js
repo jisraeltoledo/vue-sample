@@ -10,6 +10,7 @@ import store from "@/store";
 import CreateProject from "@/components/moderador/CreateProject";
 import ListProject from "@/components/moderador/ListProject";
 import DisenoGrafico from "@/components/DisenoGrafico";
+import DisenoIndustrial from "@/components/DisenoIndustrial";
 
 Vue.use(Router);
 
@@ -62,7 +63,7 @@ const router = new Router({
       name: "List Project",
       component: ListProject,
       meta: {
-        roles: ["moderador", "diseno_grafico"]
+        roles: ["moderador", "diseno_grafico", "diseno_industrial"]
       }
     },
     {
@@ -71,6 +72,14 @@ const router = new Router({
       component: DisenoGrafico,
       meta: {
         roles: ["diseno_grafico"]
+      }
+    },
+    {
+      path: "/diseno-industrial/:projectid",
+      name: "Diseño Industrial",
+      component: DisenoIndustrial,
+      meta: {
+        roles: ["diseno_industrial"]
       }
     }
   ],

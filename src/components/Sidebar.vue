@@ -3,6 +3,7 @@
   <ul class="sidebar navbar-nav">
     <menu-moderador v-if="hasRol ('moderador')"></menu-moderador>
     <menu-diseno-grafico v-if="hasRol('diseno_grafico')"></menu-diseno-grafico>
+    <menu-diseno-industrial v-if="hasRol('diseno_industrial')"></menu-diseno-industrial>
     <li class="nav-item">
       <a class="nav-link" href="charts.html">
         <i class="fas fa-fw fa-chart-area"></i>
@@ -22,12 +23,14 @@
 import store from "@/store";
 import MenuModerador from "@/components/menus/MenuModerador";
 import MenuDisenoGraficoVue from './menus/MenuDisenoGrafico.vue';
+import MenuDisenoIndstrialVue from './menus/MenuDisenoIndstrial.vue';
 
 export default {
   name: "side-bar",
   components: {
     "menu-moderador": MenuModerador,
-    "menu-diseno-grafico": MenuDisenoGraficoVue
+    "menu-diseno-grafico": MenuDisenoGraficoVue,
+    "menu-diseno-industrial": MenuDisenoIndstrialVue
   },
   created(){
       console.log (store);
