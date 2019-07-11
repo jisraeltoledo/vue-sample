@@ -2,15 +2,15 @@
   <div>
     <h1>Diseño Gráfico</h1>
     <div class="col-md-8 offset-md-2">
-        <upload-file v-bind:id="'bio'" v-bind:label="'Foto Diseño'" v-bind:width="150"></upload-file>
+        <upload-file v-bind:id="'bio'" v-bind:path="'diseno_grafico'" v-bind:label="'Foto Diseño'" v-bind:width="150"></upload-file>
         <br />
-        <upload-file v-bind:id="'prod'" v-bind:label="'Foto Producto'" v-bind:width="150"></upload-file>
+        <upload-file v-bind:id="'prod'" v-bind:path="'diseno_grafico'" v-bind:label="'Foto Producto'" v-bind:width="150"></upload-file>
         <br />
-        <upload-file v-bind:id="'mod'" v-bind:label="'Module Colors'" v-bind:width="150"></upload-file>
+        <upload-file v-bind:id="'mod'" v-bind:path="'diseno_grafico'" v-bind:label="'Module Colors'" v-bind:width="150"></upload-file>
         <br />
-        <upload-file v-bind:id="'dim'" v-bind:label="'Dimensions'" v-bind:width="150"></upload-file>
+        <upload-file v-bind:id="'dim'" v-bind:path="'diseno_grafico'" v-bind:label="'Dimensions'" v-bind:width="150"></upload-file>
         <br />
-        <upload-file v-bind:id="'est'" v-bind:label="'Estructura'" v-bind:width="150"></upload-file>
+        <upload-file v-bind:id="'est'" v-bind:path="'diseno_grafico'" v-bind:label="'Estructura'" v-bind:width="150"></upload-file>
       
     </div>
     <br />

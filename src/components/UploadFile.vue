@@ -51,7 +51,8 @@ export default {
   props: {
     label: String,
     id: String,
-    width: Number
+    width: Number,
+    path: String
   },
   components: {},
   data: function() {
@@ -86,7 +87,7 @@ export default {
     upload() {
       //var _this = this;
       var storageRef = firebase.storage().ref();
-      var ref = storageRef.child(this.projectid + "/" + this.id + ".jpg");
+      var ref = storageRef.child(this.projectid + "/" + this.path + "/" + this.id + ".jpg");
       var file = document.getElementById(this.id).files[0];
       var uploadTask = ref.put(file);
       uploadTask.on(
