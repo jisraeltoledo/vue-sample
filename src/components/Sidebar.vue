@@ -1,22 +1,12 @@
 <template>
   <!-- Sidebar -->
+  
   <ul class="sidebar navbar-nav">
+    <br>
     <menu-moderador v-if="hasRol ('moderador')"></menu-moderador>
     <menu-diseno-grafico v-if="hasRol('diseno_grafico')"></menu-diseno-grafico>
     <menu-diseno-industrial v-if="hasRol('diseno_industrial')"></menu-diseno-industrial>
     <menu-ing-electrica v-if="hasRol('ingenieria_electrica')"></menu-ing-electrica>
-    <li class="nav-item">
-      <a class="nav-link" href="charts.html">
-        <i class="fas fa-fw fa-chart-area"></i>
-        <span>Charts</span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="tables.html">
-        <i class="fas fa-fw fa-table"></i>
-        <span>Tables</span>
-      </a>
-    </li>
   </ul>
 </template>
 

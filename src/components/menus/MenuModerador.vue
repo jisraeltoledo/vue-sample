@@ -18,7 +18,7 @@
         <router-link tag="li" to="/create-project">
           <a class="dropdown-item">Nuevo proyecto</a>
         </router-link>
-        <router-link tag="li" to="/list-project">
+        <router-link tag="li" to="/list-project/create-project">
           <a class="dropdown-item">Listado proyectos</a>
         </router-link>
       </div>
