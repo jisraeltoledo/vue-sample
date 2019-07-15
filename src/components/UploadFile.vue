@@ -106,6 +106,10 @@ export default {
           $("#" + "progress_" + this.id)
             .css("width", progress + "%")
             .attr("aria-valuenow", progress);
+        }).then (()=>{
+            var data = {};
+            data [this.projectid+"-"+this.id] = true;
+            return db.collection ("projects").doc (this.projectid).update (data)
         });
     
     }

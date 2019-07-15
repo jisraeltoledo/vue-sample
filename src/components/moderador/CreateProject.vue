@@ -34,7 +34,7 @@
             type="text"
             class="form-control"
             id="formGroupExampleInput"
-            placeholder="Modelo"
+            placeholder="Ej. .004"
           />
         </div>
         <div class="form-group">
@@ -48,6 +48,19 @@
             id="exampleFormControlTextarea1"
             rows="3"
           ></textarea>
+        </div>
+        <div class="form-group">
+          <label for="formGroupExampleInput">
+            Nombre Diseñador
+            <small>*</small>
+          </label>
+          <input
+            v-model="disenador"
+            type="text"
+            class="form-control"
+            id="formGroupExampleInput"
+            placeholder="Ej. Juan Perez"
+          />
         </div>
         <div class="form-group">
           <label for="exampleFormControlTextarea1">
@@ -76,7 +89,8 @@ export default {
       modelo: "",
       descripcion: "",
       bio: "",
-      errors: []
+      errors: [],
+      disenador: ""
     };
   },
   methods: {
@@ -99,6 +113,9 @@ export default {
       if (!this.descripcion) {
         this.errors.push('Descripción es requerido.');
       }
+      if (!this.disenador) {
+        this.errors.push('Nombre de diseñador es requerido.');
+      }
       if (!this.bio) {
         this.errors.push('Biografía es requerido.');
       }
@@ -110,6 +127,7 @@ export default {
           nombre: this.nombre,
           modelo: this.modelo,
           descripcion: this.descripcion,
+          disenador: this.disenador,
           bio: this.bio
         })
         .then(ref => {

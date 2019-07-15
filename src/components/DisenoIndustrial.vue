@@ -2,20 +2,28 @@
   <div>
     <h1>Diseño Industrial</h1>
     <div class="col-md-8 offset-md-2">
+      
       <br />
       <upload-file
-        v-bind:id="'mod'"
-        v-bind:path="'diseno_industrial'"
-        v-bind:label="'Module Colors'"
-        v-bind:width="150"
-      ></upload-file>
-      <br />
-      <upload-file
-        v-bind:id="'dim'"
+        v-bind:id="'di-dim'"
         v-bind:path="'diseno_industrial'"
         v-bind:label="'Dimensions'"
         v-bind:width="150"
       ></upload-file>
+      <br />
+      <h4>Module colors</h4>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="black" id="Black" v-model="moduleColors" />
+        <label class="form-check-label" for="Black">Black</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="silver" id="Silver"  v-model="moduleColors"/>
+        <label class="form-check-label" for="Silver">Silver</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="gold" id="Gold"  v-model="moduleColors"/>
+        <label class="form-check-label" for="Gold">Gold</label>
+      </div>
       <br />
       <div>
         <div class="form-group">
@@ -90,7 +98,8 @@ export default {
     return {
         type: "",
         materials: "",
-        cordLength: ""
+        cordLength: "",
+        moduleColors: []
     };
   },
   created() {
@@ -104,6 +113,7 @@ export default {
   methods: {
       guardar(){
           db.collection("projects").doc(this.projectid).update ({
+              moduleColors: this.moduleColors,
               type: this.type,
               materials: this.materials,
               cordLength: this.cordLength

@@ -1,18 +1,17 @@
 <template>
   <div class="home">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-    <button @click="logout">Logout</button>
+    <list-project-progress></list-project-progress>
   </div>
 </template>
 
 <script>
 import firebase from 'firebase';
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import ProgressVue from '@/components/Progress.vue';
 export default {
   name: 'home',
   components: {
-    HelloWorld
+    "list-project-progress": ProgressVue
   },
   methods: {
     logout: function() {
