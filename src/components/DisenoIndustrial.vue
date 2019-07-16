@@ -2,7 +2,6 @@
   <div>
     <h1>Diseño Industrial</h1>
     <div class="col-md-8 offset-md-2">
-      
       <br />
       <upload-file
         v-bind:id="'di-dim'"
@@ -13,15 +12,33 @@
       <br />
       <h4>Module colors</h4>
       <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="black" id="Black" v-model="moduleColors" />
+        <input
+          class="form-check-input"
+          type="checkbox"
+          value="black"
+          id="Black"
+          v-model="moduleColors"
+        />
         <label class="form-check-label" for="Black">Black</label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="silver" id="Silver"  v-model="moduleColors"/>
+        <input
+          class="form-check-input"
+          type="checkbox"
+          value="silver"
+          id="Silver"
+          v-model="moduleColors"
+        />
         <label class="form-check-label" for="Silver">Silver</label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="gold" id="Gold"  v-model="moduleColors"/>
+        <input
+          class="form-check-input"
+          type="checkbox"
+          value="gold"
+          id="Gold"
+          v-model="moduleColors"
+        />
         <label class="form-check-label" for="Gold">Gold</label>
       </div>
       <br />
@@ -36,10 +53,7 @@
             aria-describedby="typeHelp"
             placeholder="Type"
           />
-          <small
-            id="typeHelp"
-            class="form-text text-muted"
-          >Tipo de luminaria</small>
+          <small id="typeHelp" class="form-text text-muted">Tipo de luminaria</small>
         </div>
 
         <div class="form-group">
@@ -52,10 +66,7 @@
             aria-describedby="materialsHelp"
             placeholder="Materials"
           ></textarea>
-          <small
-            id="materialsHelp"
-            class="form-text text-muted"
-          >Lista de materiales</small>
+          <small id="materialsHelp" class="form-text text-muted">Lista de materiales</small>
         </div>
 
         <div class="form-group">
@@ -68,12 +79,9 @@
             aria-describedby="cordHelp"
             placeholder="Cord Length"
           />
-          <small
-            id="cordHelp"
-            class="form-text text-muted"
-          >Cord Length</small>
+          <small id="cordHelp" class="form-text text-muted">Cord Length</small>
         </div>
-        
+
         <button @click="guardar" class="btn btn-primary">Guardar</button>
       </div>
     </div>
@@ -89,17 +97,16 @@ import firebase from "firebase";
 import UploadFileVue from "./UploadFile.vue";
 export default {
   name: "diseno-grafico",
-  props: {
-  },
+  props: {},
   components: {
     "upload-file": UploadFileVue
   },
   data() {
     return {
-        type: "",
-        materials: "",
-        cordLength: "",
-        moduleColors: []
+      type: "",
+      materials: "",
+      cordLength: "",
+      moduleColors: []
     };
   },
   created() {
@@ -111,17 +118,29 @@ export default {
     }
   },
   methods: {
-      guardar(){
-          db.collection("projects").doc(this.projectid).update ({
-              moduleColors: this.moduleColors,
-              type: this.type,
-              materials: this.materials,
-              cordLength: this.cordLength
-          }).then (()=>{
-              alert ("Proyecto Actualizado");
-              this.$router.push("/home");
-          });
-      },
+    guardar() {
+      var data = {};
+      if (this.moduleColors) {
+        data["moduleColors"] = this.moduleColors;
+      }
+      if (this.type) {
+        data["type"] = this.type;
+      }
+      if (this.materials) {
+        data["materials"] = this.materials;
+      }
+      if (this.cordLength) {
+        data["cordLength"] = this.cordLength;
+      }
+
+      db.collection("projects")
+        .doc(this.projectid)
+        .update(data)
+        .then(() => {
+          alert("Proyecto Actualizado");
+          this.$router.push("/home");
+        });
+    }
   }
 };
 </script>

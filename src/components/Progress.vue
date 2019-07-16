@@ -7,15 +7,13 @@
           <tr>
             <th scope="col">Nombre</th>
             <th scope="col">Progreso</th>
+            <th scope="col">ExportPDF</th>
           </tr>
         </thead>
         <tbody>
           <tr
             v-for="(project, idx) in projects"
             :key="idx"
-            class="clickable-row"
-            v-on:click="clickList(project)"
-            style="cursor: pointer; "
           >
             <td>{{project.nombre}}</td>
             <td>
@@ -31,6 +29,7 @@
                 ></div>
               </div>
             </td>
+            <td class="text-center"><export-pdf v-bind:projectid="project.id"></export-pdf></td>
           </tr>
         </tbody>
       </table>
@@ -42,11 +41,14 @@
 <script>
 import { db } from "@/main";
 import router from "@/router";
+import ExportPDFVue from './ExportPDF.vue';
 
 export default {
   name: "list-project-progress",
   props: {},
-  components: {},
+  components: {
+      "export-pdf": ExportPDFVue
+  },
   data() {
     return {
       projects: [],

@@ -9,7 +9,7 @@
             <th scope="col">Modelo</th>
             <th scope="col">Descripción</th>
             <th scope="col">Biografía</th>
-            <th scope="col">ExportPDF</th>
+            
           </tr>
         </thead>
         <tbody>
@@ -26,7 +26,7 @@
             <td v-if="!project.descripcion"></td>
             <td v-if="project.bio">{{project.bio.substring(0, 10)}}</td>
             <td v-if="!project.bio"></td>
-            <td>{{project.id}}<export-pdf v-bind:projectid="project.id"></export-pdf></td>
+            
           </tr>
         </tbody>
       </table>
