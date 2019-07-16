@@ -78,7 +78,7 @@ export default {
           fontColor: "#2D2E2D"
         },
         moduleColors: {
-            y: 453
+          y: 453
         }
       }
     };
@@ -145,7 +145,7 @@ export default {
       );
 
       //Texto Modelo del diseño
-      doc.setFontType("normal");
+      doc.setFontType("bold");
       doc.setFontSize(24);
       doc.setTextColor("#000000");
       if (this.project.modelo) {
@@ -157,7 +157,7 @@ export default {
       }
 
       //Texto nombre del diseñador
-      doc.setFontType("normal");
+      doc.setFontType("bold");
       doc.setFontSize(10);
       doc.setTextColor("#676767");
       if (this.project.disenador) {
@@ -171,13 +171,10 @@ export default {
       return doc;
     },
     setDescription(doc, x, y) {
-      doc.setFontSize(this.config.titles.fontSize);
-      doc.setTextColor(this.config.titles.fontColor);
+      this.setFontTitle (doc);
       doc.text(x, y, "DESCRIPTION");
 
-      doc.setFontType("normal");
-      doc.setFontSize(this.config.descripcion.fontSize);
-      doc.setTextColor(this.config.descripcion.fontColor);
+      this.setFontNormal (doc);
       if (this.project.descripcion) {
         doc.text(
           x,
@@ -191,12 +188,10 @@ export default {
       return doc;
     },
     setDesignerBlock(doc, x, y) {
-      doc.setFontSize(this.config.titles.fontSize);
-      doc.setTextColor(this.config.titles.fontColor);
+      this.setFontTitle (doc);
       doc.text(x, y, "DESIGNER");
 
-      doc.setFontSize(this.config.designer.fontSize);
-      doc.setTextColor(this.config.designer.fontColor);
+      this.setFontNormal (doc);
       if (this.project.bio) {
         doc.text(
           x,
@@ -223,13 +218,10 @@ export default {
       return doc;
     },
     setSpecificationsBlock(doc, x, y) {
-      doc.setFontSize(this.config.titles.fontSize);
-      doc.setTextColor(this.config.titles.fontColor);
+      this.setFontTitle(doc);
       doc.text(x, y, "SPECIFICATIONS");
 
-      doc.setFontType("normal");
-      doc.setFontSize(this.config.specifications.fontSize);
-      doc.setTextColor(this.config.specifications.fontColor);
+      this.setFontNormal(doc);
       if (this.project.type) {
         doc.text(x, y + 22, "Type: " + this.project.type);
       }
@@ -250,8 +242,10 @@ export default {
         this.config.specifications.fontSize
       );
 
-      if (this.project.cordLength)
+      if (this.project.cordLength) {
         doc.text(x, y + 50 + h + 20, "Cord length: " + this.project.cordLength);
+      }
+
       doc.text(
         x + 15,
         y + 50 + h + 30,
@@ -259,14 +253,10 @@ export default {
       );
     },
     setLedModuleBlock(doc, x, y) {
-      doc.setFontType("bold");
-      doc.setTextColor(this.config.titles.fontColor);
-      doc.setFontSize(this.config.titles.fontSize);
+      this.setFontTitle(doc);
       doc.text(x, y, "LED MODULE");
 
-      doc.setFontType("normal");
-      doc.setTextColor(this.config.ledModule.fontColor);
-      doc.setFontSize(this.config.ledModule.fontSize);
+      this.setFontNormal(doc);
       if (this.project.input) {
         doc.text(x, y + 20, "Input: " + this.project.input);
       }
@@ -463,7 +453,14 @@ export default {
         );
 
       if (this.est) {
-          doc.addImage(this.est, "JPEG", 352, this.config.moduleColors.y , 150, 150);
+        doc.addImage(
+          this.est,
+          "JPEG",
+          352,
+          this.config.moduleColors.y,
+          150,
+          150
+        );
       }
 
       if (this.project.nombre) doc.save(this.project.nombre + ".pdf");
