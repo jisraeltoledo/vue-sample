@@ -40,19 +40,21 @@ export default {
         },
         descripcion: {
           y: 132,
-          textLength: 140,
+          textLength: 120,
           fontSize: 8,
           fontColor: "#2D2E2D"
         },
         titles: {
           fontColor: "#B6B6B5",
           fontSize: 10,
-          fontType: "bold"
+          fontType: "demi",
+          font: "ITC Avant Garde Gothic LT"
         },
         paragraph: {
           fontColor: "#2D2E2D",
           fontSize: 8,
-          fontType: "normal"
+          fontType: "regular",
+          font: "Montserrat"
         },
         designer: {
           textLength: 70,
@@ -133,10 +135,9 @@ export default {
     registerFont(fontName, base64) {
       // Remove extension
       const withoutExt = fontName.replace(/\.[^/.]+$/, "");
-      const parts = withoutExt.split ("-");
-      
+      const parts = withoutExt.split("-");
       this.doc.addFileToVFS(fontName, base64);
-      if (parts.length == 1){
+      if (parts.length == 1) {
         this.doc.addFont(fontName, withoutExt, "normal");
       } else {
         this.doc.addFont(fontName, parts[0], parts[1]);
@@ -151,7 +152,7 @@ export default {
       };
       var xhr = new XMLHttpRequest();
       // fonts in public/assets
-      xhr.open("GET", "./assets/" + fontName);
+      xhr.open("GET", "./assets/fonts/" + fontName);
       xhr.responseType = "blob"; //force the HTTP response, response-type header to be blob
       xhr.onload = function() {
         reader.readAsDataURL(xhr.response); //xhr.response is now a blob object
@@ -161,16 +162,14 @@ export default {
     loadFonts() {
       // Iterate over folder to find fonts
       require
-        .context("../../public/assets/", false, /\.ttf$/)
+        .context("../../public/assets/fonts/", false, /\.ttf$/)
         .keys()
         .forEach(key => this.loadFont(key));
     },
     header(doc, x, y) {
-      console.log(doc.getFontList());
       doc.setTextColor("#000000");
-      doc.setFont("ITC Avant Garde Gothic LT");
+      doc.setFont("ITC Avant Garde Gothic LT", "demi");
       doc.setFontSize(this.config.header.fontSize);
-      doc.setFontType("normal");
 
       var w = doc.getStringUnitWidth(".DECIMAL") * this.config.header.fontSize;
       var width = doc.internal.pageSize.getWidth();
@@ -180,9 +179,8 @@ export default {
         width - w - this.config.margins.left,
         this.config.margins.top
       );
-      doc.setFont("courier");
+      
       //Texto Modelo del diseño
-      doc.setFontType("bold");
       doc.setFontSize(24);
       doc.setTextColor("#000000");
       if (this.project.modelo) {
@@ -192,9 +190,8 @@ export default {
           this.config.margins.top
         );
       }
-
+      doc.setFont("Montserrat", "bold");
       //Texto nombre del diseñador
-      doc.setFontType("bold");
       doc.setFontSize(10);
       doc.setTextColor("#676767");
       if (this.project.disenador) {
@@ -325,22 +322,19 @@ export default {
       }
     },
     setFontTitle(doc) {
-      doc.setFontType(this.config.titles.fontType);
+      doc.setFont(this.config.titles.font, this.config.titles.fontType);
       doc.setTextColor(this.config.titles.fontColor);
       doc.setFontSize(this.config.titles.fontSize);
     },
     setFontNormal(doc) {
-      doc.setFontType(this.config.paragraph.fontType);
+      doc.setFont(this.config.paragraph.font, this.config.paragraph.fontType);
       doc.setTextColor(this.config.paragraph.fontColor);
       doc.setFontSize(this.config.paragraph.fontSize);
     },
     getHeight(doc, str, fontSize) {
       var lineHeight = doc.internal.getLineHeightFactor();
-
       var numberOfLines = str.split(/\r\n|\r|\n/).length;
-
       var height = fontSize * numberOfLines * lineHeight;
-
       return height;
     },
     insertImage(doc, img, x, y, width) {
