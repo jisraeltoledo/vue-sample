@@ -1,14 +1,14 @@
 <template>
   <div>
-    <h1>Crear proyecto</h1>
+    <h1>{{title}}</h1>
     <div class="col-md-6 offset-md-3">
       <form id="app" @submit="guardar">
-        <p v-if="errors.length">
+        <div v-if="errors.length">
           <b>Por favor corrige los errores:</b>
           <ul>
             <li v-for="(error, idx) in errors" :key="idx">{{ error }}</li>
           </ul>
-        </p>
+        </div>
 
         <div class="form-group">
           <label for="formGroupExampleInput">
@@ -72,6 +72,7 @@
         <button class="btn btn-success" @click="guardar">Guardar</button>
         <button class="btn" @click="cancelar">Cancelar</button>
       </form>
+      <br />
     </div>
   </div>
 </template>
@@ -90,11 +91,27 @@ export default {
       descripcion: "",
       bio: "",
       errors: [],
-      disenador: ""
+      disenador: "",
+      title: "Crear proyecto"
     };
   },
+  created() {
+    if (this.$route.params.projectid) {
+      this.title = "Editar proyecto";
+      db.collection("projects")
+        .doc(this.$route.params.projectid)
+        .get()
+        .then(doc => {
+          this.nombre = doc.data().nombre;
+          this.modelo = doc.data().modelo;
+          this.descripcion = doc.data().descripcion;
+          this.bio = doc.data ().bio;
+          this.disenador = doc.data().disenador;
+        });
+    }
+  },
   methods: {
-    cancelar (){
+    cancelar() {
       this.$router.push("/home");
     },
     guardar(e) {
@@ -105,37 +122,36 @@ export default {
       this.errors = [];
 
       if (!this.nombre) {
-        this.errors.push('Nombre es requerido.');
+        this.errors.push("Nombre es requerido.");
       }
       if (!this.modelo) {
-        this.errors.push('Modelo es requerido.');
+        this.errors.push("Modelo es requerido.");
       }
       if (!this.descripcion) {
-        this.errors.push('Descripción es requerido.');
+        this.errors.push("Descripción es requerido.");
       }
       if (!this.disenador) {
-        this.errors.push('Nombre de diseñador es requerido.');
+        this.errors.push("Nombre de diseñador es requerido.");
       }
       if (!this.bio) {
-        this.errors.push('Biografía es requerido.');
+        this.errors.push("Biografía es requerido.");
       }
 
       e.preventDefault();
-      if (this.errors.length == 0){
+      if (this.errors.length == 0) {
         db.collection("projects")
-        .add({
-          nombre: this.nombre,
-          modelo: this.modelo,
-          descripcion: this.descripcion,
-          disenador: this.disenador,
-          bio: this.bio
-        })
-        .then(ref => {
-          alert("se guardó el proyecto correctamente");
-          this.$router.push("/home");
-        });
+          .add({
+            nombre: this.nombre,
+            modelo: this.modelo,
+            descripcion: this.descripcion,
+            disenador: this.disenador,
+            bio: this.bio
+          })
+          .then(ref => {
+            alert("se guardó el proyecto correctamente");
+            this.$router.push("/home");
+          });
       }
-      
     }
   }
 };

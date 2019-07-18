@@ -9,10 +9,7 @@
 import { db } from "@/main";
 import router from "@/router";
 import jsPDF from "jspdf";
-import font1 from "../../public/fonts/ITC Avant Garde Gothic LT-normal.js";
-import font2 from "../../public/fonts/ITC Avant Garde Gothic LT-bold.js";
 import firebase from "firebase";
-// import fs from 'fs';
 
 export default {
   name: "list-project",
@@ -86,7 +83,6 @@ export default {
     };
   },
   created() {
-    console.log("created");
     db.collection("projects")
       .doc(this.projectid)
       .get()
@@ -137,8 +133,14 @@ export default {
     registerFont(fontName, base64) {
       // Remove extension
       const withoutExt = fontName.replace(/\.[^/.]+$/, "");
+      const parts = withoutExt.split ("-");
+      
       this.doc.addFileToVFS(fontName, base64);
-      this.doc.addFont(fontName, withoutExt, "normal");
+      if (parts.length == 1){
+        this.doc.addFont(fontName, withoutExt, "normal");
+      } else {
+        this.doc.addFont(fontName, parts[0], parts[1]);
+      }
     },
     loadFont(fontName) {
       fontName = fontName.substring(2); // Remove './' from name

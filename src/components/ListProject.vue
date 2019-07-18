@@ -38,7 +38,7 @@
 <script>
 import { db } from "@/main";
 import router from "@/router";
-import ExportPDFVue from '../ExportPDF.vue';
+import ExportPDFVue from '@/components/ExportPDF.vue';
 export default {
   name: "list-project",
   props: {},
