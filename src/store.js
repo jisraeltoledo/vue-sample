@@ -10,7 +10,6 @@ export default new Vuex.Store({
   },
   mutations: {
     setUserRol(state, rol) {
-      console.log("seting rol", rol);
       state.userRole = rol;
     }
   },

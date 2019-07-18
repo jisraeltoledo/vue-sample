@@ -5,14 +5,15 @@
     <img id="img_prod" :src="prod" style="display: none;" />
   </div>
 </template>
-
-
 <script>
 import { db } from "@/main";
 import router from "@/router";
 import jsPDF from "jspdf";
+import font1 from "../../public/fonts/ITC Avant Garde Gothic LT-normal.js";
+import font2 from "../../public/fonts/ITC Avant Garde Gothic LT-bold.js";
 import firebase from "firebase";
-import { inspect } from "util";
+// import fs from 'fs';
+
 export default {
   name: "list-project",
   props: {
@@ -20,6 +21,7 @@ export default {
   },
   data() {
     return {
+      doc: null,
       project: null,
       images: null,
       bio: null,
@@ -32,7 +34,7 @@ export default {
           fontSize: 24,
           logoHeight: 16,
           modelSize: 18,
-          font: "Avant Garde Gothic"
+          font: "AvantGardeGothicDemi"
         },
         margins: {
           left: 36,
@@ -84,7 +86,7 @@ export default {
     };
   },
   created() {
-    console.log("projectid", this.projectid);
+    console.log("created");
     db.collection("projects")
       .doc(this.projectid)
       .get()
@@ -127,13 +129,46 @@ export default {
       .then(doc => {
         if (doc.exists) this.cert = doc.data().img;
       });
+    this.doc = new jsPDF("p", "pt", "letter");
+    this.loadFonts();
   },
   computed: {},
   methods: {
+    registerFont(fontName, base64) {
+      // Remove extension
+      const withoutExt = fontName.replace(/\.[^/.]+$/, "");
+      this.doc.addFileToVFS(fontName, base64);
+      this.doc.addFont(fontName, withoutExt, "normal");
+    },
+    loadFont(fontName) {
+      fontName = fontName.substring(2); // Remove './' from name
+      var reader = new FileReader();
+      reader.onload = e => {
+        // .split(",").pop() => remove first part data:[<mediatype>][;base64],<data>
+        this.registerFont(fontName, e.target.result.split(",").pop());
+      };
+      var xhr = new XMLHttpRequest();
+      // fonts in public/assets
+      xhr.open("GET", "./assets/" + fontName);
+      xhr.responseType = "blob"; //force the HTTP response, response-type header to be blob
+      xhr.onload = function() {
+        reader.readAsDataURL(xhr.response); //xhr.response is now a blob object
+      };
+      xhr.send();
+    },
+    loadFonts() {
+      // Iterate over folder to find fonts
+      require
+        .context("../../public/assets/", false, /\.ttf$/)
+        .keys()
+        .forEach(key => this.loadFont(key));
+    },
     header(doc, x, y) {
+      console.log(doc.getFontList());
       doc.setTextColor("#000000");
+      doc.setFont("ITC Avant Garde Gothic LT");
       doc.setFontSize(this.config.header.fontSize);
-      doc.setFontType("bold");
+      doc.setFontType("normal");
 
       var w = doc.getStringUnitWidth(".DECIMAL") * this.config.header.fontSize;
       var width = doc.internal.pageSize.getWidth();
@@ -143,7 +178,7 @@ export default {
         width - w - this.config.margins.left,
         this.config.margins.top
       );
-
+      doc.setFont("courier");
       //Texto Modelo del diseño
       doc.setFontType("bold");
       doc.setFontSize(24);
@@ -171,10 +206,10 @@ export default {
       return doc;
     },
     setDescription(doc, x, y) {
-      this.setFontTitle (doc);
+      this.setFontTitle(doc);
       doc.text(x, y, "DESCRIPTION");
 
-      this.setFontNormal (doc);
+      this.setFontNormal(doc);
       if (this.project.descripcion) {
         doc.text(
           x,
@@ -188,10 +223,10 @@ export default {
       return doc;
     },
     setDesignerBlock(doc, x, y) {
-      this.setFontTitle (doc);
+      this.setFontTitle(doc);
       doc.text(x, y, "DESIGNER");
 
-      this.setFontNormal (doc);
+      this.setFontNormal(doc);
       if (this.project.bio) {
         doc.text(
           x,
@@ -299,18 +334,18 @@ export default {
     },
     getHeight(doc, str, fontSize) {
       var lineHeight = doc.internal.getLineHeightFactor();
-      console.log(lineHeight);
+
       var numberOfLines = str.split(/\r\n|\r|\n/).length;
-      console.log(numberOfLines);
+
       var height = fontSize * numberOfLines * lineHeight;
-      console.log(height);
+
       return height;
     },
     insertImage(doc, img, x, y, width) {
       var h = img.height();
       var w = img.width();
       var nh = (h * width) / w;
-      console.log(h, w, nh, width, img.attr("src"));
+
       doc.addImage(img.attr("src"), "JPEG", x, y, width, nh);
     },
     insertLineBreaks(sentence, x) {
@@ -322,7 +357,7 @@ export default {
         alert("No hay datos");
         return;
       }
-      var doc = new jsPDF("p", "pt", "letter");
+      var doc = this.doc;
 
       this.header(doc, 0, 0);
 

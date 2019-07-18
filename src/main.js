@@ -21,7 +21,6 @@ firebase.initializeApp(firebaseConfig);
 export const db = firebase.firestore();
 
 firebase.auth().onAuthStateChanged(user => {
-  console.log(user);
   if (!user) {
     store.commit("setUserRol", "guest");
     initApp();
@@ -32,14 +31,12 @@ firebase.auth().onAuthStateChanged(user => {
     .doc(user.uid)
     .get()
     .then(userdb => {
-      console.log("query users", userdb.data());
       store.commit("setUserRol", userdb.data().rol);
       initApp();
     });
 });
 
 function initApp() {
-  console.log("initing app");
   if (!app) {
     /* eslint-disable no-new */
     app = new Vue({

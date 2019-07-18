@@ -26,7 +26,7 @@ export default {
     "menu-ing-electrica": MenuIngenieriaElectricaVue
   },
   created(){
-      console.log (store);
+      
   },
   computed: {
       

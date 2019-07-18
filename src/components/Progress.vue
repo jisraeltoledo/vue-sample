@@ -66,7 +66,6 @@ export default {
           this.projects.push(p);
         });
       });
-      console.log ("progress", this.progress);
   },
 
   methods: {
@@ -78,12 +77,12 @@ export default {
       return progress;
     },
     setProgress(project) {
-      console.log("project", project);
+      
       var progress = this.getProgressCreate(project);
       progress += this.getProgressDisenoG(project);
       progress += this.getProgressDisenoI(project);
       progress += this.getProgressIngElec(project);
-      console.log("progress", $("#" + "progress_" + project.id));
+      
       $("#" + "progress_" + project.id)
         .css("width", progress + "%")
         .attr("aria-valuenow", progress);
@@ -108,7 +107,7 @@ export default {
       if (project.bio) {
         progress += 5;
       }
-      console.log ("progress create", progress);
+      
       return progress;
     },
     getProgressDisenoG(project) {
@@ -125,7 +124,7 @@ export default {
       if (project[project.id + "-prod"]) {
         progress += 7;
       }
-console.log ("progress DG", progress);
+
       return progress;
     },
     getProgressDisenoI(project) {
@@ -145,7 +144,7 @@ console.log ("progress DG", progress);
       if (project.cordLength) {
         progress += 5;
       }
-      console.log ("progress DI", progress);
+      
       return progress;
     },
     getProgressIngElec(project) {
@@ -171,7 +170,7 @@ console.log ("progress DG", progress);
       if (project.lifeSpan) {
         progress += 4;
       }
-      console.log ("progress IngEle", progress);
+      
       return progress;
     }
   }
