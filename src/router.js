@@ -11,7 +11,9 @@ import CreateProject from "@/components/CreateProject";
 import ListProject from "@/components/ListProject";
 import DisenoGrafico from "@/components/DisenoGrafico";
 import DisenoIndustrial from "@/components/DisenoIndustrial";
+import CreateTemplate from "@/components/CreateTemplate";
 import IngenieriaElectrica from "@/components/IngenieriaElectrica";
+import FormBase from "@/components/FormBase";
 
 Vue.use(Router);
 
@@ -50,6 +52,16 @@ const router = new Router({
       path: "/about",
       name: "About",
       component: About
+    },
+    {
+      path: "/form-base/:formid/:departamento",
+      name: "FormBase",
+      component: FormBase
+    },
+    {
+      path: "/create-template",
+      name: "CreateTemplate",
+      component: CreateTemplate
     },
     {
       path: "/create-project/:projectid?",
