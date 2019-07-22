@@ -1,10 +1,9 @@
 <template>
-  <div>
-    Form base
-    <div v-for="(f, idx) in fields" v-bind:key="idx">
-      {{f}}
+  <div class="row">
+    <div v-for="(f, idx) in fields" v-bind:key="'f'+idx" class="form-group col-md-6">
+      <!--  ************ TEXTO ************ -->
       <div v-if="f.tipo==='texto'">
-        <div class="form-group col-md-6">
+        <div>
           <label for="formGroupExampleInput">
             {{f.nombre}}
             <small v-if="f.obligatorio">*</small>
@@ -19,8 +18,9 @@
           />
         </div>
       </div>
-      <div v-if="f.tipo==='numero'">
-        <div class="form-group col-md-6">
+      <!--  ************ NUMERO ************ -->
+      <div v-else-if="f.tipo==='numero'">
+        <div>
           <label for="formGroupExampleInput">
             {{f.nombre}}
             <small v-if="f.obligatorio">*</small>
@@ -35,7 +35,8 @@
           />
         </div>
       </div>
-      <div v-if="f.tipo==='boolean'">
+      <!--  ************ Boolean ************ -->
+      <div v-else-if="f.tipo==='boolean'">
         <div class="form-check">
           <input
             class="form-check-input"
@@ -47,13 +48,53 @@
           <label class="form-check-label" :for="f.id">{{f.nombre}}</label>
         </div>
       </div>
+      <!--  ************ Check ************ -->
+      <div v-else-if="f.tipo==='check'">
+        {{f.nombre}}
+        <div class="form-check" v-for="(o, idy) in f.options" v-bind:key="'o'+idy">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value="true"
+            :checked="project[f.id]!== undefined && project[f.id].includes(o.id)"
+            :id="f.id+'_'+o.id"
+          />
+          <label class="form-check-label" :for="f.id+'_'+o.id">{{o.value}}</label>
+        </div>
+      </div>
+      <!--  ************ Radio ************ -->
+      <div v-else-if="f.tipo==='radio'">
+        {{f.nombre}}
+        <div class="radio" v-for="(o, idy) in f.options" v-bind:key="'o'+idy">
+          <input
+            :name="f.id"
+            type="radio"
+            value="true"
+            :checked="project[f.id]!== undefined && project[f.id].includes(o.id)"
+            :id="f.id+'_'+o.id"
+          />
+          <label :for="f.id+'_'+o.id">{{o.value}}</label>
+        </div>
+      </div>
+      <!--  ************ File ************ -->
+      <div v-else-if="f.tipo==='file'">
+        <upload-file 
+        v-bind:id="f.id"
+        v-bind:path="projectid"
+        v-bind:label="f.nombre"
+        v-bind:fileType="f.fileType"
+        @uploaded:url="files[f.id] = $event" 
+        ></upload-file>
+      </div>
+      <div v-else>{{f}}</div>
     </div>
-    <button class="btn btn-primary" @click="guardar">Guardar</button>
+    <button class="btn btn-primary form-control col-md-2 offset-2" @click="guardar">Guardar</button>
   </div>
 </template>
 
 <script>
 import { db } from "@/main";
+import UploadFileVue from './UploadFile.vue';
 
 export default {
   name: "form-base",
@@ -61,12 +102,15 @@ export default {
   data() {
     return {
       fields: [],
-      rol: "estructuras",
+      rol: "diseño industrial",
       projectid: "4FyMEQx6ZECw07cFxnTt",
-      project: {}
+      project: {},
+      files: []
     };
   },
-  components: {},
+  components: {
+      "upload-file": UploadFileVue
+  },
   created() {
     const formid = this.$route.params.formid;
     db.collection("projects")
@@ -91,7 +135,25 @@ export default {
     guardar() {
       var values = {};
       this.fields.forEach(f => {
-        if ($("#" + f.id).val()) values[f.id] = $("#" + f.id).val();
+        if (f.tipo === "boolean") {
+          if ($("#" + f.id).is(":checked")) values[f.id] = true;
+        } else if (f.tipo === "texto" || f.tipo === "numero") {
+          if ($("#" + f.id).val()) values[f.id] = $("#" + f.id).val();
+        } else if (f.tipo === "check") {
+          values[f.id] = [];
+          f.options.forEach(o => {
+            if ($("#" + f.id + "_" + o.id).is(":checked"))
+              values[f.id].push(o.id);
+          });
+        } else if (f.tipo === "radio") {
+          f.options.forEach(o => {
+            if ($("#" + f.id + "_" + o.id).is(":checked")) values[f.id] = o.id;
+          });
+        } else if (f.tipo === "file"){
+            if (this.files[f.id]){
+                values[f.id] = this.files[f.id];
+            }
+        }
       });
       db.collection("projects")
         .doc(this.projectid)
