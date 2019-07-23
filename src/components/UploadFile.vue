@@ -1,19 +1,21 @@
 
 <template>
   <div class="row">
-    <div :class="isImage?'col-md-8':'col-md-12'">
+    <div :class="isImage&&!multiple?'col-md-8':'col-md-12'">
       <div class="form-group align-bottom">
         <h5>
           <label>{{label}}</label>
         </h5>
+        <small v-if="multiple">* puedes subir más de 1</small>
         <div class="form-group align-bottom">
           <div class="input-group-prepend align-bottom">
             <input
               :id="id"
+              :multiple="multiple"
               type="file"
               class="form-control align-bottom"
               :accept="fileType===undefined?'*':fileType"
-              @change="previewFile($event, 'img_'+id)"
+              @change="preview"
             />
             <span class="input-group-btn">
               <button v-if="! empty" class="btn btn-success pull-right" @click="upload">Subir</button>
@@ -32,17 +34,14 @@
           style="width:0%"
         ></div>
       </div>
-      <small>
+      <!-- <small>
         <a target="blank" v-if="downloadUrl" :href="downloadUrl">{{downloadUrl}}</a>
-      </small>
+      </small> -->
     </div>
-    <div class="col-md-4" v-if="isImage">
-      <img
-        :id="'img_'+id"
-        :src="'https://via.placeholder.com/'+width"
-        alt="your image"
-        :width="width"
-      />
+    <div class="row">
+      <div class="col-md-4" v-for="(img, idx) in imgs" :key="'prev_'+idx">
+        <img :id="'img_'+idx" :src="img" alt="preview" :width="width" />
+      </div>
     </div>
   </div>
 </template>
@@ -59,7 +58,8 @@ export default {
     id: String,
     width: Number,
     path: String,
-    fileType: String
+    fileType: String,
+    multiple: Boolean
   },
   components: {},
   data: function() {
@@ -67,12 +67,11 @@ export default {
       empty: true,
       downloadUrl: null,
       base64: null,
-      ext: ""
+      ext: "",
+      imgs: []
     };
   },
-  created() {
-    console.log(this.downloadUrl);
-  },
+  created() {},
   watch: {},
   computed: {
     projectid() {
@@ -88,34 +87,23 @@ export default {
     }
   },
   methods: {
-    previewFile() {
-      var preview = document.getElementById("img_" + this.id);
-      var file = document.getElementById(this.id).files[0];
-      const name = file.name;
-      const lastDot = name.lastIndexOf(".");
-      const fileName = name.substring(0, lastDot);
-      this.ext = name.substring(lastDot + 1);
-
+    preview() {
+      var files = document.getElementById(this.id).files;
+      console.log("files.length", files.length);
+      if (files.length > 0) this.empty = false;
+      else this.empty = true;
+      console.log("files", files);
+      Array.from(files).forEach(file => {
+        this.previewFile(file);
+      });
+    },
+    previewFile(file) {
+      console.log("file", file);
       var reader = new FileReader();
-      var _this = this;
-
-      reader.addEventListener(
-        "load",
-        function() {
-          if (preview != null) {
-            preview.src = reader.result;
-          }
-          _this.base64 = reader.result;
-        },
-        false
-      );
-
-      if (file) {
-        reader.readAsDataURL(file);
-        this.empty = false;
-      } else {
-        this.empty = true;
-      }
+      reader.onload = e => {
+        this.imgs.push(e.target.result);
+      };
+      reader.readAsDataURL(file);
     },
     store() {
       var data = {};
@@ -139,13 +127,17 @@ export default {
             .update(data);
         });
     },
-    upload() {
-      //var _this = this;
-      var storageRef = firebase.storage().ref();
-      var ref = storageRef.child(
-        this.path + "/" + this.id +'.'+ this.ext
-      );
-      var file = document.getElementById(this.id).files[0];
+    uploadFile(file, cont) {
+      const name = file.name;
+      const lastDot = name.lastIndexOf(".");
+      const fileName = name.substring(0, lastDot);
+      this.ext = name.substring(lastDot + 1);
+
+      var ref = firebase
+        .storage()
+        .ref()
+        .child(this.path + "/" + this.id + "/" + cont + "." + this.ext);
+
       var uploadTask = ref.put(file);
       uploadTask.on(
         "state_changed",
@@ -167,10 +159,17 @@ export default {
           // For instance, get the download URL: https://firebasestorage.googleapis.com/...
           uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
             this.downloadUrl = downloadURL;
-            this.$emit ('uploaded:url', downloadURL);
+            this.$emit("uploaded:url", downloadURL);
           });
         }
       );
+    },
+    upload() {
+      var files = document.getElementById(this.id).files;
+      var cont = 1;
+      Array.from(files).forEach(file => {
+        this.uploadFile(file, cont++);
+      });
     }
   }
 };
