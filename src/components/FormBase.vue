@@ -1,6 +1,7 @@
 <template>
   <div>
     <h1>{{project.nombre}}</h1>
+    <div v-if="message">{{message}}</div>
     <div class="row">
       <div v-for="(f, idx) in fields" v-bind:key="'f'+idx" class="form-group col-md-6">
         <!--  ************ TEXTO ************ -->
@@ -85,6 +86,7 @@
             v-bind:path="projectid"
             v-bind:label="f.nombre"
             v-bind:fileType="f.fileType"
+            v-bind:description="f.descripcion"
             v-bind:width="100"
             @uploaded:url="files[f.id] = $event"
           ></upload-file>
@@ -98,12 +100,15 @@
             v-bind:fileType="f.fileType"
             v-bind:width="100"
             v-bind:multiple="true"
+            v-bind:description="f.descripcion"
             @uploaded:url="files[f.id] = $event"
           ></upload-file>
         </div>
         <div v-else>{{f}}</div>
       </div>
-      <button class="btn btn-primary form-control col-md-2 offset-2" @click="guardar">Guardar</button>
+    </div>
+    <div v-if="fields.length > 0" class="row">
+      <button class="btn btn-primary form-control col-md-2 offset-5" @click="guardar">Guardar</button>
     </div>
   </div>
 </template>
@@ -118,14 +123,28 @@ export default {
   data() {
     return {
       fields: [],
-      rol: "diseño grafico",
+      rol: "diseño industrial",
       projectid: "4FyMEQx6ZECw07cFxnTt",
       project: {},
-      files: []
+      files: [],
+      message: "No hay datos para ti"
     };
   },
   components: {
     "upload-file": UploadFileVue
+  },
+  watch: {
+    fields: function() {
+      console.log(this.fields.length);
+      if (this.fields.length === 0) {
+        console.log("if");
+        this.message = "No hay datos para ti";
+      } else {
+        console.log("else");
+        this.message = "";
+      }
+      console.log("message:", this.message);
+    }
   },
   created() {
     const formid = this.$route.params.formid;

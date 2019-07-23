@@ -3,10 +3,11 @@
   <div class="row">
     <div :class="isImage&&!multiple?'col-md-8':'col-md-12'">
       <div class="form-group align-bottom">
-        <h5>
-          <label>{{label}}</label>
-        </h5>
-        <small v-if="multiple">* puedes subir más de 1</small>
+        <h6>
+          {{label}}
+        </h6>
+        <small>{{description}}</small>
+        <small v-if="multiple"><br />* puedes subir más de 1</small>
         <div class="form-group align-bottom">
           <div class="input-group-prepend align-bottom">
             <input
@@ -55,6 +56,7 @@ export default {
   name: "upoad-file",
   props: {
     label: String,
+    description: String,
     id: String,
     width: Number,
     path: String,

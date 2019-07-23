@@ -17,6 +17,15 @@ import FormBase from "@/components/FormBase";
 
 Vue.use(Router);
 
+export const roles = {
+  moderador: "moderador",
+  estructuras: "estructuras",
+  diseno_grafico: "diseño grafico",
+  diseno_industrial: "diseño industrial",
+  ingenieria_electrica: "ingenieria electrica",
+  super_admin: "super admin"
+};
+
 const router = new Router({
   routes: [
     {
@@ -54,7 +63,7 @@ const router = new Router({
       component: About
     },
     {
-      path: "/form-base/:formid/:departamento/:projectid?",
+      path: "/form-base/:formid/:projectid?",
       name: "FormBase",
       component: FormBase
     },
@@ -68,7 +77,7 @@ const router = new Router({
       name: "Create Project",
       component: CreateProject,
       meta: {
-        roles: ["moderador", "super_admin"]
+        roles: [roles.moderador]
       }
     },
     {
@@ -76,13 +85,7 @@ const router = new Router({
       name: "List Project",
       component: ListProject,
       meta: {
-        roles: [
-          "moderador",
-          "diseno_grafico",
-          "diseno_industrial",
-          "ingenieria_electrica",
-          "super_admin"
-        ]
+        roles: []
       }
     },
     {
@@ -90,7 +93,7 @@ const router = new Router({
       name: "Diseño Gráfico",
       component: DisenoGrafico,
       meta: {
-        roles: ["diseno_grafico", "super_admin"]
+        roles: [roles.diseno_grafico]
       }
     },
     {
@@ -98,7 +101,7 @@ const router = new Router({
       name: "Diseño Industrial",
       component: DisenoIndustrial,
       meta: {
-        roles: ["diseno_industrial", "super_admin"]
+        roles: [roles.diseno_industrial]
       }
     },
     {
@@ -106,7 +109,7 @@ const router = new Router({
       name: "Ingenieria Electrica",
       component: IngenieriaElectrica,
       meta: {
-        roles: ["ingenieria_electrica", "super_admin"]
+        roles: [roles.ingenieria_electrica]
       }
     }
   ],
@@ -115,7 +118,12 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   let roles = to.meta.roles ? to.meta.roles : ["guest"];
-  if (roles.includes(store.state.userRole) || roles.includes("guest")) next();
+  if (
+    store.state.userRole === roles.super_admin ||
+    roles.includes(store.state.userRole) ||
+    roles.includes("guest")
+  )
+    next();
   else next("login");
 });
 
