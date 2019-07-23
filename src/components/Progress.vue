@@ -1,13 +1,18 @@
 <template>
   <div>
     <h1>Progreso de proyectos</h1>
-    <div class="col-md-8 offset-md-2">
-      <table class="table thead-dark">
+    <div class="col-md-12 table-responsive">
+      <table class="table thead-dark table-striped table-hover">
         <thead class="thead-dark">
           <tr>
+            <th scope="col">Clave</th>
             <th scope="col">Nombre</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Versión</th>
+            <th scope="col">Días publicado</th>
             <th scope="col">Progreso</th>
-            <th scope="col">ExportPDF</th>
+            <th scope="col">Status</th>
+            <th scope="col">Exportar PDF</th>
           </tr>
         </thead>
         <tbody>
@@ -15,7 +20,11 @@
             v-for="(project, idx) in projects"
             :key="idx"
           >
-            <td>{{project.nombre}}</td>
+            <td>{{project.C01}}</td>
+            <td>{{project.C03}}</td>
+            <td>{{project.C02}}</td>
+            <td>{{project.version}}</td>
+            <td>{{Math.round((new Date().getTime()-project.created)/(1000*60*60*24)) }}</td>
             <td>
               <div class="progress">
                 <div
@@ -29,6 +38,7 @@
                 ></div>
               </div>
             </td>
+            <td> {{project.status}}</td>
             <td class="text-center"><export-pdf v-bind:projectid="project.id"></export-pdf></td>
           </tr>
         </tbody>
@@ -56,6 +66,7 @@ export default {
     };
   },
   created() {
+    console.log (new Date ().getTime());
     db.collection("projects")
       .get()
       .then(snap => {

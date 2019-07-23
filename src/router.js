@@ -23,6 +23,7 @@ export const roles = {
   diseno_grafico: "diseño grafico",
   diseno_industrial: "diseño industrial",
   ingenieria_electrica: "ingenieria electrica",
+  fotometria: "fotometria",
   super_admin: "super admin"
 };
 

@@ -116,15 +116,15 @@
 <script>
 import { db } from "@/main";
 import UploadFileVue from "./UploadFile.vue";
-
+import store from "@/store";
 export default {
   name: "form-base",
   props: {},
   data() {
     return {
       fields: [],
-      rol: "diseño industrial",
-      projectid: "4FyMEQx6ZECw07cFxnTt",
+      rol: "sistema",
+      projectid: "",
       project: {},
       files: [],
       message: "No hay datos para ti"
@@ -134,20 +134,18 @@ export default {
     "upload-file": UploadFileVue
   },
   watch: {
-    fields: function() {
-      console.log(this.fields.length);
+    fields (){
       if (this.fields.length === 0) {
-        console.log("if");
         this.message = "No hay datos para ti";
       } else {
-        console.log("else");
         this.message = "";
       }
-      console.log("message:", this.message);
     }
   },
   created() {
+      this.role = store.state.userRole;
     const formid = this.$route.params.formid;
+    this.projectid = this.$route.params.projectid;
     db.collection("projects")
       .doc(this.projectid)
       .get()

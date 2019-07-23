@@ -1,22 +1,58 @@
 <template>
   <!-- Sidebar -->
-  
+
   <ul class="sidebar navbar-nav">
-    <br>
-    <menu-moderador v-if="hasRol ('moderador')"></menu-moderador>
+    <br />
+    <!-- <menu-moderador v-if="hasRol ('moderador')"></menu-moderador>
     <menu-diseno-grafico v-if="hasRol('diseno_grafico')"></menu-diseno-grafico>
     <menu-diseno-industrial v-if="hasRol('diseno_industrial')"></menu-diseno-industrial>
-    <menu-ing-electrica v-if="hasRol('ingenieria_electrica')"></menu-ing-electrica>
+    <menu-ing-electrica v-if="hasRol('ingenieria_electrica')"></menu-ing-electrica>-->
+
+    <li class="nav-item">
+      <router-link tag="li" to="/list-project/diseno-grafico">
+        <a class="nav-link">
+          <i class="fas fa-list"></i>
+          <span> Todos los productos</span>
+        </a>
+      </router-link>
+    </li>
+
+    <li class="nav-item">
+      <router-link tag="li" to="/list-project/diseno-grafico">
+        <a class="nav-link">
+          <i class="fas fa-spinner"></i>
+          <span> En proceso</span>
+        </a>
+      </router-link>
+    </li>
+
+    <li class="nav-item">
+      <router-link tag="li" to="/list-project/diseno-grafico">
+        <a class="nav-link">
+          <i class="fas fa-check-double"></i>
+          <span> En revisión</span>
+        </a>
+      </router-link>
+    </li>
+
+    <li class="nav-item">
+      <router-link tag="li" to="/list-project/diseno-grafico">
+        <a class="nav-link">
+          <i class="fas fa-globe-americas"></i>
+          <span> Publicados</span>
+        </a>
+      </router-link>
+    </li>
   </ul>
 </template>
 
 <script>
 import store from "@/store";
 import MenuModerador from "@/components/menus/MenuModerador";
-import MenuDisenoGraficoVue from './menus/MenuDisenoGrafico.vue';
-import MenuDisenoIndstrialVue from './menus/MenuDisenoIndstrial.vue';
-import MenuIngenieriaElectricaVue from './menus/MenuIngenieriaElectrica.vue';
-
+import MenuDisenoGraficoVue from "./menus/MenuDisenoGrafico.vue";
+import MenuDisenoIndstrialVue from "./menus/MenuDisenoIndstrial.vue";
+import MenuIngenieriaElectricaVue from "./menus/MenuIngenieriaElectrica.vue";
+import { roles } from "@/router";
 export default {
   name: "side-bar",
   components: {
@@ -25,16 +61,18 @@ export default {
     "menu-diseno-industrial": MenuDisenoIndstrialVue,
     "menu-ing-electrica": MenuIngenieriaElectricaVue
   },
-  created(){
-      
+  created() {
+    console.log(roles);
   },
-  computed: {
-      
-  },
+  computed: {},
   methods: {
-      hasRol (rol){
-          return store.state.userRole === rol || store.state.userRole=== 'super_admin'; 
-      }
+    hasRol(rol) {
+      console.log(rol, store.state.userRole);
+      return (
+        store.state.userRole === rol ||
+        store.state.userRole === roles.super_admin
+      );
+    }
   }
 };
 </script>
