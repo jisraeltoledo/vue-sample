@@ -21,6 +21,22 @@
             />
           </div>
         </div>
+        <!--  ************ TEXTAREA ************ -->
+        <div v-else-if="f.tipo==='textarea'">
+          <div>
+            <label for="formGroupExampleInput">
+              {{f.nombre}}
+              <small v-if="f.obligatorio">*</small>
+            </label>
+            
+            <textarea class="form-control" rows="3"
+              :id="f.id"
+              :required="f.obligatorio"
+              :placeholder="f.descripcion"
+              :value="project[f.id]?project[f.id]:''"
+            ></textarea>
+          </div>
+        </div>
         <!--  ************ NUMERO ************ -->
         <div v-else-if="f.tipo==='numero'">
           <div>
@@ -143,7 +159,7 @@ export default {
     }
   },
   created() {
-      this.role = store.state.userRole;
+    this.role = store.state.userRole;
     const formid = this.$route.params.formid;
     this.projectid = this.$route.params.projectid;
     db.collection("projects")
@@ -151,6 +167,7 @@ export default {
       .get()
       .then(doc => {
         this.project = doc.data();
+        console.log (this.project);
       });
     db.collection("forms")
       .doc(formid)
@@ -163,6 +180,7 @@ export default {
           this.addField(f);
         });
       });
+      
   },
   methods: {
     guardar() {
@@ -170,7 +188,7 @@ export default {
       this.fields.forEach(f => {
         if (f.tipo === "boolean") {
           if ($("#" + f.id).is(":checked")) values[f.id] = true;
-        } else if (f.tipo === "texto" || f.tipo === "numero") {
+        } else if (f.tipo === "texto" || f.tipo === "numero" || f.tipo === 'textarea') {
           if ($("#" + f.id).val()) values[f.id] = $("#" + f.id).val();
         } else if (f.tipo === "check") {
           values[f.id] = [];
