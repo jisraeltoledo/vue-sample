@@ -43,6 +43,15 @@
         </a>
       </router-link>
     </li>
+
+    <li class="nav-item">
+      <router-link tag="li" to="/projects/retirado">
+        <a class="nav-link">
+          <i class="fas fa-minus-circle"></i>
+          <span> Retirados </span>
+        </a>
+      </router-link>
+    </li>
   </ul>
 </template>
 
