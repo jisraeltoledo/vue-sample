@@ -9,7 +9,7 @@
     <menu-ing-electrica v-if="hasRol('ingenieria_electrica')"></menu-ing-electrica>-->
 
     <li class="nav-item">
-      <router-link tag="li" to="/list-project/diseno-grafico">
+      <router-link tag="li" to="projects">
         <a class="nav-link">
           <i class="fas fa-list"></i>
           <span> Todos los productos</span>
@@ -18,7 +18,7 @@
     </li>
 
     <li class="nav-item">
-      <router-link tag="li" to="/list-project/diseno-grafico">
+      <router-link tag="li" to="/projects/proceso">
         <a class="nav-link">
           <i class="fas fa-spinner"></i>
           <span> En proceso</span>
@@ -27,7 +27,7 @@
     </li>
 
     <li class="nav-item">
-      <router-link tag="li" to="/list-project/diseno-grafico">
+      <router-link tag="li" to="/projects/revision">
         <a class="nav-link">
           <i class="fas fa-check-double"></i>
           <span> En revisión</span>
@@ -36,7 +36,7 @@
     </li>
 
     <li class="nav-item">
-      <router-link tag="li" to="/list-project/diseno-grafico">
+      <router-link tag="li" to="/projects/publicado">
         <a class="nav-link">
           <i class="fas fa-globe-americas"></i>
           <span> Publicados</span>

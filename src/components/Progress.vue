@@ -16,10 +16,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr
-            v-for="(project, idx) in projects"
-            :key="idx"
-          >
+          <tr v-for="(project, idx) in projects" :key="idx">
             <td>{{project.C01}}</td>
             <td>{{project.C03}}</td>
             <td>{{project.C02}}</td>
@@ -38,8 +35,10 @@
                 ></div>
               </div>
             </td>
-            <td> {{project.status}}</td>
-            <td class="text-center"><export-pdf v-bind:projectid="project.id"></export-pdf></td>
+            <td>{{project.status}}</td>
+            <td class="text-center">
+              <export-pdf v-bind:projectid="project.id"></export-pdf>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -51,25 +50,65 @@
 <script>
 import { db } from "@/main";
 import router from "@/router";
-import ExportPDFVue from './ExportPDF.vue';
+import ExportPDFVue from "./ExportPDF.vue";
 
 export default {
   name: "list-project-progress",
-  props: {},
+  props: {
+    filterStatus: String,
+    filterStep: String
+  },
   components: {
-      "export-pdf": ExportPDFVue
+    "export-pdf": ExportPDFVue
   },
   data() {
     return {
       projects: [],
-      progress: {}
+      progress: {},
+      status: null,
+      step: null
     };
   },
   created() {
-    console.log (new Date ().getTime());
-    db.collection("projects")
-      .get()
-      .then(snap => {
+    console.log(new Date().getTime());
+
+    if (this.filterStatus) {
+      this.status = this.filterStatus;
+    } else if (this.$route.params.status) {
+      this.status = this.$route.params.status;
+    }
+    if (this.filterStep) {
+      this.step = this.filterStep;
+    } else if (this.$route.params.step) {
+      this.step = this.$route.params.step;
+    }
+    this.getProjects();
+  },
+  watch: {
+    "$route.params.status": {
+      handler: function(status) {
+        console.log ("status", status);
+        this.status = status;
+        this.getProjects();
+      },
+      deep: true,
+      immediate: true
+    },
+    status() {
+      this.getProjects();
+    }
+  },
+  methods: {
+    getProjects() {
+      this.projects = [];
+      var ref = db.collection("projects");
+      if (this.status) {
+        ref = ref.where("status", "==", this.status);
+      }
+      if (this.step) {
+        ref = ref.where("step", "==", this.step);
+      }
+      ref.get().then(snap => {
         snap.forEach(element => {
           let p = element.data();
           p["id"] = element.id;
@@ -77,9 +116,7 @@ export default {
           this.projects.push(p);
         });
       });
-  },
-
-  methods: {
+    },
     getProgress(project) {
       var progress = this.getProgressCreate(project);
       progress += this.getProgressDisenoG(project);
@@ -88,12 +125,11 @@ export default {
       return progress;
     },
     setProgress(project) {
-      
       var progress = this.getProgressCreate(project);
       progress += this.getProgressDisenoG(project);
       progress += this.getProgressDisenoI(project);
       progress += this.getProgressIngElec(project);
-      
+
       $("#" + "progress_" + project.id)
         .css("width", progress + "%")
         .attr("aria-valuenow", progress);
@@ -118,7 +154,7 @@ export default {
       if (project.bio) {
         progress += 5;
       }
-      
+
       return progress;
     },
     getProgressDisenoG(project) {
@@ -155,7 +191,7 @@ export default {
       if (project.cordLength) {
         progress += 5;
       }
-      
+
       return progress;
     },
     getProgressIngElec(project) {
@@ -181,7 +217,7 @@ export default {
       if (project.lifeSpan) {
         progress += 4;
       }
-      
+
       return progress;
     }
   }

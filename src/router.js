@@ -14,6 +14,7 @@ import DisenoIndustrial from "@/components/DisenoIndustrial";
 import CreateTemplate from "@/components/CreateTemplate";
 import IngenieriaElectrica from "@/components/IngenieriaElectrica";
 import FormBase from "@/components/FormBase";
+import Progress from "@/components/Progress";
 
 Vue.use(Router);
 
@@ -80,6 +81,12 @@ const router = new Router({
       meta: {
         roles: [roles.moderador]
       }
+    },
+    {
+      path: "/projects/:status/",
+      name: "List Project",
+      component: Progress,
+      meta: {}
     },
     {
       path: "/list-project/:next_path/",
