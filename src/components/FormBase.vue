@@ -54,6 +54,24 @@
             />
           </div>
         </div>
+        <!--  ************ barcode ************ -->
+        <div v-else-if="f.tipo==='barcode'">
+          <barcode :value="project[f.id]?project[f.id]:''" :options="{ displayValue: true }"></barcode>
+          <div>
+            <label for="formGroupExampleInput">
+              {{f.nombre}}
+              <small v-if="f.obligatorio">*</small>
+            </label>
+            <input
+              :id="f.id"
+              :required="f.obligatorio"
+              type="text"
+              class="form-control"
+              :placeholder="f.descripcion"
+              :value="project[f.id]?project[f.id]:''"
+            />
+          </div>
+        </div>
         <!--  ************ Boolean ************ -->
         <div v-else-if="f.tipo==='boolean'">
           <div class="form-check">
@@ -133,6 +151,7 @@
 import { db } from "@/main";
 import UploadFileVue from "./UploadFile.vue";
 import store from "@/store";
+import VueBarcode from '@xkeshi/vue-barcode';
 export default {
   name: "form-base",
   props: {},
@@ -147,7 +166,8 @@ export default {
     };
   },
   components: {
-    "upload-file": UploadFileVue
+    "upload-file": UploadFileVue,
+    barcode: VueBarcode
   },
   watch: {
     fields (){

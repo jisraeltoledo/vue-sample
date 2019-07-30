@@ -9,6 +9,7 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "@xkeshi/vue-barcode": "^1.0.0",
     "core-js": "^2.6.5",
     "firebase": "^6.2.4",
     "jspdf": "^1.5.3",
