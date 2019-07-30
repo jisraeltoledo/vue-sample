@@ -9,7 +9,7 @@
     <menu-ing-electrica v-if="hasRol('ingenieria_electrica')"></menu-ing-electrica>-->
 
     <li class="nav-item">
-      <router-link tag="li" to="projects">
+      <router-link tag="li" to="/projects/all">
         <a class="nav-link">
           <i class="fas fa-list"></i>
           <span> Todos los productos</span>

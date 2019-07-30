@@ -88,7 +88,8 @@ export default {
     "$route.params.status": {
       handler: function(status) {
         console.log ("status", status);
-        this.status = status;
+        if (status === 'all') this.status = null;
+        else this.status = status;
         this.getProjects();
       },
       deep: true,
@@ -100,7 +101,6 @@ export default {
   },
   methods: {
     getProjects() {
-      this.projects = [];
       var ref = db.collection("projects");
       if (this.status) {
         ref = ref.where("status", "==", this.status);
@@ -108,7 +108,9 @@ export default {
       if (this.step) {
         ref = ref.where("step", "==", this.step);
       }
+      ref = ref.orderBy('created', 'asc');
       ref.get().then(snap => {
+        this.projects = [];
         snap.forEach(element => {
           let p = element.data();
           p["id"] = element.id;
