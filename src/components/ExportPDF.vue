@@ -136,6 +136,7 @@ export default {
       // Remove extension
       const withoutExt = fontName.replace(/\.[^/.]+$/, "");
       const parts = withoutExt.split("-");
+      console.log (parts);
       this.doc.addFileToVFS(fontName, base64);
       if (parts.length == 1) {
         this.doc.addFont(fontName, withoutExt, "normal");

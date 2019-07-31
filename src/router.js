@@ -14,7 +14,7 @@ import DisenoIndustrial from "@/components/DisenoIndustrial";
 import CreateTemplate from "@/components/CreateTemplate";
 import IngenieriaElectrica from "@/components/IngenieriaElectrica";
 import FormBase from "@/components/FormBase";
-import Progress from "@/components/Progress";
+import TabsScreen from "@/components/TabsScreen";
 
 Vue.use(Router);
 
@@ -84,8 +84,8 @@ const router = new Router({
     },
     {
       path: "/projects/:status/",
-      name: "List Project",
-      component: Progress,
+      name: "List Project Progress",
+      component: TabsScreen,
       meta: {}
     },
     {
@@ -111,6 +111,12 @@ const router = new Router({
       meta: {
         roles: [roles.diseno_industrial]
       }
+    },
+    {
+      path: "/tab-screen",
+      name: "Tabs Screem",
+      component: TabsScreen,
+      meta: {}
     },
     {
       path: "/ingenieria-electrica/:projectid",

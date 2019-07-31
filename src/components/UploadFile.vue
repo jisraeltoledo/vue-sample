@@ -6,7 +6,7 @@
         <h6>
           {{label}}
         </h6>
-        <small>{{description}}</small>
+        <small>{{description}} {{fileType}}</small>
         <small v-if="multiple"><br />* puedes subir más de 1</small>
         <div class="form-group align-bottom">
           <div class="input-group-prepend align-bottom">

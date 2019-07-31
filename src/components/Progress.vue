@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>Progreso de proyectos</h1>
     <div class="col-md-12 table-responsive">
       <table class="table thead-dark table-striped table-hover">
         <thead class="thead-dark">
@@ -16,7 +15,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(project, idx) in projects" :key="idx">
+          <tr
+            v-for="(project, idx) in projects"
+            :key="idx"
+            class="clickable-row"
+            v-on:click="clickList(project)"
+            style="cursor: pointer; "
+          >
             <td>{{project.C01}}</td>
             <td>{{project.C03}}</td>
             <td>{{project.C02}}</td>
@@ -37,7 +42,7 @@
             </td>
             <td>{{project.status}}</td>
             <td class="text-center">
-              <export-pdf v-bind:projectid="project.id"></export-pdf>
+              <!-- <export-pdf v-bind:projectid="project.id"></export-pdf> -->
             </td>
           </tr>
         </tbody>
@@ -100,6 +105,9 @@ export default {
     }
   },
   methods: {
+    clickList(project) {
+      this.$emit('click', project);
+    },
     getProjects() {
       var ref = db.collection("projects");
       if (this.status) {
@@ -135,9 +143,6 @@ export default {
       $("#" + "progress_" + project.id)
         .css("width", progress + "%")
         .attr("aria-valuenow", progress);
-    },
-    clickList(project) {
-      this.$router.push("/" + this.$route.params.next_path + "/" + project.id);
     },
     getProgressCreate(project) {
       var progress = 0;

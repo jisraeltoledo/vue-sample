@@ -28,8 +28,10 @@
               {{f.nombre}}
               <small v-if="f.obligatorio">*</small>
             </label>
-            
-            <textarea class="form-control" rows="3"
+
+            <textarea
+              class="form-control"
+              rows="3"
               :id="f.id"
               :required="f.obligatorio"
               :placeholder="f.descripcion"
@@ -56,7 +58,6 @@
         </div>
         <!--  ************ barcode ************ -->
         <div v-else-if="f.tipo==='barcode'">
-          <barcode :value="project[f.id]?project[f.id]:''" :options="{ displayValue: true }"></barcode>
           <div>
             <label for="formGroupExampleInput">
               {{f.nombre}}
@@ -70,6 +71,7 @@
               :placeholder="f.descripcion"
               :value="project[f.id]?project[f.id]:''"
             />
+            <barcode :value="project[f.id]?project[f.id]:''" :options="{ displayValue: true }"></barcode>
           </div>
         </div>
         <!--  ************ Boolean ************ -->
@@ -151,10 +153,12 @@
 import { db } from "@/main";
 import UploadFileVue from "./UploadFile.vue";
 import store from "@/store";
-import VueBarcode from '@xkeshi/vue-barcode';
+import VueBarcode from "@xkeshi/vue-barcode";
 export default {
   name: "form-base",
-  props: {},
+  props: {
+      projectidSource: String
+  },
   data() {
     return {
       fields: [],
@@ -170,7 +174,7 @@ export default {
     barcode: VueBarcode
   },
   watch: {
-    fields (){
+    fields() {
       if (this.fields.length === 0) {
         this.message = "No hay datos para ti";
       } else {
@@ -180,14 +184,16 @@ export default {
   },
   created() {
     this.role = store.state.userRole;
-    const formid = this.$route.params.formid;
-    this.projectid = this.$route.params.projectid;
+    const formid = 'F01';
+    if (this.$route.params.projectid) this.projectid = this.$route.params.projectid;
+    else if (this.projectidSource) this.projectid = this.projectidSource;
+    console.log (this.projectid);
     db.collection("projects")
       .doc(this.projectid)
       .get()
       .then(doc => {
         this.project = doc.data();
-        console.log (this.project);
+        console.log(this.project);
       });
     db.collection("forms")
       .doc(formid)
@@ -200,7 +206,6 @@ export default {
           this.addField(f);
         });
       });
-      
   },
   methods: {
     guardar() {
@@ -208,7 +213,11 @@ export default {
       this.fields.forEach(f => {
         if (f.tipo === "boolean") {
           if ($("#" + f.id).is(":checked")) values[f.id] = true;
-        } else if (f.tipo === "texto" || f.tipo === "numero" || f.tipo === 'textarea') {
+        } else if (
+          f.tipo === "texto" ||
+          f.tipo === "numero" ||
+          f.tipo === "textarea"
+        ) {
           if ($("#" + f.id).val()) values[f.id] = $("#" + f.id).val();
         } else if (f.tipo === "check") {
           values[f.id] = [];
