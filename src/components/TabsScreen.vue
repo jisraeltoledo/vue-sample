@@ -12,7 +12,7 @@
           aria-selected="true"
         >Proyectos</a>
       </li>
-      <li class="nav-item" v-for="(project, idx) in openedProjects" :key="idx">
+      <li class="nav-item" v-for="(project, idx) in openedProjects" :key="idx" :id="'li-'+project">
         <a
           class="nav-link"
           :id="'tab-'+project"
@@ -21,7 +21,10 @@
           role="tab"
           :aria-controls="'content-'+project"
           aria-selected="true"
-        >{{project}}</a>
+        >
+          <button class="close closeTab" type="button" @click="closeTab(project)">×</button>
+          {{project}}
+        </a>
       </li>
     </ul>
     <div class="tab-content" id="myTabContent">
@@ -36,18 +39,38 @@
         role="tabpanel"
         :aria-labelledby="'tab-'+project2"
       >
-        <form-base :projectidSource="project2"></form-base>
+        <form-base :projectidSource="project2" @created="tabCreated"></form-base>
       </div>
     </div>
   </div>
 </template>
-
+<style>
+.nav-tabs > li .close {
+  margin: -2px 0 0 10px;
+  font-size: 18px;
+}
+.marginBottom {
+  margin-bottom: 1px !important;
+}
+.operationDiv {
+  padding: 5px 10px 5px 5px;
+}
+.operationDivWrapper {
+  margin-top: -1px;
+}
+.leftMenu {
+  height: 70%;
+  background-color: #e6e6e6;
+  border-right: 2px solid #bfbfbf;
+}
+</style>
 <script>
 import firebase from "firebase";
 // @ is an alias to /src
 import ProgressVue from "@/components/Progress.vue";
 import { db } from "@/main";
 import FormBase from "@/components/FormBase";
+import { without } from "underscore";
 export default {
   name: "tab-screen",
   components: {
@@ -56,21 +79,26 @@ export default {
   },
   data() {
     return {
-      openedProjects: [
-      ]
+      openedProjects: []
     };
   },
   created() {},
-  watch: {
-  },
+  watch: {},
   methods: {
-      listClick (data){
-          console.log (data);
-          this.openedProjects.push (data.id);
-          console.log ('.nav-tabs a[href="#content-'+data.id+'"]');
-          console.log ("document", $('.nav-tabs a[href="#content-'+data.id+'"]'));
-          $('.nav-tabs a[href="#content-'+data.id+'"]').tab('show');
-      },
+    closeTab(id) {
+      this.openedProjects = jQuery.grep(this.openedProjects, function(value) {
+        return value != id;
+      });
+      $("#home-tab").tab('show');
+    },
+    tabCreated(id) {
+      console.log("tab created ", id);
+      $("#tab-" + id).tab("show");
+    },
+    listClick(data) {
+      console.log(data);
+      this.openedProjects.push(data.id);
+    }
   }
 };
 </script>

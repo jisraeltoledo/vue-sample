@@ -205,6 +205,8 @@ export default {
         fields.forEach(f => {
           this.addField(f);
         });
+      }).then (()=>{
+          this.$emit ('created', this.projectid);
       });
   },
   methods: {
