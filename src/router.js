@@ -15,6 +15,7 @@ import CreateTemplate from "@/components/CreateTemplate";
 import IngenieriaElectrica from "@/components/IngenieriaElectrica";
 import FormBase from "@/components/FormBase";
 import TabsScreen from "@/components/TabsScreen";
+import Producto from "@/components/Producto";
 
 Vue.use(Router);
 
@@ -116,6 +117,12 @@ const router = new Router({
       path: "/tab-screen",
       name: "Tabs Screem",
       component: TabsScreen,
+      meta: {}
+    },
+    {
+      path: "/product/:projectid",
+      name: "Producto",
+      component: Producto,
       meta: {}
     },
     {

@@ -6,7 +6,7 @@ import store from "./store";
 import firebase from "firebase";
 
 Vue.config.productionTip = false;
-
+Vue.config.devtools = true;
 let app = "";
 const firebaseConfig = {
   apiKey: "AIzaSyCb0lXfuHx5yQTzKb40gsLKvVo0dVqAfpk",

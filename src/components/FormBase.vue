@@ -162,7 +162,7 @@ export default {
   data() {
     return {
       fields: [],
-      rol: "sistema",
+      rol: "diseño industrial",
       projectid: "",
       project: {},
       files: [],
