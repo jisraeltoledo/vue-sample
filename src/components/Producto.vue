@@ -1,5 +1,5 @@
 <template>
-  <div v-if="project">
+  <div v-if="project && fields">
     <h2>Producto</h2>
     <div class="row">
       <div class="col-md-6" v-for="(k, idx) in keys" :key="idx">
@@ -52,8 +52,8 @@ export default {
   data() {
     return {
       projectid: String,
-      project: {},
-      form: {},
+      project: null,
+      form: null,
       fields: null
     };
   },
@@ -87,7 +87,6 @@ export default {
         .get()
         .then(doc => {
           this.project = doc.data();
-          console.log("project", this.project);
           return this.project.form;
         })
         .then(formid => {
@@ -105,7 +104,6 @@ export default {
           docs.forEach(doc => {
             this.fields[doc.data().id] = doc.data();
           });
-          console.log("fields", this.fields);
           return true;
         })
         .catch(err => {

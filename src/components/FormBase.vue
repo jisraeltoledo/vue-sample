@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h1>{{project.nombre}}</h1>
+    <hr>
+    <h3>Clave: {{project.C01}}</h3>
+    <h4>Nombre: {{project.C03}}</h4>
     <div v-if="message">{{message}}</div>
     <div class="row">
       <div v-for="(f, idx) in fields" v-bind:key="'f'+idx" class="form-group col-md-6">
@@ -8,7 +10,7 @@
         <div v-if="f.tipo==='texto'">
           <div>
             <label for="formGroupExampleInput">
-              {{f.nombre}}
+              <strong>{{f.nombre}}</strong>
               <small v-if="f.obligatorio">*</small>
             </label>
             <input
@@ -25,7 +27,7 @@
         <div v-else-if="f.tipo==='textarea'">
           <div>
             <label for="formGroupExampleInput">
-              {{f.nombre}}
+              <strong>{{f.nombre}}</strong>
               <small v-if="f.obligatorio">*</small>
             </label>
 
@@ -43,7 +45,7 @@
         <div v-else-if="f.tipo==='numero'">
           <div>
             <label for="formGroupExampleInput">
-              {{f.nombre}}
+              <strong>{{f.nombre}}</strong>
               <small v-if="f.obligatorio">*</small>
             </label>
             <input
@@ -60,7 +62,7 @@
         <div v-else-if="f.tipo==='barcode'">
           <div>
             <label for="formGroupExampleInput">
-              {{f.nombre}}
+              <strong>{{f.nombre}}</strong>
               <small v-if="f.obligatorio">*</small>
             </label>
             <input
@@ -84,35 +86,38 @@
               :checked="project[f.id]!==undefined"
               :id="f.id"
             />
-            <label class="form-check-label" :for="f.id">{{f.nombre}}</label>
+            <label class="form-check-label" :for="f.id">
+              <strong>{{f.nombre}}</strong>
+              </label>
           </div>
         </div>
         <!--  ************ Check ************ -->
         <div v-else-if="f.tipo==='check'">
-          {{f.nombre}}
+          <strong>{{f.nombre}}</strong>
           <div class="form-check" v-for="(o, idy) in f.options" v-bind:key="'o'+idy">
             <input
               class="form-check-input"
               type="checkbox"
               value="true"
-              :checked="project[f.id]!== undefined && project[f.id].includes(o.id)"
-              :id="f.id+'_'+o.id"
+              :checked="project[f.id]!== undefined && project[f.id].includes(o)"
+              :id="f.id+'_'+o"
             />
-            <label class="form-check-label" :for="f.id+'_'+o.id">{{o.value}}</label>
+            <label class="form-check-label" :for="f.id+'_'+o">{{o}}</label>
           </div>
         </div>
         <!--  ************ Radio ************ -->
         <div v-else-if="f.tipo==='radio'">
-          {{f.nombre}}
-          <div class="radio" v-for="(o, idy) in f.options" v-bind:key="'o'+idy">
+          <strong>{{f.nombre}}</strong>
+          <div class="form-check" v-for="(o, idy) in f.options" v-bind:key="'o'+idy">
             <input
+              class="form-check-input"
               :name="f.id"
               type="radio"
               value="true"
-              :checked="project[f.id]!== undefined && project[f.id].includes(o.id)"
-              :id="f.id+'_'+o.id"
+              :checked="project[f.id]!== undefined && project[f.id].includes(o)"
+              :id="f.id+'_'+o"
             />
-            <label :for="f.id+'_'+o.id">{{o.value}}</label>
+            <label class="form-check-label" :for="f.id+'_'+o">{{o}}</label>
           </div>
         </div>
         <!--  ************ File ************ -->

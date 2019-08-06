@@ -4,7 +4,7 @@
     <div :class="isImage&&!multiple?'col-md-8':'col-md-12'">
       <div class="form-group align-bottom">
         <h6>
-          {{label}}
+          <strong>{{label}}</strong>
         </h6>
         <small>{{description}} {{fileType}}</small>
         <small v-if="multiple"><br />* puedes subir más de 1</small>
@@ -39,7 +39,7 @@
         <a target="blank" v-if="downloadUrl" :href="downloadUrl">{{downloadUrl}}</a>
       </small> -->
     </div>
-    <div class="row">
+    <div class="row" v-if="isImage">
       <div class="col-md-4" v-for="(img, idx) in imgs" :key="'prev_'+idx">
         <img :id="'img_'+idx" :src="img" alt="preview" :width="width" />
       </div>

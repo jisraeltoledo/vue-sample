@@ -11,7 +11,7 @@
             <th scope="col">Días publicado</th>
             <th scope="col">Progreso</th>
             <th scope="col">Status</th>
-            <th scope="col">Exportar PDF</th>
+            <th scope="col">Opciones</th>
           </tr>
         </thead>
         <tbody>
@@ -43,6 +43,14 @@
             <td>{{project.status}}</td>
             <td class="text-center">
               <!-- <export-pdf v-bind:projectid="project.id"></export-pdf> -->
+              <table>
+                <tr><td>
+              <a :href="'/edit/'+project.id"> <i class="fas fa-edit"></i> </a>
+              </td>
+              <td>
+              <a :href="'/product/'+project.id"> <i class="fas fa-eye"></i> </a>
+              </td></tr>
+              </table>
             </td>
           </tr>
         </tbody>

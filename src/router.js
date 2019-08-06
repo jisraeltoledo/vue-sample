@@ -66,7 +66,7 @@ const router = new Router({
       component: About
     },
     {
-      path: "/form-base/:formid/:projectid?",
+      path: "/edit/:projectid?",
       name: "FormBase",
       component: FormBase
     },
