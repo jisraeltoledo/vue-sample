@@ -11,6 +11,9 @@ export default new Vuex.Store({
   mutations: {
     setUserRol(state, rol) {
       state.userRole = rol;
+    },
+    setUser(state, user) {
+      state.user = user;
     }
   },
   actions: {}

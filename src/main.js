@@ -31,7 +31,10 @@ firebase.auth().onAuthStateChanged(user => {
     .doc(user.uid)
     .get()
     .then(userdb => {
+      var userdata = userdb.data();
+      userdata.id = user.uid;
       store.commit("setUserRol", userdb.data().rol);
+      store.commit("setUser", userdata);
       initApp();
     });
 });

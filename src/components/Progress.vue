@@ -18,9 +18,6 @@
           <tr
             v-for="(project, idx) in projects"
             :key="idx"
-            class="clickable-row"
-            v-on:click="clickList(project)"
-            style="cursor: pointer; "
           >
             <td>{{project.C01}}</td>
             <td>{{project.C03}}</td>
@@ -45,11 +42,15 @@
               <!-- <export-pdf v-bind:projectid="project.id"></export-pdf> -->
               <table>
                 <tr><td>
-              <a :href="'/edit/'+project.id"> <i class="fas fa-edit"></i> </a>
+              <a @click="clickList(project).id" style="cursor: pointer;"> <i class="fas fa-edit"></i> </a>
               </td>
               <td>
-              <a :href="'/product/'+project.id"> <i class="fas fa-eye"></i> </a>
-              </td></tr>
+              <a :href="'/product/'+project.id"> <i class="fas fa-eye" style="color: black;"></i> </a>
+              </td>
+              <td>
+                <i :id="'heart-'+project.id" class="fas fa-heart" @click="like(project.id)" :style="'cursor: pointer;'+colorHeart(project.id)"></i>
+              </td>
+              </tr>
               </table>
             </td>
           </tr>
@@ -63,6 +64,7 @@
 <script>
 import { db } from "@/main";
 import router from "@/router";
+import store from "@/store";
 import ExportPDFVue from "./ExportPDF.vue";
 
 export default {
@@ -113,6 +115,23 @@ export default {
     }
   },
   methods: {
+    colorHeart(projectid){
+      return store.state.user.likes.includes (projectid)?
+        "color: red;":"color: black;";
+    },
+    like(projectid){
+      var user = store.state.user;
+      if (!user.likes) user["likes"] = [];
+      if (user.likes.includes (projectid)){
+        user.likes = user.likes.filter(item => item !== projectid);
+        $("#heart-"+projectid).css("color", "black");
+      } else {
+        user.likes.push (projectid);
+        $("#heart-"+projectid).css("color", "red");
+      }
+      store.commit("setUser", user);
+      db.collection("users").doc(user.id).update (user);
+    },
     clickList(project) {
       this.$emit('click', project);
     },

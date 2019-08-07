@@ -1,6 +1,6 @@
 <template>
   <div>
-    <hr>
+    <hr />
     <h3>Clave: {{project.C01}}</h3>
     <h4>Nombre: {{project.C03}}</h4>
     <div v-if="message">{{message}}</div>
@@ -88,7 +88,7 @@
             />
             <label class="form-check-label" :for="f.id">
               <strong>{{f.nombre}}</strong>
-              </label>
+            </label>
           </div>
         </div>
         <!--  ************ Check ************ -->
@@ -115,7 +115,7 @@
               type="radio"
               value="true"
               :checked="project[f.id]!== undefined && project[f.id].includes(o)"
-              :id="f.id+'_'+o"
+              :id="removeSpecialChars(f.id+'_'+o)"
             />
             <label class="form-check-label" :for="f.id+'_'+o">{{o}}</label>
           </div>
@@ -162,7 +162,7 @@ import VueBarcode from "@xkeshi/vue-barcode";
 export default {
   name: "form-base",
   props: {
-      projectidSource: String
+    projectidSource: String
   },
   data() {
     return {
@@ -189,10 +189,11 @@ export default {
   },
   created() {
     this.role = store.state.userRole;
-    const formid = 'F01';
-    if (this.$route.params.projectid) this.projectid = this.$route.params.projectid;
+    const formid = "F01";
+    if (this.$route.params.projectid)
+      this.projectid = this.$route.params.projectid;
     else if (this.projectidSource) this.projectid = this.projectidSource;
-    console.log (this.projectid);
+    console.log(this.projectid);
     db.collection("projects")
       .doc(this.projectid)
       .get()
@@ -210,11 +211,15 @@ export default {
         fields.forEach(f => {
           this.addField(f);
         });
-      }).then (()=>{
-          this.$emit ('created', this.projectid);
+      })
+      .then(() => {
+        this.$emit("created", this.projectid);
       });
   },
   methods: {
+    removeSpecialChars(cadena) {
+      return cadena.replace(/[^A-Z0-9]/ig, "_");
+    },
     guardar() {
       var values = {};
       this.fields.forEach(f => {
@@ -229,12 +234,12 @@ export default {
         } else if (f.tipo === "check") {
           values[f.id] = [];
           f.options.forEach(o => {
-            if ($("#" + f.id + "_" + o.id).is(":checked"))
-              values[f.id].push(o.id);
+            if ($("#" + f.id + "_" + o).is(":checked")) values[f.id].push(o);
           });
         } else if (f.tipo === "radio") {
           f.options.forEach(o => {
-            if ($("#" + f.id + "_" + o.id).is(":checked")) values[f.id] = o.id;
+            if ($("#" + this.removeSpecialChars(f.id + "_" + o)).is(":checked"))
+              values[f.id] = o;
           });
         } else if (f.tipo === "file") {
           if (this.files[f.id]) {

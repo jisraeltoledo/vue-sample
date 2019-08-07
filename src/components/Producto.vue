@@ -5,7 +5,7 @@
       <div class="col-md-6" v-for="(k, idx) in keys" :key="idx">
         <div class="card mb-3" v-if="fields[k]">
           <div class="card-header">
-            <strong>{{fields[k].nombre}}</strong>
+            <strong>{{k}} - {{fields[k].nombre}}</strong>
           </div>
           <div class="card-body">
             <div v-if="fields[k].fileType && fields[k].fileType === 'images/*'">
