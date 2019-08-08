@@ -6,6 +6,7 @@
     <div v-if="message">{{message}}</div>
     <div class="row">
       <div v-for="(f, idx) in fields" v-bind:key="'f'+idx" class="form-group col-md-6">
+        <strong>{{f.id}}</strong>
         <!--  ************ TEXTO ************ -->
         <div v-if="f.tipo==='texto'">
           <div>
@@ -159,6 +160,7 @@ import { db } from "@/main";
 import UploadFileVue from "./UploadFile.vue";
 import store from "@/store";
 import VueBarcode from "@xkeshi/vue-barcode";
+import {roles } from "@/router";
 export default {
   name: "form-base",
   props: {
@@ -167,7 +169,7 @@ export default {
   data() {
     return {
       fields: [],
-      rol: "diseño industrial",
+      rol: null,
       projectid: "",
       project: {},
       files: [],
@@ -188,8 +190,8 @@ export default {
     }
   },
   created() {
-    this.role = store.state.userRole;
-    const formid = "F01";
+    this.rol = store.state.userRole;
+    console.log ("rol", this.rol);
     if (this.$route.params.projectid)
       this.projectid = this.$route.params.projectid;
     else if (this.projectidSource) this.projectid = this.projectidSource;
@@ -200,11 +202,9 @@ export default {
       .then(doc => {
         this.project = doc.data();
         console.log(this.project);
-      });
-    db.collection("forms")
-      .doc(formid)
-      .get()
-      .then(doc => {
+      }).then (()=>{
+        return db.collection("forms").doc(this.project.form).get();
+      }).then(doc => {
         return doc.data().fields;
       })
       .then(fields => {
@@ -257,7 +257,7 @@ export default {
         .doc(f)
         .get()
         .then(doc => {
-          if (doc.data().departamento === this.rol) {
+          if (doc.data().departamento === this.rol || this.rol == roles.super_admin) {
             this.fields.push(doc.data());
           }
           return true;
