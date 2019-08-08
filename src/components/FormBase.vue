@@ -257,7 +257,7 @@ export default {
         .doc(f)
         .get()
         .then(doc => {
-          if (doc.data().departamento === this.rol || this.rol == roles.super_admin) {
+          if ( doc.data().departamento === this.rol || this.rol == roles.super_admin) {
             this.fields.push(doc.data());
           }
           return true;

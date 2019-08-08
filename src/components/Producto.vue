@@ -1,6 +1,14 @@
 <template>
   <div v-if="project && fields">
-    <h2>Producto</h2>
+    <h2>
+      Producto
+      <i
+        :id="'heart-see-'+project.id"
+        class="fas fa-heart"
+        @click="like(project)"
+        :style="'cursor: pointer;'+colorHeart(project.id)"
+      ></i>
+    </h2>
     <div class="row">
       <div class="col-md-6" v-for="(k, idx) in keys" :key="idx">
         <div class="card mb-3" v-if="fields[k]">
@@ -12,18 +20,18 @@
               <img class="img-fluid" :src="project[k]" />
             </div>
             <div v-else-if="fields[k].fileType && fields[k].fileType !== 'images/*'">
-              <a :href="project[k]" target="blank"><i class="fas fa-download fa-5x"></i></a>
+              <a :href="project[k]" target="blank">
+                <i class="fas fa-download fa-5x"></i>
+              </a>
             </div>
             <div v-else-if="fields[k].tipo && fields[k].tipo  === 'barcode'">
               <barcode :value="project[k]" :options="{ displayValue: true }"></barcode>
             </div>
-            <div v-else-if="fields[k].tipo && fields[k].tipo  === 'boolean'">              
-              <i  v-if="project[k]" class="fas fa-check-square fa-5x"></i>
-              <i v-else  class="fas fa-times-circle fa-5x"></i>
+            <div v-else-if="fields[k].tipo && fields[k].tipo  === 'boolean'">
+              <i v-if="project[k]" class="fas fa-check-square fa-5x"></i>
+              <i v-else class="fas fa-times-circle fa-5x"></i>
             </div>
-            <div v-else>
-              {{project[k]}}
-            </div>
+            <div v-else>{{project[k]}}</div>
           </div>
           <!-- <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div> -->
         </div>
@@ -41,6 +49,7 @@ import fields from "@/assets/fields.json";
 import mock from "@/assets/MOCK_DATA.json";
 import TabsScreenVue from "../components/TabsScreen.vue";
 import VueBarcode from "@xkeshi/vue-barcode";
+import store from "@/store";
 export default {
   name: "product",
   components: {
@@ -64,7 +73,7 @@ export default {
       return keys;
     }
   },
-  
+
   mounted() {
     this.projectid = this.$route.params.projectid
       ? this.$route.params.projectid
@@ -81,13 +90,43 @@ export default {
     }
   },
   methods: {
+    colorHeart(projectid) {
+      return store.state.user.likes.includes(projectid)
+        ? "color: red;"
+        : "color: black;";
+    },
+    like(project) {
+      console.log ("like", project)
+      var projectid = project.id;
+      var user = store.state.user;
+      console.log ("user", user);
+      if (!user.likes) user["likes"] = [];
+      if (user.likes.includes(projectid)) {
+        console.log ("includes");
+        user.likes = user.likes.filter(item => item !== projectid);
+        $("#heart-see-" + projectid).css("color", "black");
+        $("#heart-" + projectid).css("color", "black");
+      } else {
+        console.log ("else")
+        user.likes.push(projectid);
+        $("#heart-see-" + projectid).css("color", "red");
+        $("#heart-" + projectid).css("color", "red");
+      }
+      store.commit("setUser", user);
+      console.log (user);
+      db.collection("users")
+        .doc(user.id)
+        .update(user);
+    },
     loadProject() {
       return db
         .collection("projects")
         .doc(this.projectid)
         .get()
         .then(doc => {
-          this.project = doc.data();
+          this.project = doc.data();          
+          this.project["id"] = doc.id;
+          console.log ("project", this.project);
           return this.project.form;
         })
         .then(formid => {
@@ -103,7 +142,8 @@ export default {
         .then(docs => {
           this.fields = {};
           docs.forEach(doc => {
-            this.fields[doc.data().id] = doc.data();
+            if (doc.data ())
+              this.fields[doc.data().id] = doc.data();
           });
           return true;
         })
