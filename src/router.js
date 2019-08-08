@@ -18,6 +18,8 @@ import TabsScreen from "@/components/TabsScreen";
 import Producto from "@/components/Producto";
 import Privacy from "@/views/Privacy";
 import Claves from "@/views/Claves";
+import Collections from "@/components/Collections";
+import Collection from "@/components/Collection";
 
 Vue.use(Router);
 
@@ -84,6 +86,16 @@ const router = new Router({
       path: "/about",
       name: "About",
       component: About
+    },
+    {
+      path: "/collection/:id",
+      name: "Collection",
+      component: Collection
+    },
+    {
+      path: "/collections",
+      name: "Collections",
+      component: Collections
     },
     {
       path: "/edit/:projectid?",

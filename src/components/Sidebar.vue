@@ -52,6 +52,15 @@
         </a>
       </router-link>
     </li>
+
+    <li class="nav-item">
+      <router-link tag="li" to="/collections">
+        <a class="nav-link">
+          <i class="fas fa-layer-group"></i>
+          <span> Collecciones </span>
+        </a>
+      </router-link>
+    </li>
   </ul>
 </template>
 
@@ -71,12 +80,11 @@ export default {
     "menu-ing-electrica": MenuIngenieriaElectricaVue
   },
   created() {
-    console.log(roles);
+    
   },
   computed: {},
   methods: {
     hasRol(rol) {
-      console.log(rol, store.state.userRole);
       return (
         store.state.userRole === rol ||
         store.state.userRole === roles.super_admin
