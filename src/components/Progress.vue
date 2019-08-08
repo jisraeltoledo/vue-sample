@@ -62,7 +62,7 @@
                       <input
                         class="form-check-input"
                         type="checkbox"
-                        value="true"
+                        :value="project.id"
                         :id="'chk_'+project.id"
                       />
                     </div>
@@ -73,6 +73,35 @@
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Crear colección</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <label for="colectionName">Nombre de la colección:</label>
+            <input class="form-control" id="colectionName" placeholder="Escribe el nombre aquí" />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" @click="guardaColeccion">Guardar</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -132,8 +161,25 @@ export default {
     }
   },
   methods: {
-    crearColeccion (){
-      alert ('Crear coleccion');
+    guardaColeccion() {
+      var checked = [];
+      var nombre = $("#colectionName").val();
+      if (nombre === "") alert("El nombre está vacío");
+      else {
+        $(".form-check-input:checked").each(function() {
+          checked.push($(this).val());
+        });
+        db.collection("collections").add({
+          name: nombre,
+          products: checked,
+          created: new Date().getTime(),
+          user: store.state.user.email
+        });
+        $("#exampleModal").modal("hide");
+      }
+    },
+    crearColeccion() {
+      $("#exampleModal").modal("show");
     },
     colorHeart(projectid) {
       return store.state.user.likes.includes(projectid)
@@ -157,7 +203,7 @@ export default {
         .update(user);
     },
     clickList(project, type) {
-      this.$emit("click", {project:project, type:type});
+      this.$emit("click", { project: project, type: type });
     },
     getProjects() {
       var ref = db.collection("projects");

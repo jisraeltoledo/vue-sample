@@ -104,6 +104,7 @@ export default {
   methods: {
     crearColeccion() {
       console.log("listprojects", this.$refs.listProjects);
+      this.$refs.listProjects.crearColeccion();
     },
     closeTab(p) {
       console.log ("closing", p);
