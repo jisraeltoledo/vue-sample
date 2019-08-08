@@ -12,34 +12,49 @@
           aria-selected="true"
         >Proyectos</a>
       </li>
-      <li class="nav-item" v-for="(project, idx) in openedProjects" :key="idx" :id="'li-'+project">
+      <li
+        class="nav-item"
+        v-for="(p, idx) in openedProjects"
+        :key="idx"
+        :id="'li-'+p.type+'-'+p.project.id"
+      >
         <a
           class="nav-link"
-          :id="'tab-'+project"
+          :id="'tab-'+p.type+'-'+p.project.id"
           data-toggle="tab"
-          :href="'#content-'+project"
+          :href="'#content-'+p.type+'-'+p.project.id"
           role="tab"
-          :aria-controls="'content-'+project"
+          :aria-controls="'content-'+p.type+'-'+p.project.id"
           aria-selected="true"
         >
-          <button class="close closeTab" type="button" @click="closeTab(project)">×</button>
-          {{project}}
+          <button class="close closeTab" type="button" @click="closeTab(p)">×</button>
+          <i v-if="p.type==='edit'" class="fas fa-edit"></i>
+          <i v-if="p.type==='see'" class="fas fa-eye" style="color: black;"></i>
+          [{{p.project.C01?p.project.C01:""}}] {{p.project.C03?p.project.C03:""}}
         </a>
       </li>
     </ul>
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-        <list-projects :filterStatus="'proceso'" @click="listClick"></list-projects>
+        <div class="row" style="margin: 20px;">
+          <div class="col-md-4 offset-md-8">
+            <button class="btn btn-primary" @click="crearColeccion">Crear colección</button>
+          </div>
+        </div>
+        <list-projects :filterStatus="'proceso'" @click="listClick" ref="listProjects"></list-projects>
       </div>
       <div
-        v-for="(project2, idx2) in openedProjects"
-        :key="'content-'+idx2"
+        v-for="(p, idx2) in openedProjects"
+        :key="'content-'+p.type+'-'+idx2"
         class="tab-pane fade"
-        :id="'content-'+project2"
+        :id="'content-'+p.type+'-'+p.project.id"
         role="tabpanel"
-        :aria-labelledby="'tab-'+project2"
+        :aria-labelledby="'tab-'+p.type+'-'+p.project.id"
       >
-        <form-base :projectidSource="project2" @created="tabCreated"></form-base>
+        
+        <form-base v-if="p.type==='edit'" :projectidSource="p.project.id" @created="tabCreated"></form-base>
+        
+        <producto v-if="p.type==='see'" :productId="p.project.id" @created="tabCreated"></producto>
       </div>
     </div>
   </div>
@@ -71,11 +86,13 @@ import ProgressVue from "@/components/Progress.vue";
 import { db } from "@/main";
 import FormBase from "@/components/FormBase";
 import { without } from "underscore";
+import ProductoVue from "./Producto.vue";
 export default {
   name: "tab-screen",
   components: {
     "list-projects": ProgressVue,
-    "form-base": FormBase
+    "form-base": FormBase,
+    producto: ProductoVue
   },
   data() {
     return {
@@ -85,19 +102,28 @@ export default {
   created() {},
   watch: {},
   methods: {
-    closeTab(id) {
-      this.openedProjects = jQuery.grep(this.openedProjects, function(value) {
-        return value != id;
+    crearColeccion() {
+      console.log("listprojects", this.$refs.listProjects);
+    },
+    closeTab(p) {
+      console.log ("closing", p);
+      console.log (this.openedProjects);
+      this.openedProjects = jQuery.grep(this.openedProjects, (value)=> {
+        return ! this.same (value, p);
       });
-      $("#home-tab").tab('show');
+      console.log (this.openedProjects);
+      $("#home-tab").tab("show");
+    },
+    same (o1, o2){
+      return o1.project.id === o2.project.id && o1.type === o2.type;
     },
     tabCreated(id) {
-      console.log("tab created ", id);
-      $("#tab-" + id).tab("show");
+      var data = this.openedProjects[this.openedProjects.length-1];
+      $("#tab-"+data.type+'-'+data.project.id).tab("show");
     },
     listClick(data) {
-      console.log(data);
-      this.openedProjects.push(data.id);
+      console.log("listclick", data);
+      this.openedProjects.push(data);
     }
   }
 };

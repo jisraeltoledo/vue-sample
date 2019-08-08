@@ -15,10 +15,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr
-            v-for="(project, idx) in projects"
-            :key="idx"
-          >
+          <tr v-for="(project, idx) in projects" :key="idx">
             <td>{{project.C01}}</td>
             <td>{{project.C03}}</td>
             <td>{{project.C02}}</td>
@@ -41,16 +38,36 @@
             <td class="text-center">
               <!-- <export-pdf v-bind:projectid="project.id"></export-pdf> -->
               <table>
-                <tr><td>
-              <a @click="clickList(project).id" style="cursor: pointer;"> <i class="fas fa-edit"></i> </a>
-              </td>
-              <td>
-              <a :href="'/product/'+project.id"> <i class="fas fa-eye" style="color: black;"></i> </a>
-              </td>
-              <td>
-                <i :id="'heart-'+project.id" class="fas fa-heart" @click="like(project.id)" :style="'cursor: pointer;'+colorHeart(project.id)"></i>
-              </td>
-              </tr>
+                <tr>
+                  <td>
+                    <a @click="clickList(project, 'edit')" style="cursor: pointer;">
+                      <i class="fas fa-edit"></i>
+                    </a>
+                  </td>
+                  <td>
+                    <a @click="clickList(project, 'see')" style="cursor: pointer;">
+                      <i class="fas fa-eye" style="color: black;"></i>
+                    </a>
+                  </td>
+                  <td>
+                    <i
+                      :id="'heart-'+project.id"
+                      class="fas fa-heart"
+                      @click="like(project)"
+                      :style="'cursor: pointer;'+colorHeart(project.id)"
+                    ></i>
+                  </td>
+                  <td>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        value="true"
+                        :id="'chk_'+project.id"
+                      />
+                    </div>
+                  </td>
+                </tr>
               </table>
             </td>
           </tr>
@@ -102,8 +119,8 @@ export default {
   watch: {
     "$route.params.status": {
       handler: function(status) {
-        console.log ("status", status);
-        if (status === 'all') this.status = null;
+        console.log("status", status);
+        if (status === "all") this.status = null;
         else this.status = status;
         this.getProjects();
       },
@@ -115,25 +132,32 @@ export default {
     }
   },
   methods: {
-    colorHeart(projectid){
-      return store.state.user.likes.includes (projectid)?
-        "color: red;":"color: black;";
+    crearColeccion (){
+      alert ('Crear coleccion');
     },
-    like(projectid){
+    colorHeart(projectid) {
+      return store.state.user.likes.includes(projectid)
+        ? "color: red;"
+        : "color: black;";
+    },
+    like(project) {
+      var projectid = project.id;
       var user = store.state.user;
       if (!user.likes) user["likes"] = [];
-      if (user.likes.includes (projectid)){
+      if (user.likes.includes(projectid)) {
         user.likes = user.likes.filter(item => item !== projectid);
-        $("#heart-"+projectid).css("color", "black");
+        $("#heart-" + projectid).css("color", "black");
       } else {
-        user.likes.push (projectid);
-        $("#heart-"+projectid).css("color", "red");
+        user.likes.push(projectid);
+        $("#heart-" + projectid).css("color", "red");
       }
       store.commit("setUser", user);
-      db.collection("users").doc(user.id).update (user);
+      db.collection("users")
+        .doc(user.id)
+        .update(user);
     },
-    clickList(project) {
-      this.$emit('click', project);
+    clickList(project, type) {
+      this.$emit("click", {project:project, type:type});
     },
     getProjects() {
       var ref = db.collection("projects");
@@ -143,7 +167,7 @@ export default {
       if (this.step) {
         ref = ref.where("step", "==", this.step);
       }
-      ref = ref.orderBy('created', 'asc');
+      ref = ref.orderBy("created", "asc");
       ref.get().then(snap => {
         this.projects = [];
         snap.forEach(element => {

@@ -16,6 +16,8 @@ import IngenieriaElectrica from "@/components/IngenieriaElectrica";
 import FormBase from "@/components/FormBase";
 import TabsScreen from "@/components/TabsScreen";
 import Producto from "@/components/Producto";
+import Privacy from "@/views/Privacy";
+import Claves from "@/views/Claves";
 
 Vue.use(Router);
 
@@ -45,6 +47,24 @@ const router = new Router({
       component: Login,
       meta: {
         plainLayout: true
+      }
+    },
+    {
+      path: "/privacy",
+      name: "Privacy",
+      component: Privacy,
+      meta: {
+        plainLayout: true,
+        roles: ["guest"]
+      }
+    },
+    {
+      path: "/claves",
+      name: "Claves",
+      component: Claves,
+      meta: {
+        plainLayout: true,
+        roles: ["guest"]
       }
     },
     {
@@ -138,14 +158,25 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
+  console.log(store.state.userRole);
+
   let roles = to.meta.roles ? to.meta.roles : ["guest"];
+  console.log(roles);
+  console.log(
+    store.state.userRole === roles.super_admin ||
+      roles.includes(store.state.userRole) ||
+      roles.includes("guest")
+  );
   if (
     store.state.userRole === roles.super_admin ||
     roles.includes(store.state.userRole) ||
     roles.includes("guest")
   )
     next();
-  else next("login");
+  else {
+    console.log("else");
+    next("login");
+  }
 });
 
 export default router;

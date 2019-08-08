@@ -73,6 +73,7 @@ export default {
       : "";
     this.loadProject();
     console.log("fields mounted", this.fields);
+    this.$emit("created", this.projectid);
   },
   watch: {
     fields(newValue) {

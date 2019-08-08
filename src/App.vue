@@ -224,7 +224,7 @@
       </div>
     </div>
     <div v-if="$route.meta.plainLayout" class="bg-gradient-primary">
-      <login></login>
+      <router-view />
     </div>
   </div>
 </template>
