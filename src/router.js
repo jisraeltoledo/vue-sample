@@ -65,8 +65,7 @@ const router = new Router({
       name: "Claves",
       component: Claves,
       meta: {
-        plainLayout: true,
-        roles: ["guest"]
+        plainLayout: true
       }
     },
     {
