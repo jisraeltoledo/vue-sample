@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" v-if="show">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
       <li class="nav-item">
         <a
@@ -96,24 +96,46 @@ export default {
   },
   data() {
     return {
-      openedProjects: []
+      openedProjects: [],
+      show: true,
     };
   },
   created() {},
   watch: {},
   methods: {
+    rerender(){
+                this.show = false
+                this.$nextTick(() => {
+                    this.show = true
+                    console.log('re-render start')
+                    this.$nextTick(() => {
+                        console.log('re-render end')
+                    })
+                })
+            },
     crearColeccion() {
       console.log("listprojects", this.$refs.listProjects);
       this.$refs.listProjects.crearColeccion();
     },
     closeTab(p) {
-      console.log ("closing", p);
+      // console.log ("closing", p);
+      // console.log ("closing", "#li-"+p.type+'-'+p.project.id);
+      
       console.log (this.openedProjects);
+      // $("#li-"+p.type+'-'+p.project.id).remove ();   
+      // $('#content-'+p.type+'-'+p.project.id).remove();  
       this.openedProjects = jQuery.grep(this.openedProjects, (value)=> {
         return ! this.same (value, p);
       });
       console.log (this.openedProjects);
-      $("#home-tab").tab("show");
+      this.rerender ();
+      //$('#content-'+p.type+'-'+p.project.id).remove(); 
+      //$(".nav-link").removeClass("active");//this will remove the active class from  
+                                     //previously active menu item 
+      // $('#home-tab').addClass('active');
+      // $('#home').addClass('active show');
+      // $("#home-tab").tab("show");
+      
     },
     same (o1, o2){
       return o1.project.id === o2.project.id && o1.type === o2.type;
