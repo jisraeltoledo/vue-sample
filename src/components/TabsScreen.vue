@@ -37,11 +37,29 @@
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
         <div class="row" style="margin: 20px;">
-          <div class="col-md-4 offset-md-8">
+          <div class="col-md-4 offset-md-2">
+            <div class="input-group">
+              <input
+                id="searchField"
+                type="text"
+                class="form-control"
+                placeholder="Search for..."
+                aria-label="Search"
+                aria-describedby="basic-addon2"
+                @input="searchChange"
+              />
+              <div class="input-group-append">
+                <button class="btn btn-primary" type="button">
+                  <i class="fas fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 offset-md-2">
             <button class="btn btn-primary" @click="crearColeccion">Crear colección</button>
           </div>
         </div>
-        <list-projects :filterStatus="'proceso'" @click="listClick" ref="listProjects"></list-projects>
+        <list-projects :filterStatus="'proceso'" @click="listClick" ref="listProjects" :products="searchResults"></list-projects>
       </div>
       <div
         v-for="(p, idx2) in openedProjects"
@@ -51,9 +69,8 @@
         role="tabpanel"
         :aria-labelledby="'tab-'+p.type+'-'+p.project.id"
       >
-        
         <form-base v-if="p.type==='edit'" :projectidSource="p.project.id" @created="tabCreated"></form-base>
-        
+
         <producto v-if="p.type==='see'" :productId="p.project.id" @created="tabCreated"></producto>
       </div>
     </div>
@@ -98,21 +115,39 @@ export default {
     return {
       openedProjects: [],
       show: true,
+      searchResults: []
     };
   },
   created() {},
   watch: {},
   methods: {
-    rerender(){
-                this.show = false
-                this.$nextTick(() => {
-                    this.show = true
-                    console.log('re-render start')
-                    this.$nextTick(() => {
-                        console.log('re-render end')
-                    })
-                })
-            },
+    searchChange() {
+      console.log($("#searchField").val());
+      this.search($("#searchField").val());
+    },
+    search(word) {
+      db.collection("products")
+        .where("keywords", "array-contains", word)
+        .limit(10)
+        .get()
+        .then(docs => {
+          this.searchResults = [];
+          docs.forEach(doc => {
+            console.log(doc.data());
+            this.searchResults.push (doc.data());
+          });
+        });
+    },
+    rerender() {
+      this.show = false;
+      this.$nextTick(() => {
+        this.show = true;
+        console.log("re-render start");
+        this.$nextTick(() => {
+          console.log("re-render end");
+        });
+      });
+    },
     crearColeccion() {
       console.log("listprojects", this.$refs.listProjects);
       this.$refs.listProjects.crearColeccion();
@@ -120,29 +155,28 @@ export default {
     closeTab(p) {
       // console.log ("closing", p);
       // console.log ("closing", "#li-"+p.type+'-'+p.project.id);
-      
-      console.log (this.openedProjects);
-      // $("#li-"+p.type+'-'+p.project.id).remove ();   
-      // $('#content-'+p.type+'-'+p.project.id).remove();  
-      this.openedProjects = jQuery.grep(this.openedProjects, (value)=> {
-        return ! this.same (value, p);
+
+      console.log(this.openedProjects);
+      // $("#li-"+p.type+'-'+p.project.id).remove ();
+      // $('#content-'+p.type+'-'+p.project.id).remove();
+      this.openedProjects = jQuery.grep(this.openedProjects, value => {
+        return !this.same(value, p);
       });
-      console.log (this.openedProjects);
-      this.rerender ();
-      //$('#content-'+p.type+'-'+p.project.id).remove(); 
-      //$(".nav-link").removeClass("active");//this will remove the active class from  
-                                     //previously active menu item 
+      console.log(this.openedProjects);
+      this.rerender();
+      //$('#content-'+p.type+'-'+p.project.id).remove();
+      //$(".nav-link").removeClass("active");//this will remove the active class from
+      //previously active menu item
       // $('#home-tab').addClass('active');
       // $('#home').addClass('active show');
       // $("#home-tab").tab("show");
-      
     },
-    same (o1, o2){
+    same(o1, o2) {
       return o1.project.id === o2.project.id && o1.type === o2.type;
     },
     tabCreated(id) {
-      var data = this.openedProjects[this.openedProjects.length-1];
-      $("#tab-"+data.type+'-'+data.project.id).tab("show");
+      var data = this.openedProjects[this.openedProjects.length - 1];
+      $("#tab-" + data.type + "-" + data.project.id).tab("show");
     },
     listClick(data) {
       console.log("listclick", data);

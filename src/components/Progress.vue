@@ -117,7 +117,8 @@ export default {
   name: "list-project-progress",
   props: {
     filterStatus: String,
-    filterStep: String
+    filterStep: String,
+    products: Array
   },
   components: {
     "export-pdf": ExportPDFVue
@@ -146,6 +147,10 @@ export default {
     this.getProjects();
   },
   watch: {
+    products: function (newV, oldV) {
+      console.log ("products", newV);
+      this.projects = newV;
+    },
     "$route.params.status": {
       handler: function(status) {
         console.log("status", status);
@@ -168,12 +173,16 @@ export default {
       else {
         $(".form-check-input:checked").each(function() {
           checked.push($(this).val());
+          $(this).prop('checked', false); 
+          
         });
         db.collection("collections").add({
           name: nombre,
           products: checked,
           created: new Date().getTime(),
           user: store.state.user.email
+        }).then ((ref)=>{
+          this.$router.replace(`/collection/${ref.id}`);
         });
         $("#exampleModal").modal("hide");
       }
