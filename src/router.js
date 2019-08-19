@@ -171,17 +171,18 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   console.log(store.state.userRole);
 
-  let roles = to.meta.roles ? to.meta.roles : ["guest"];
+  let rolNeeded = to.meta.roles ? to.meta.roles : ["guest"];
   console.log(roles);
+  console.log(store.state.userRole, roles.super_admin);
   console.log(
     store.state.userRole === roles.super_admin ||
-      roles.includes(store.state.userRole) ||
-      roles.includes("guest")
+      rolNeeded.includes(store.state.userRole) ||
+      rolNeeded.includes("guest")
   );
   if (
     store.state.userRole === roles.super_admin ||
-    roles.includes(store.state.userRole) ||
-    roles.includes("guest")
+    rolNeeded.includes(store.state.userRole) ||
+    rolNeeded.includes("guest")
   )
     next();
   else {

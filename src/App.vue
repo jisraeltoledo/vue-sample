@@ -11,9 +11,9 @@
         >
           <i class="fas fa-bars"></i>
         </button>
-
+        <div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0"></div>
         <!-- Navbar Search -->
-        <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+        <!-- <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
           <div class="input-group">
             <input
               type="text"
@@ -28,7 +28,7 @@
               </button>
             </div>
           </div>
-        </form>
+        </form>-->
 
         <!-- Navbar -->
         <ul class="navbar-nav ml-auto ml-md-0">
@@ -229,7 +229,7 @@
   </div>
 </template>
 <script>
-import firebase from 'firebase';
+import firebase from "firebase";
 import LoginVue from "@/views/Login.vue";
 import Sidebar from "@/components/Sidebar.vue";
 export default {

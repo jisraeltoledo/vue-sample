@@ -51,6 +51,43 @@
         </div>
         <div class="form-group">
           <label for="formGroupExampleInput">
+            Código de barras
+            <small>*</small>
+          </label>
+          <input
+            v-model="barCode"
+            type="text"
+            class="form-control"
+            id="formGroupExampleInput"
+            placeholder="Ej. 82912819281"
+          />
+        </div>
+        <div class="form-group">
+          <label for="select-form">
+            Formulario
+            <small>*</small>
+          </label>
+          <select
+            v-model="form"
+            class="form-control"
+            id="select-form"
+          ><option v-for="f in forms" :key="f"> {{f}}</option></select>
+        </div>
+        <div>
+          <div class="form-check">
+            <input
+              v-model="isFamily"
+              class="form-check-input"
+              type="checkbox"
+              value="true"
+              id="isFamily"
+            />
+            <label class="form-check-label" for="isFamily">Es familia</label>
+          </div>
+        </div>
+        <br>
+        <!-- <div class="form-group">
+          <label for="formGroupExampleInput">
             Nombre Diseñador
             <small>*</small>
           </label>
@@ -68,7 +105,7 @@
             <small>*</small>
           </label>
           <textarea v-model="bio" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-        </div>
+        </div> -->
         <button class="btn btn-success" @click="guardar">Guardar</button>
         <button class="btn" @click="cancelar">Cancelar</button>
       </form>
@@ -92,7 +129,11 @@ export default {
       bio: "",
       errors: [],
       disenador: "",
-      title: "Crear proyecto"
+      title: "Crear producto",
+      barCode:"",
+      isFamily: false,
+      forms: [],
+      form:""
     };
   },
   created() {
@@ -102,12 +143,24 @@ export default {
         .doc(this.$route.params.projectid)
         .get()
         .then(doc => {
-          this.nombre = doc.data().nombre;
-          this.modelo = doc.data().modelo;
-          this.descripcion = doc.data().descripcion;
-          this.bio = doc.data ().bio;
-          this.disenador = doc.data().disenador;
+          this.nombre = doc.data().C03;
+          this.modelo = doc.data().C01;
+          this.descripcion = doc.data().C02;
+          this.barCode = doc.data ().C04;
         });
+    }
+    db.collection ("forms").get ().then (docs => {
+      docs.forEach (doc => {
+        this.forms.push (doc.id);
+      });
+    }).then (()=>{
+      this.form = this.forms[0];
+    });
+    console.log ("forms",this.forms);
+  },
+  watch: {
+    isFamily: function (nV, oV){
+      console.log ("nV", nV);
     }
   },
   methods: {
@@ -130,22 +183,23 @@ export default {
       if (!this.descripcion) {
         this.errors.push("Descripción es requerido.");
       }
-      if (!this.disenador) {
-        this.errors.push("Nombre de diseñador es requerido.");
-      }
-      if (!this.bio) {
-        this.errors.push("Biografía es requerido.");
+      if (!this.barCode) {
+        this.errors.push("Código de barras es requerido");
       }
 
       e.preventDefault();
       if (this.errors.length == 0) {
         db.collection("projects")
           .add({
-            nombre: this.nombre,
-            modelo: this.modelo,
-            descripcion: this.descripcion,
-            disenador: this.disenador,
-            bio: this.bio
+            C03: this.nombre,
+            C01: this.modelo,
+            C02: this.descripcion,
+            C04: this.barCode,
+            status: "proceso",
+            step: "estructuras",
+            created: new Date ().getTime (),
+            form: this.form,
+            isFamily: this.isFamily                        
           })
           .then(ref => {
             alert("se guardó el proyecto correctamente");

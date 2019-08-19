@@ -37,7 +37,7 @@
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
         <div class="row" style="margin: 20px;">
-          <div class="col-md-4 offset-md-2">
+          <div class="col-md-4 ">
             <div class="input-group">
               <input
                 id="searchField"
@@ -55,8 +55,11 @@
               </div>
             </div>
           </div>
-          <div class="col-md-4 offset-md-2">
+          <div class="col-md-3 offset-md-1">
             <button class="btn btn-primary" @click="crearColeccion">Crear colección</button>
+          </div>
+          <div class="col-md-3 offset-md-1">
+            <button class="btn btn-success" @click="crearFamilia">Crear familia</button>
           </div>
         </div>
         <list-projects :filterStatus="'proceso'" @click="listClick" ref="listProjects" :products="searchResults"></list-projects>
@@ -151,6 +154,9 @@ export default {
           console.log("re-render end");
         });
       });
+    },
+    crearFamilia (){
+      
     },
     crearColeccion() {
       console.log("listprojects", this.$refs.listProjects);
