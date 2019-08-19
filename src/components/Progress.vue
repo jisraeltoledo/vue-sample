@@ -150,6 +150,9 @@ export default {
     products: function (newV, oldV) {
       console.log ("products", newV);
       this.projects = newV;
+      if (this.projects === null){
+        this.getProjects();
+      }
     },
     "$route.params.status": {
       handler: function(status) {
@@ -215,6 +218,7 @@ export default {
       this.$emit("click", { project: project, type: type });
     },
     getProjects() {
+      console.log ("getProjects")
       var ref = db.collection("projects");
       if (this.status) {
         ref = ref.where("status", "==", this.status);

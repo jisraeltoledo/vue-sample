@@ -126,8 +126,12 @@ export default {
       this.search($("#searchField").val());
     },
     search(word) {
+      if (word === ''){
+        this.searchResults = null;
+        return;
+      }
       db.collection("products")
-        .where("keywords", "array-contains", word)
+        .where("keywords", "array-contains", word.toLowerCase ())
         .limit(10)
         .get()
         .then(docs => {

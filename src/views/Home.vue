@@ -5,24 +5,30 @@
 </template>
 
 <script>
-import firebase from 'firebase';
+import firebase from "firebase";
 // @ is an alias to /src
-import ProgressVue from '@/components/Progress.vue';
+import ProgressVue from "@/components/Progress.vue";
 import { db } from "@/main";
-import fields from "@/assets/fields.json"
-import mock from "@/assets/MOCK_DATA.json"
-import data from "@/assets/data.json"
-import TabsScreenVue from '../components/TabsScreen.vue';
+import fields from "@/assets/fields.json";
+import mock from "@/assets/MOCK_DATA.json";
+import data from "@/assets/data.json";
+import TabsScreenVue from "../components/TabsScreen.vue";
 export default {
-  name: 'home',
+  name: "home",
   components: {
     "list-project-progress": ProgressVue,
-    'tab-screen': TabsScreenVue
+    "tab-screen": TabsScreenVue
   },
-  created(){
+  created() {
+    
     // Array.prototype.forEach.call(data, elements => {
-    //   db.collection ("products").add(elements);
+    //   var keywords = [];
+    //   keywords = keywords.concat (this.createKey(elements.C02));
+    //   keywords = keywords.concat (this.createKey(elements.C03));
+    //   elements["keywords"] = Array.from(new Set (keywords));
+    //   db.collection("products").add(elements);
     // });
+
     // Array.prototype.forEach.call(fields, f => {
     //   db.collection ("fields").doc(f["id"]).set(f);
     // });
@@ -30,12 +36,27 @@ export default {
     // db.collection ("forms").doc("F01").update({fields: array});
   },
   methods: {
+    createKey(name) {
+      console.log(name);
+      const arrName = [];
+      let curName = "";
+      name
+        .toLowerCase()
+        .split("")
+        .forEach(letter => {
+          curName += letter;
+          arrName.push(curName);
+        });
+      return arrName;
+    },
     logout: function() {
-      firebase.auth().signOut().then(() => {
-        this.$router.replace('login')
-      })
+      firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          this.$router.replace("login");
+        });
     }
   }
-}
-
+};
 </script>
