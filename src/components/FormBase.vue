@@ -273,10 +273,17 @@ export default {
           }
         }
       });
+      console.log(values);
       db.collection("projects")
         .doc(this.projectid)
         .update(values);
-      console.log(values);
+      if (this.project.isFamily){
+        this.project.products.forEach (p=>{
+          db.collection("projects")
+                  .doc(p)
+                  .update(values);
+        });
+      }
     },
     addField(f) {
       db.collection("fields")
