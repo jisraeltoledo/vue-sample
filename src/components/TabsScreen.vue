@@ -72,7 +72,7 @@
         role="tabpanel"
         :aria-labelledby="'tab-'+p.type+'-'+p.project.id"
       >
-        <form-base v-if="p.type==='edit'" :projectidSource="p.project.id" @created="tabCreated"></form-base>
+        <form-base v-if="p.type==='edit'" :projectidSource="p.project.id" @created="tabCreated" @editFamily="editFamily"></form-base>
 
         <producto v-if="p.type==='see'" :productId="p.project.id" @created="tabCreated"></producto>
       </div>
@@ -124,6 +124,10 @@ export default {
   created() {},
   watch: {},
   methods: {
+    editFamily(family){
+      console.log ("editFam tab", family);
+      this.listClick({ project: family, type: 'edit' });
+    },
     searchChange() {
       console.log($("#searchField").val());
       this.search($("#searchField").val());

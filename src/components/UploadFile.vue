@@ -17,6 +17,7 @@
               class="form-control align-bottom"
               :accept="fileType===undefined?'*':fileType"
               @change="preview"
+              :disabled="disabled"
             />
             <span class="input-group-btn">
               <button v-if="! empty" class="btn btn-success pull-right" @click="upload">Subir</button>
@@ -61,7 +62,8 @@ export default {
     width: Number,
     path: String,
     fileType: String,
-    multiple: Boolean
+    multiple: Boolean,
+    disabled: Boolean,
   },
   components: {},
   data: function() {

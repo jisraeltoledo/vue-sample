@@ -1,8 +1,16 @@
 <template>
   <div>
     <hr />
-    <h3>Clave: {{project.C01}}</h3>
-    <h4>Nombre: {{project.C03}}</h4>
+    <div class="row">
+      <div class="col-md-6">
+        <h3>Clave: {{project.C01}}</h3>
+        <h4>Nombre: {{project.C03}}</h4>
+    
+      </div>
+      <div class="col-md-6">
+        <button @click="editFamily" class="btn btn-primary"> Editar familia </button>
+      </div>
+    </div>
     <div v-if="message">{{message}}</div>
     <div class="row">
       <div v-for="(f, idx) in fields" v-bind:key="'f'+idx" class="form-group col-md-6">
@@ -21,6 +29,7 @@
               class="form-control"
               :placeholder="f.descripcion"
               :value="project[f.id]?project[f.id]:''"
+              :disabled="project.family && !f.editableIfFamily"
             />
           </div>
         </div>
@@ -39,6 +48,7 @@
               :required="f.obligatorio"
               :placeholder="f.descripcion"
               :value="project[f.id]?project[f.id]:''"
+              :disabled="project.family && !f.editableIfFamily"
             ></textarea>
           </div>
         </div>
@@ -56,6 +66,7 @@
               class="form-control"
               :placeholder="f.descripcion"
               :value="project[f.id]?project[f.id]:''"
+              :disabled="project.family && !f.editableIfFamily"
             />
           </div>
         </div>
@@ -73,6 +84,7 @@
               class="form-control"
               :placeholder="f.descripcion"
               :value="project[f.id]?project[f.id]:''"
+              :disabled="project.family && !f.editableIfFamily"
             />
             <barcode :value="project[f.id]?project[f.id]:''" :options="{ displayValue: true }"></barcode>
           </div>
@@ -86,6 +98,7 @@
               value="true"
               :checked="project[f.id]!==undefined"
               :id="f.id"
+              :disabled="project.family && !f.editableIfFamily"
             />
             <label class="form-check-label" :for="f.id">
               <strong>{{f.nombre}}</strong>
@@ -102,6 +115,7 @@
               value="true"
               :checked="project[f.id]!== undefined && project[f.id].includes(o)"
               :id="f.id+'_'+o"
+              :disabled="project.family && !f.editableIfFamily"
             />
             <label class="form-check-label" :for="f.id+'_'+o">{{o}}</label>
           </div>
@@ -117,6 +131,7 @@
               value="true"
               :checked="project[f.id]!== undefined && project[f.id].includes(o)"
               :id="removeSpecialChars(f.id+'_'+o)"
+              :disabled="project.family && !f.editableIfFamily"
             />
             <label class="form-check-label" :for="f.id+'_'+o">{{o}}</label>
           </div>
@@ -131,6 +146,7 @@
             v-bind:description="f.descripcion"
             v-bind:width="100"
             @uploaded:url="files[f.id] = $event"
+            :disabled="project.family && !f.editableIfFamily"
           ></upload-file>
         </div>
         <!--  ************ Files ************ -->
@@ -144,6 +160,7 @@
             v-bind:multiple="true"
             v-bind:description="f.descripcion"
             @uploaded:url="files[f.id] = $event"
+            :disabled="project.family && !f.editableIfFamily"
           ></upload-file>
         </div>
         <div v-else>{{f}}</div>
@@ -217,6 +234,15 @@ export default {
       });
   },
   methods: {
+    editFamily (){
+      console.log ("editFamily", this.project.family);
+      db.collection ("projects").doc (this.project.family).get().then (doc => {
+        console.log ("editFamily", doc.data ());
+        var p = doc.data ();
+        p["id"] = doc.id;
+        this.$emit("editFamily", p);
+      });
+    },
     removeSpecialChars(cadena) {
       return cadena.replace(/[^A-Z0-9]/ig, "_");
     },
