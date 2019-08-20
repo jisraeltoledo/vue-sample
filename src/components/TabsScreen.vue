@@ -156,7 +156,7 @@ export default {
       });
     },
     crearFamilia (){
-      
+      this.$refs.listProjects.crearFamilia();
     },
     crearColeccion() {
       console.log("listprojects", this.$refs.listProjects);

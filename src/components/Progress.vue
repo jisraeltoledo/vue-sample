@@ -87,17 +87,17 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Crear colección</h5>
+            <h5 class="modal-title" id="exampleModalLabel">{{titleModal}}</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-            <label for="colectionName">Nombre de la colección:</label>
+            <label for="colectionName">{{labelModal}}</label>
             <input class="form-control" id="colectionName" placeholder="Escribe el nombre aquí" />
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" @click="guardaColeccion">Guardar</button>
+            <button type="button" class="btn btn-primary" @click="guardar">Guardar</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
           </div>
         </div>
@@ -128,7 +128,10 @@ export default {
       projects: [],
       progress: {},
       status: null,
-      step: null
+      step: null,
+      titleModal: "",
+      labelModal: "",
+      flagModalColeccion: false,
     };
   },
   created() {
@@ -169,28 +172,75 @@ export default {
     }
   },
   methods: {
-    guardaColeccion() {
+    guardar (){
+      if (this.flagModalColeccion){
+        this.guardaColeccion ();
+      } else {
+        this.guardaFamilia ();
+      }
+    },
+    guardaFamilia (){ 
+      var data = this.getModalData ();
+      console.log (data);
+      console.log (this.projects);
+      var project = this.projects.filter ( (e) => {
+        return e.id === data.checks[0];
+      })[0];
+      project["C01"] = data.nombre;
+      project["products"] = data.checks;
+      project["created"] = new Date().getTime();
+      project["user"] = store.state.user.email;
+      project["isFamily"] = true;
+      delete project['id'];
+      console.log ("project", project);
+      db.collection("projects").add(project)
+      .then ((ref) => {
+        data.checks.forEach (id => {
+          db.collection ("projects").doc (id).update ({family: ref.id});
+        })        
+        return ref;
+      })
+      .then ((ref)=>{
+          console.log (ref.id);
+          this.$router.replace(`/family/${ref.id}`);
+        });
+        $("#exampleModal").modal("hide");
+    },
+    getModalData (){
       var checked = [];
       var nombre = $("#colectionName").val();
-      if (nombre === "") alert("El nombre está vacío");
+      if (nombre === "") alert(this.labelModal+" está vacío");
       else {
         $(".form-check-input:checked").each(function() {
           checked.push($(this).val());
           $(this).prop('checked', false); 
-          
         });
-        db.collection("collections").add({
-          name: nombre,
-          products: checked,
+        return {
+          nombre: nombre,
+          checks: checked
+        }
+      }
+    },
+    guardaColeccion() {
+      var data = this.getModalData ();
+      db.collection("collections").add({
+          name: data.nombre,
+          products: data.checks,
           created: new Date().getTime(),
           user: store.state.user.email
         }).then ((ref)=>{
           this.$router.replace(`/collection/${ref.id}`);
         });
         $("#exampleModal").modal("hide");
-      }
     },
     crearColeccion() {
+      this.titleModal = "Crear colección";
+      this.labelModal = "Nombre";
+      $("#exampleModal").modal("show");
+    },
+    crearFamilia (){
+      this.titleModal = "Crear familia";
+      this.labelModal = "Clave";
       $("#exampleModal").modal("show");
     },
     colorHeart(projectid) {
