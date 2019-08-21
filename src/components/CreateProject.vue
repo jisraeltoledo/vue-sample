@@ -167,6 +167,19 @@ export default {
     cancelar() {
       this.$router.push("/home");
     },
+    createKey(name) {
+      console.log(name);
+      const arrName = [];
+      let curName = "";
+      name
+        .toLowerCase()
+        .split("")
+        .forEach(letter => {
+          curName += letter;
+          arrName.push(curName);
+        });
+      return arrName;
+    },
     guardar(e) {
       if (this.name && this.age) {
         return true;
@@ -188,6 +201,10 @@ export default {
       }
 
       e.preventDefault();
+      var keywords = [];
+      keywords = keywords.concat (this.createKey(this.descripcion));
+      keywords = keywords.concat (this.createKey(this.nombre));
+      
       if (this.errors.length == 0) {
         db.collection("projects")
           .add({
@@ -199,7 +216,8 @@ export default {
             step: "estructuras",
             created: new Date ().getTime (),
             form: this.form,
-            isFamily: this.isFamily                        
+            isFamily: this.isFamily,
+            keywords: Array.from(new Set (keywords))                
           })
           .then(ref => {
             alert("se guardó el proyecto correctamente");

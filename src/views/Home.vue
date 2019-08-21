@@ -21,12 +21,12 @@ export default {
   },
   created() {
     
-    // Array.prototype.forEach.call(data, elements => {
+    // Array.prototype.forEach.call(mock, elements => {
     //   var keywords = [];
     //   keywords = keywords.concat (this.createKey(elements.C02));
     //   keywords = keywords.concat (this.createKey(elements.C03));
     //   elements["keywords"] = Array.from(new Set (keywords));
-    //   db.collection("products").add(elements);
+    //   db.collection("projects").add(elements);
     // });
 
     // Array.prototype.forEach.call(fields, f => {

@@ -148,14 +148,16 @@ export default {
         this.searchResults = null;
         return;
       }
-      db.collection("products")
+      db.collection("projects")
         .where("keywords", "array-contains", word.toLowerCase ())
         .limit(10)
         .get()
         .then(docs => {
           this.searchResults = [];
           docs.forEach(doc => {
-            this.searchResults.push (doc.data());
+            var p = doc.data();
+            p["id"] = doc.id;
+            this.searchResults.push (p);
           });
         });
     },
