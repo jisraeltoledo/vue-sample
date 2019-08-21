@@ -55,14 +55,14 @@
               </div>
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-3 text-center">
             <button class="btn btn-primary" @click="crearColeccion">Crear colección</button>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-3 text-center">
             <button class="btn btn-success" @click="crearFamilia">Crear familia</button>
           </div>
-          <div class="col-md-2">
-            <button class="btn btn-info" @click="publish">Publicar productos</button>
+          <div class="col-md-2 text-center">
+            <button class="btn btn-info" @click="publish">Publicar</button>
           </div>
         </div>
         <list-projects :filterStatus="'proceso'" @click="listClick" ref="listProjects" :products="searchResults"></list-projects>
@@ -152,7 +152,6 @@ export default {
         .then(docs => {
           this.searchResults = [];
           docs.forEach(doc => {
-            
             this.searchResults.push (doc.data());
           });
         });

@@ -54,6 +54,15 @@
     </li>
 
     <li class="nav-item">
+      <router-link tag="li" to="/projects/favorites">
+        <a class="nav-link">
+          <i class="fas fa-heart"></i>
+          <span> Favoritos</span>
+        </a>
+      </router-link>
+    </li>
+
+    <li class="nav-item">
       <router-link tag="li" to="/collections">
         <a class="nav-link">
           <i class="fas fa-layer-group"></i>
@@ -61,6 +70,8 @@
         </a>
       </router-link>
     </li>
+
+    
 
     <li class="nav-item" v-if="hasRol(myroles.estructuras)">
       <router-link tag="li" to="/create-project">

@@ -135,8 +135,6 @@ export default {
     };
   },
   created() {
-    console.log(new Date().getTime());
-
     if (this.filterStatus) {
       this.status = this.filterStatus;
     } else if (this.$route.params.status) {
@@ -146,6 +144,10 @@ export default {
       this.step = this.filterStep;
     } else if (this.$route.params.step) {
       this.step = this.$route.params.step;
+    }
+    if (this.$route.params.status === 'favorites'){
+      //this.getFavorites ();
+      return;
     }
     this.getProjects();
   },
@@ -160,6 +162,12 @@ export default {
     "$route.params.status": {
       handler: function(status) {
         console.log("status", status);
+        if (status === "favorites"){
+          console.log("entro aqui");
+          this.getFavorites ();
+          return;
+        }
+        console.log("ya no llega aqui");
         if (status === "all") this.status = null;
         else this.status = status;
         this.getProjects();
@@ -167,11 +175,28 @@ export default {
       deep: true,
       immediate: true
     },
-    status() {
-      this.getProjects();
-    }
+    // status() {
+    //   console.log ("watch status");
+    //   this.getProjects();
+    // }
   },
   methods: {
+    getFavorites (){
+      console.log ("get Favorites", store.state.user);
+      var promises = [];
+      store.state.user.likes.forEach (like => {
+        var p = db.collection ("projects").doc (like).get ();
+        promises.push (p);
+      });
+      this.projects = [];
+      Promise.all (promises).then (docs => {
+        docs.forEach (doc => {
+          var p = doc.data ();
+          p["id"] = doc.id;
+          this.projects.push (p);
+        })
+      });
+    },
     publish (){
       var _this = this;
       
