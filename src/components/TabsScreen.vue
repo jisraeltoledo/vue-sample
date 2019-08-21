@@ -37,7 +37,7 @@
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
         <div class="row" style="margin: 20px;">
-          <div class="col-md-4 ">
+          <div class="col-md-3 ">
             <div class="input-group">
               <input
                 id="searchField"
@@ -55,14 +55,17 @@
               </div>
             </div>
           </div>
-          <div class="col-md-3 text-center">
+          <div class="col-md-2 offset-md-3 text-center">
             <button class="btn btn-primary" @click="crearColeccion">Crear colección</button>
           </div>
-          <div class="col-md-3 text-center">
-            <button class="btn btn-success" @click="crearFamilia">Crear familia</button>
-          </div>
           <div class="col-md-2 text-center">
-            <button class="btn btn-info" @click="publish">Publicar</button>
+            <button class="btn btn-info" @click="crearFamilia">Crear familia</button>
+          </div>
+          <div class="col-md-1 text-center">            
+            <button class="btn btn-success" @click="changeStatus('publicado')">Publicar</button>
+          </div>
+          <div class="col-md-1 text-center">            
+            <button class="btn btn-danger" @click="changeStatus('retirado')">Retirar</button>
           </div>
         </div>
         <list-projects :filterStatus="'proceso'" @click="listClick" ref="listProjects" :products="searchResults"></list-projects>
@@ -127,9 +130,9 @@ export default {
   created() {},
   watch: {},
   methods: {
-    publish (){
+    changeStatus (status){
       if (confirm ("Estás seguro de llevar a cabo esta acción?")){
-        this.$refs.listProjects.publish();
+        this.$refs.listProjects.changeStatus(status);
       }
     },
     editFamily(family){

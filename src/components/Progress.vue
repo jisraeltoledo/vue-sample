@@ -197,14 +197,14 @@ export default {
         })
       });
     },
-    publish (){
+    changeStatus (status){
       var _this = this;
       
       $(".form-check-input:checked").each(function() {
-        db.collection ("projects").doc($(this).val()).update ({status: "publicado"});   
+        db.collection ("projects").doc($(this).val()).update ({status: status});   
         for (var i = 0; i<_this.projects.length; i++){
           if (_this.projects[i].id === $(this).val()){
-            _this.projects[i].status = "publicado";
+            _this.projects[i].status = status;
           }
         }
         $(this).prop('checked', false); 
