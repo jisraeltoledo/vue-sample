@@ -156,11 +156,11 @@ export default {
     }).then (()=>{
       this.form = this.forms[0];
     });
-    console.log ("forms",this.forms);
+    
   },
   watch: {
     isFamily: function (nV, oV){
-      console.log ("nV", nV);
+      
     }
   },
   methods: {

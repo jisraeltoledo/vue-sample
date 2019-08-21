@@ -55,11 +55,14 @@
               </div>
             </div>
           </div>
-          <div class="col-md-3 offset-md-1">
+          <div class="col-md-3">
             <button class="btn btn-primary" @click="crearColeccion">Crear colección</button>
           </div>
-          <div class="col-md-3 offset-md-1">
+          <div class="col-md-3">
             <button class="btn btn-success" @click="crearFamilia">Crear familia</button>
+          </div>
+          <div class="col-md-2">
+            <button class="btn btn-info" @click="publish">Publicar productos</button>
           </div>
         </div>
         <list-projects :filterStatus="'proceso'" @click="listClick" ref="listProjects" :products="searchResults"></list-projects>
@@ -124,12 +127,17 @@ export default {
   created() {},
   watch: {},
   methods: {
+    publish (){
+      if (confirm ("Estás seguro de llevar a cabo esta acción?")){
+        this.$refs.listProjects.publish();
+      }
+    },
     editFamily(family){
-      console.log ("editFam tab", family);
+      
       this.listClick({ project: family, type: 'edit' });
     },
     searchChange() {
-      console.log($("#searchField").val());
+      
       this.search($("#searchField").val());
     },
     search(word) {
@@ -144,7 +152,7 @@ export default {
         .then(docs => {
           this.searchResults = [];
           docs.forEach(doc => {
-            console.log(doc.data());
+            
             this.searchResults.push (doc.data());
           });
         });
@@ -153,9 +161,9 @@ export default {
       this.show = false;
       this.$nextTick(() => {
         this.show = true;
-        console.log("re-render start");
+        
         this.$nextTick(() => {
-          console.log("re-render end");
+          
         });
       });
     },
@@ -163,27 +171,13 @@ export default {
       this.$refs.listProjects.crearFamilia();
     },
     crearColeccion() {
-      console.log("listprojects", this.$refs.listProjects);
       this.$refs.listProjects.crearColeccion();
     },
     closeTab(p) {
-      // console.log ("closing", p);
-      // console.log ("closing", "#li-"+p.type+'-'+p.project.id);
-
-      console.log(this.openedProjects);
-      // $("#li-"+p.type+'-'+p.project.id).remove ();
-      // $('#content-'+p.type+'-'+p.project.id).remove();
       this.openedProjects = jQuery.grep(this.openedProjects, value => {
         return !this.same(value, p);
       });
-      console.log(this.openedProjects);
       this.rerender();
-      //$('#content-'+p.type+'-'+p.project.id).remove();
-      //$(".nav-link").removeClass("active");//this will remove the active class from
-      //previously active menu item
-      // $('#home-tab').addClass('active');
-      // $('#home').addClass('active show');
-      // $("#home-tab").tab("show");
     },
     same(o1, o2) {
       return o1.project.id === o2.project.id && o1.type === o2.type;
@@ -193,7 +187,6 @@ export default {
       $("#tab-" + data.type + "-" + data.project.id).tab("show");
     },
     listClick(data) {
-      console.log("listclick", data);
       this.openedProjects.push(data);
     }
   }

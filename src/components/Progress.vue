@@ -172,6 +172,19 @@ export default {
     }
   },
   methods: {
+    publish (){
+      var _this = this;
+      
+      $(".form-check-input:checked").each(function() {
+        db.collection ("projects").doc($(this).val()).update ({status: "publicado"});   
+        for (var i = 0; i<_this.projects.length; i++){
+          if (_this.projects[i].id === $(this).val()){
+            _this.projects[i].status = "publicado";
+          }
+        }
+        $(this).prop('checked', false); 
+      });
+    },
     guardar (){
       if (this.flagModalColeccion){
         this.guardaColeccion ();

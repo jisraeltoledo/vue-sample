@@ -48,7 +48,7 @@
       <router-link tag="li" to="/projects/retirado">
         <a class="nav-link">
           <i class="fas fa-minus-circle"></i>
-          <span> Retirados </span>
+          <span> Retirados</span>
         </a>
       </router-link>
     </li>
@@ -57,7 +57,18 @@
       <router-link tag="li" to="/collections">
         <a class="nav-link">
           <i class="fas fa-layer-group"></i>
-          <span> Collecciones </span>
+          <span> Collecciones</span>
+        </a>
+      </router-link>
+    </li>
+
+    <li class="nav-item" v-if="hasRol(myroles.estructuras)">
+      <router-link tag="li" to="/create-project">
+        <a class="nav-link">
+          <button class="btn btn-success">
+            <i class="fas fa-plus-circle"></i>
+            <small> Producto | Familia</small>
+          </button>
         </a>
       </router-link>
     </li>
@@ -79,10 +90,20 @@ export default {
     "menu-diseno-industrial": MenuDisenoIndstrialVue,
     "menu-ing-electrica": MenuIngenieriaElectricaVue
   },
-  created() {
-    
+  data() {
+    return {
+      isMounted: false
+    };
   },
-  computed: {},
+  created() {},
+  mounted() {
+    this.isMounted = true;
+  },
+  computed: {
+    myroles() {
+      return roles;
+    }
+  },
   methods: {
     hasRol(rol) {
       return (
