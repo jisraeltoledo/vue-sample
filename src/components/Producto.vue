@@ -15,7 +15,14 @@
         Productos en la Familia:
         <ul>
           <li v-for="(p, i) in products" :key="i">
-            <a href @click="clickProduct(p, $event)">[{{p.C01}}] - {{p.C03}}</a>
+            <a href @click="removeProductFromFamily(p, $event)">
+              <i class="fas fa-trash-alt"></i>
+            </a>
+            &nbsp;&nbsp;&nbsp;
+            <a
+              href
+              @click="clickProduct(p, $event)"
+            >[{{p.C01}}] - {{p.C03}}</a>
           </li>
         </ul>
       </div>
@@ -142,7 +149,6 @@ export default {
   computed: {
     keys() {
       var keys = Object.keys(this.project);
-      console.log("keys", keys);
       return keys;
     }
   },
@@ -154,7 +160,7 @@ export default {
       ? this.productId
       : "";
     this.loadProject();
-    console.log("fields mounted", this.fields);
+
     this.$emit("created", this.projectid);
     this.searching();
   },
@@ -169,21 +175,24 @@ export default {
   methods: {
     guardar() {
       var arr = [];
-      $("#select-products").val().forEach((element) => {
-        arr.push(element);
-      });
-      console.log ("before", this.project.products);
-      this.project.products = Array.from(new Set (this.project.products.concat (arr)));
-      console.log ("after",this.project.products);
-      db.collection ("projects").doc(this.project.id).update ({products: this.project.products});
-      this.loadProducts (this.project.products);
+      $("#select-products")
+        .val()
+        .forEach(element => {
+          arr.push(element);
+        });
+      this.project.products = Array.from(
+        new Set(this.project.products.concat(arr))
+      );
+      db.collection("projects")
+        .doc(this.project.id)
+        .update({ products: this.project.products });
+      this.loadProducts(this.project.products);
       $("#modalAddProduct").modal("hide");
       $("#select-products option:selected").prop("selected", false);
     },
     searching() {
       var ref = db.collection("projects");
       if (this.searchInput != "") {
-        console.log("searching", this.searchInput);
         ref = ref.where(
           "keywords",
           "array-contains",
@@ -198,10 +207,18 @@ export default {
           this.searchProjects.push(p);
         });
       });
-      console.log("search", this.searchProjects);
     },
     agregarProducto() {
       $("#modalAddProduct").modal("show");
+    },
+    removeProductFromFamily(p, e) {
+      var i = this.project.products.indexOf(p.id);
+      this.project.products.splice(i, 1);
+      this.loadProducts(this.project.products);
+      db.collection("projects")
+        .doc(this.project.id)
+        .update({ products: this.project.products });
+      e.preventDefault();
     },
     clickProduct(p, e) {
       this.$emit("clickProduct", { project: p, type: "see" });
@@ -213,30 +230,26 @@ export default {
         : "color: black;";
     },
     like(project) {
-      console.log("like", project);
       var projectid = project.id;
       var user = store.state.user;
-      console.log("user", user);
+
       if (!user.likes) user["likes"] = [];
       if (user.likes.includes(projectid)) {
-        console.log("includes");
         user.likes = user.likes.filter(item => item !== projectid);
         $("#heart-see-" + projectid).css("color", "black");
         $("#heart-" + projectid).css("color", "black");
       } else {
-        console.log("else");
         user.likes.push(projectid);
         $("#heart-see-" + projectid).css("color", "red");
         $("#heart-" + projectid).css("color", "red");
       }
       store.commit("setUser", user);
-      console.log(user);
+
       db.collection("users")
         .doc(user.id)
         .update(user);
     },
     loadProducts(products) {
-      console.log("loading products", products);
       this.products = [];
       products.forEach(p => {
         db.collection("projects")
@@ -248,7 +261,6 @@ export default {
             this.products.push(data);
           });
       });
-      console.log("loaded products", this.products);
     },
     loadProject() {
       return db
@@ -258,7 +270,7 @@ export default {
         .then(doc => {
           this.project = doc.data();
           this.project["id"] = doc.id;
-          console.log("project", this.project);
+
           if (this.project.products) {
             this.loadProducts(this.project.products);
           }
