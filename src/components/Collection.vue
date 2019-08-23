@@ -47,25 +47,7 @@ export default {
       .then(doc => {
         this.collection = doc.data();
         this.collection["id"] = doc.id;
-        return true;
-      })
-      .then(() => {
-        var ref = db.collection("projects");
-        var promises = [];
-        this.collection.products.forEach(p => {
-          promises.push(ref.doc(p).get());
-        });
-        return Promise.all(promises);
-      })
-      .then(docs => {
-        docs.forEach(doc => {
-            console.log (doc);
-          if (doc.exists){
-            var p = doc.data();
-            p["id"] = doc.id;
-            this.products.push(p);
-          }          
-        });
+        this.loadProducts ();
         return true;
       })
       .catch(err => {
@@ -77,10 +59,7 @@ export default {
       this.showModal = true;
     },
     guardarProductos (productos){
-      console.log ("guardar productos", productos);
-      console.log ("antes", this.collection.products);
       this.collection.products = Array.from (new Set (this.collection.products.concat (productos)));
-      console.log ("despues", this.collection.products);
       this.loadProducts ();
       db.collection ("collections").doc (this.collection.id).update ({products: this.collection.products})
       this.showModal = false;
