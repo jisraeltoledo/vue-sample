@@ -224,11 +224,13 @@ export default {
       var project = this.projects.filter ( (e) => {
         return e.id === data.checks[0];
       })[0];
+      console.log (project, data.nombre);
       project["C01"] = data.nombre;
       project["products"] = data.checks;
       project["created"] = new Date().getTime();
       project["user"] = store.state.user.email;
       project["isFamily"] = true;
+      project.keywords = project.keywords.concat (this.createKey(data.nombre));
       delete project['id'];
       console.log ("project", project);
       db.collection("projects").add(project)
@@ -243,6 +245,19 @@ export default {
           this.$router.replace(`/family/${ref.id}`);
         });
         $("#exampleModal").modal("hide");
+    },
+    createKey(name) {
+      console.log(name);
+      const arrName = [];
+      let curName = "";
+      name
+        .toLowerCase()
+        .split("")
+        .forEach(letter => {
+          curName += letter;
+          arrName.push(curName);
+        });
+      return arrName;
     },
     getModalData (){
       var checked = [];

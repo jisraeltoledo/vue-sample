@@ -80,7 +80,7 @@
       >
         <form-base v-if="p.type==='edit'" :projectidSource="p.project.id" @created="tabCreated" @editFamily="editFamily"></form-base>
 
-        <producto v-if="p.type==='see'" :productId="p.project.id" @created="tabCreated"></producto>
+        <producto v-if="p.type==='see'" :productId="p.project.id" @created="tabCreated" @clickProduct="listClick"></producto>
       </div>
     </div>
   </div>
