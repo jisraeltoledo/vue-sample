@@ -27,7 +27,7 @@
         </ul>
       </div>
       <div class="col-md-6">
-        <button class="btn btn-primary" @click="agregarProducto">Agregar producto</button>
+        <button class="btn btn-primary" @click="agregarProducto"><i class="fas fa-plus-circle"></i> Producto</button>
       </div>
     </div>
     <div class="row">
