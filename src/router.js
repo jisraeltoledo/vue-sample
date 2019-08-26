@@ -20,6 +20,7 @@ import Privacy from "@/views/Privacy";
 import Claves from "@/views/Claves";
 import Collections from "@/components/Collections";
 import Collection from "@/components/Collection";
+import ProgresBar from "@/components/ProgressBar";
 
 Vue.use(Router);
 
@@ -85,6 +86,11 @@ const router = new Router({
       path: "/about",
       name: "About",
       component: About
+    },
+    {
+      path: "/progresbar",
+      name: "Progres Bar",
+      component: ProgresBar
     },
     {
       path: "/collection/:id",
