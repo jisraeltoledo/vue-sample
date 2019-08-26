@@ -7,7 +7,7 @@
         <h4>Nombre: {{project.C03}}</h4>
     
       </div>
-      <div class="col-md-6">
+      <div class="col-md-6" v-if="project.family">
         <button @click="editFamily" class="btn btn-primary"> Editar familia </button>
       </div>
     </div>
@@ -284,6 +284,7 @@ export default {
                   .update(values);
         });
       }
+      alert ("Los cambios se han guardado");
     },
     addField(f) {
       db.collection("fields")
