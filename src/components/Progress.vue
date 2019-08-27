@@ -10,6 +10,7 @@
             <th scope="col">Versión</th>
             <th scope="col">Días publicado</th>
             <th scope="col">Status</th>
+            <th scope="col">PDF</th>
             <th scope="col">Opciones</th>
             <th scope="col">Progreso</th>
           </tr>
@@ -23,6 +24,7 @@
             <td>{{Math.round((new Date().getTime()-project.created)/(1000*60*60*24)) }}</td>
 
             <td>{{project.status}}</td>
+            <td><pdf-export :projectid="project.id"></pdf-export></td>
             <td class="text-center">
               <!-- <export-pdf v-bind:projectid="project.id"></export-pdf> -->
               <table>
@@ -104,6 +106,7 @@ import router from "@/router";
 import store from "@/store";
 import ExportPDFVue from "./ExportPDF.vue";
 import ProgressBarVue from "./ProgressBar.vue";
+import PDFExportVue from './PDFExport.vue';
 
 export default {
   name: "list-project-progress",
@@ -114,7 +117,8 @@ export default {
   },
   components: {
     "export-pdf": ExportPDFVue,
-    "progress-bar": ProgressBarVue
+    "progress-bar": ProgressBarVue,
+    "pdf-export": PDFExportVue
   },
   data() {
     return {

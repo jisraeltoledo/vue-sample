@@ -86,26 +86,6 @@
           </div>
         </div>
         <br>
-        <!-- <div class="form-group">
-          <label for="formGroupExampleInput">
-            Nombre Diseñador
-            <small>*</small>
-          </label>
-          <input
-            v-model="disenador"
-            type="text"
-            class="form-control"
-            id="formGroupExampleInput"
-            placeholder="Ej. Juan Perez"
-          />
-        </div>
-        <div class="form-group">
-          <label for="exampleFormControlTextarea1">
-            Bio diseñador
-            <small>*</small>
-          </label>
-          <textarea v-model="bio" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-        </div> -->
         <button class="btn btn-success" @click="guardar">Guardar</button>
         <button class="btn" @click="cancelar">Cancelar</button>
       </form>

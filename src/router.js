@@ -21,6 +21,7 @@ import Claves from "@/views/Claves";
 import Collections from "@/components/Collections";
 import Collection from "@/components/Collection";
 import ProgresBar from "@/components/ProgressBar";
+import PDFExport from "@/components/PDFExport";
 
 Vue.use(Router);
 
@@ -88,9 +89,9 @@ const router = new Router({
       component: About
     },
     {
-      path: "/progresbar",
-      name: "Progres Bar",
-      component: ProgresBar
+      path: "/pdf-export",
+      name: "PDFExport",
+      component: PDFExport
     },
     {
       path: "/collection/:id",

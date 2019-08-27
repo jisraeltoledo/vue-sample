@@ -1,0 +1,50 @@
+[
+    {
+        "field": "C01",
+        "fontSize": "24",
+        "fontColor": "#000000",
+        "fontType": "demi",
+        "font": "ITC Avant Garde Gothic LT",
+        "type":"text-field",
+        "x": 36,
+        "y": 46
+    },
+    {
+        "field": "C03",
+        "fontSize": "24",
+        "fontColor": "#000000",
+        "fontType": "demi",
+        "font": "ITC Avant Garde Gothic LT",
+        "type":"text-field",
+        "x": 476,
+        "y": 46
+    },
+    {
+        "field": "C02",
+        "fontSize": "8",
+        "fontColor": "#2D2E2D",
+        "fontType": "regular",
+        "font": "Montserrat",
+        "type":"text-field",
+        "x": 36,
+        "y": 162
+    },
+    {
+        "field": "C42",
+        "type":"image-field",
+        "x": 200,
+        "y": 200,
+        "h": 200,
+        "w": 200
+    },
+    {
+        "text": "Descripción",
+        "type":"text",
+        "fontSize": "10",
+        "fontColor": "#B6B6B5",
+        "fontType": "demi",
+        "font": "ITC Avant Garde Gothic LT",
+        "x": 36,
+        "y": 142
+    }
+]
