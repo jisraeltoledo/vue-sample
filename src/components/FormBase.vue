@@ -254,7 +254,7 @@ export default {
         } else if (
           f.tipo === "texto" ||
           f.tipo === "numero" ||
-          f.tipo === "textarea"
+          f.tipo === "textarea" 
         ) {
           if ($("#" + f.id).val()) values[f.id] = $("#" + f.id).val();
         } else if (f.tipo === "check") {
@@ -278,6 +278,10 @@ export default {
         .doc(this.projectid)
         .update(values);
       if (this.project.isFamily){
+        if (values.C01) delete values.C01;
+        if (values.C02) delete values.C02;
+        if (values.C03) delete values.C03;
+        if (values.C04) delete values.C04;
         this.project.products.forEach (p=>{
           db.collection("projects")
                   .doc(p)

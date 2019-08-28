@@ -10,8 +10,9 @@
         :style="'cursor: pointer;'+colorHeart(project.id)"
       ></i>
     </h2>
-    <div class="row" v-if="project.isFamily">
-      <div class="col-md-6">
+    
+    <div class="row">
+      <div class="col-md-6" v-if="project.isFamily">
         Productos en la Familia:
         <ul>
           <li v-for="(p, i) in products" :key="i">
@@ -26,10 +27,15 @@
           </li>
         </ul>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-3" v-if="project.isFamily">
         <button class="btn btn-primary" @click="agregarProducto"><i class="fas fa-plus-circle"></i> Producto</button>
       </div>
+      <div class="col-md-3">
+        <pdf-export :project="project"></pdf-export>
+      </div>
+      
     </div>
+    <br>
     <div class="row">
       <div class="col-md-6" v-for="(k, idx) in keys" :key="idx">
         <div class="card mb-3" v-if="fields[k]">
@@ -127,10 +133,12 @@ import mock from "@/assets/MOCK_DATA.json";
 import TabsScreenVue from "../components/TabsScreen.vue";
 import VueBarcode from "@xkeshi/vue-barcode";
 import store from "@/store";
+import PDFExportVue from './PDFExport.vue';
 export default {
   name: "product",
   components: {
-    barcode: VueBarcode
+    barcode: VueBarcode,
+    "pdf-export": PDFExportVue
   },
   props: {
     productId: String

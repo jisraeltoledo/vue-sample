@@ -123,7 +123,6 @@ export default {
   data() {
     return {
       projects: [],
-      progress: {},
       status: null,
       step: null,
       titleModal: "",
@@ -150,7 +149,6 @@ export default {
   },
   watch: {
     products: function(newV, oldV) {
-      console.log("products", newV);
       this.projects = newV;
       if (this.projects === null) {
         this.getProjects();
@@ -158,13 +156,10 @@ export default {
     },
     "$route.params.status": {
       handler: function(status) {
-        console.log("status", status);
         if (status === "favorites") {
-          console.log("entro aqui");
           this.getFavorites();
           return;
         }
-        console.log("ya no llega aqui");
         if (status === "all") this.status = null;
         else this.status = status;
         this.getProjects();
@@ -172,14 +167,9 @@ export default {
       deep: true,
       immediate: true
     }
-    // status() {
-    //   console.log ("watch status");
-    //   this.getProjects();
-    // }
   },
   methods: {
     getFavorites() {
-      console.log("get Favorites", store.state.user);
       var promises = [];
       store.state.user.likes.forEach(like => {
         var p = db
@@ -223,12 +213,9 @@ export default {
     },
     guardaFamilia() {
       var data = this.getModalData();
-      console.log(data);
-      console.log(this.projects);
       var project = this.projects.filter(e => {
         return e.id === data.checks[0];
       })[0];
-      console.log(project, data.nombre);
       project["C01"] = data.nombre;
       project["products"] = data.checks;
       project["created"] = new Date().getTime();
@@ -236,7 +223,6 @@ export default {
       project["isFamily"] = true;
       project.keywords = project.keywords.concat(this.createKey(data.nombre));
       delete project["id"];
-      console.log("project", project);
       db.collection("projects")
         .add(project)
         .then(ref => {
@@ -248,13 +234,11 @@ export default {
           return ref;
         })
         .then(ref => {
-          console.log(ref.id);
-          this.$router.replace(`/family/${ref.id}`);
+          this.$router.replace(`/home`);
         });
       $("#exampleModal").modal("hide");
     },
     createKey(name) {
-      console.log(name);
       const arrName = [];
       let curName = "";
       name
@@ -330,7 +314,6 @@ export default {
       this.$emit("click", { project: project, type: type });
     },
     getProjects() {
-      console.log("getProjects");
       var ref = db.collection("projects");
       if (this.status) {
         ref = ref.where("status", "==", this.status);
@@ -344,110 +327,9 @@ export default {
         snap.forEach(element => {
           let p = element.data();
           p["id"] = element.id;
-          this.progress[element.id] = this.getProgress(p);
           this.projects.push(p);
         });
       });
-    },
-    getProgress(project) {
-      var progress = this.getProgressCreate(project);
-      progress += this.getProgressDisenoG(project);
-      progress += this.getProgressDisenoI(project);
-      progress += this.getProgressIngElec(project);
-      return progress;
-    },
-    setProgress(project) {
-      var progress = this.getProgressCreate(project);
-      progress += this.getProgressDisenoG(project);
-      progress += this.getProgressDisenoI(project);
-      progress += this.getProgressIngElec(project);
-
-      $("#" + "progress_" + project.id)
-        .css("width", progress + "%")
-        .attr("aria-valuenow", progress);
-    },
-    getProgressCreate(project) {
-      var progress = 0;
-      if (project.nombre) {
-        progress += 5;
-      }
-      if (project.modelo) {
-        progress += 5;
-      }
-      if (project.descripcion) {
-        progress += 5;
-      }
-      if (project.disenador) {
-        progress += 5;
-      }
-      if (project.bio) {
-        progress += 5;
-      }
-
-      return progress;
-    },
-    getProgressDisenoG(project) {
-      var progress = 0;
-      if (project[project.id + "-bio"]) {
-        progress += 6;
-      }
-      if (project[project.id + "-dim"]) {
-        progress += 6;
-      }
-      if (project[project.id + "-est"]) {
-        progress += 6;
-      }
-      if (project[project.id + "-prod"]) {
-        progress += 7;
-      }
-
-      return progress;
-    },
-    getProgressDisenoI(project) {
-      var progress = 0;
-      if (project.moduleColors) {
-        progress += 5;
-      }
-      if (project[project.id + "-di-dim"]) {
-        progress += 5;
-      }
-      if (project.type) {
-        progress += 5;
-      }
-      if (project.materials) {
-        progress += 5;
-      }
-      if (project.cordLength) {
-        progress += 5;
-      }
-
-      return progress;
-    },
-    getProgressIngElec(project) {
-      var progress = 0;
-      if (project.input) {
-        progress += 3.5;
-      }
-      if (project.voltage) {
-        progress += 3.5;
-      }
-      if (project.dimming) {
-        progress += 3.5;
-      }
-      if (project.lumenOutput) {
-        progress += 3.5;
-      }
-      if (project.colorTemperature) {
-        progress += 3.5;
-      }
-      if (project.cri) {
-        progress += 3.5;
-      }
-      if (project.lifeSpan) {
-        progress += 4;
-      }
-
-      return progress;
     }
   }
 };
