@@ -1,6 +1,8 @@
 <template>
   <div class="home">
-    <button :disabled="!ready" @click="exportPdf" class="btn btn-primary"><i class="fas fa-download"></i></button>
+    <button  @click="click" class="btn btn-primary">
+      <i class="fas fa-download"></i>
+    </button>
   </div>
 </template>
 
@@ -27,27 +29,27 @@ export default {
     };
   },
   components: {},
-  created() {
-    return db
-      .collection("export")
-      .doc(this.exportId)
-      .get()
-      .then(doc => {
-        if (doc.exists) {
-          this.exportData = doc.data();
-          this.exportData["id"] = doc.id;
-        }
-        return true;
-      })
-      .then(() => {
-        this.doc = new jsPDF("p", "pt", "letter");
-        this.ready = true;
-        console.log(this.ready);
-        this.registerFonts();
-      });
-  },
+  created() {},
   mounted() {},
   methods: {
+    click() {
+      return db
+        .collection("export")
+        .doc(this.exportId)
+        .get()
+        .then(doc => {
+          if (doc.exists) {
+            this.exportData = doc.data();
+            this.exportData["id"] = doc.id;
+          }
+          return true;
+        })
+        .then(() => {
+          this.doc = new jsPDF("p", "pt", "letter");
+          this.registerFonts();
+          this.exportPdf ();
+        });
+    },
     readFile(file) {
       return new Promise((resolve, reject) => {
         let fr = new FileReader();
@@ -152,10 +154,10 @@ export default {
       var regexp = new RegExp("(.{" + x + "}[^ ]*) ", "g");
       return text.replace(regexp, "$1\n");
     },
-    registerFonts (){
-        Object.keys(store.state.fonts).forEach (fontName=>{
-            this.registerFont (fontName, store.state.fonts[fontName]);
-        });
+    registerFonts() {
+      Object.keys(store.state.fonts).forEach(fontName => {
+        this.registerFont(fontName, store.state.fonts[fontName]);
+      });
     },
     registerFont(fontName, base64) {
       // Remove extension
@@ -168,36 +170,7 @@ export default {
       } else {
         this.doc.addFont(fontName, parts[0], parts[1]);
       }
-    },
-    // loadFont(fontName) {
-    //   fontName = fontName.substring(2); // Remove './' from name
-    //   var reader = new FileReader();
-    //   reader.onload = e => {
-    //     // .split(",").pop() => remove first part data:[<mediatype>][;base64],<data>
-    //     var x = e.target.result.split(",").pop();
-    //     console.log ("reader.onload", x);
-    //     this.registerFont(fontName, x);
-    //   };
-    //   var xhr = new XMLHttpRequest();
-    //   // fonts in public/assets
-    //   xhr.open("GET", window.location.origin+"/assets/fonts/" + fontName);
-    //   xhr.responseType = "blob"; //force the HTTP response, response-type header to be blob
-    //   xhr.onload = function() {
-    //     console.log ("get assets fonts", xhr.response);
-    //     reader.readAsDataURL(xhr.response); //xhr.response is now a blob object
-    //   };
-    //   xhr.send();
-    // },
-    // loadFonts() {
-    //   // Iterate over folder to find fonts
-    //   require
-    //     .context("../../public/assets/fonts/", false, /\.ttf$/)
-    //     .keys()
-    //     .forEach(key => {
-    //       console.log ("key", key);
-    //       this.loadFont(key);
-    //       });
-    // },
+    }
   }
 };
 </script>
