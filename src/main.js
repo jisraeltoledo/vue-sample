@@ -20,6 +20,39 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 export const db = firebase.firestore();
 
+function loadFont(fontName) {
+  fontName = fontName.substring(2); // Remove './' from name
+  var reader = new FileReader();
+  reader.onload = e => {
+    // .split(",").pop() => remove first part data:[<mediatype>][;base64],<data>
+    var x = e.target.result.split(",").pop();
+    console.log("reader.onload", x);
+    store.commit("setFont", { name: fontName, data: x });
+    //this.registerFont(fontName, x);
+  };
+  var xhr = new XMLHttpRequest();
+  // fonts in public/assets
+  xhr.open("GET", window.location.origin + "/assets/fonts/" + fontName);
+  xhr.responseType = "blob"; //force the HTTP response, response-type header to be blob
+  xhr.onload = function() {
+    console.log("get assets fonts", xhr.response);
+    reader.readAsDataURL(xhr.response); //xhr.response is now a blob object
+  };
+  xhr.send();
+}
+function loadFonts() {
+  // Iterate over folder to find fonts
+  require
+    .context("../public/assets/fonts/", false, /\.ttf$/)
+    .keys()
+    .forEach(key => {
+      console.log("key", key);
+      loadFont(key);
+    });
+}
+
+loadFonts();
+
 firebase.auth().onAuthStateChanged(user => {
   if (!user) {
     store.commit("setUserRol", "guest");

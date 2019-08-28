@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <button :disabled="!ready" @click="exportPdf">Download</button>
+    <button :disabled="!ready" @click="exportPdf" class="btn btn-primary"><i class="fas fa-download"></i></button>
   </div>
 </template>
 
@@ -8,16 +8,17 @@
 import firebase from "firebase";
 // @ is an alias to /src
 import { db } from "@/main";
+import store from "@/store";
 import jsPDF from "jspdf";
 export default {
   name: "pdf-export",
   props: {
-      projectid: String,
+    project: Object
   },
   data() {
     return {
       //projectid: "007I6UXe2kS44cIVYZ2v",
-      project: null,
+      //project: null,
       doc: null,
       exportId: "GPRhnpTy77demsHh1tHB",
       exportData: null,
@@ -27,22 +28,10 @@ export default {
   },
   components: {},
   created() {
-    db.collection("projects")
-      .doc(this.projectid)
+    return db
+      .collection("export")
+      .doc(this.exportId)
       .get()
-      .then(doc => {
-        if (doc.exists) {
-          this.project = doc.data();
-          this.project["id"] = doc.id;
-        }
-        return true;
-      })
-      .then(() => {
-        return db
-          .collection("export")
-          .doc(this.exportId)
-          .get();
-      })
       .then(doc => {
         if (doc.exists) {
           this.exportData = doc.data();
@@ -52,9 +41,9 @@ export default {
       })
       .then(() => {
         this.doc = new jsPDF("p", "pt", "letter");
-        this.loadFonts();
         this.ready = true;
         console.log(this.ready);
+        this.registerFonts();
       });
   },
   mounted() {},
@@ -99,7 +88,6 @@ export default {
     },
     exportPdf() {
       this.exportData.sections.forEach(sec => {
-        
         if (sec.type === "text-field") {
           this.addText(sec, this.project[sec.field]);
         }
@@ -119,14 +107,14 @@ export default {
     },
     addImage(section, src) {
       if (!src) return;
-      if (section.x < 0){ // Margen derecho
+      if (section.x < 0) {
+        // Margen derecho
         var width = this.doc.internal.pageSize.getWidth();
         section.x = width + section.x;
       }
       var _this = this;
       var p = this.makeRequest(src, "GET")
         .then(result => {
-          
           this.doc.addImage(
             result,
             "JPEG",
@@ -144,6 +132,7 @@ export default {
     },
     addText(section, text) {
       if (!text) return;
+      text = "" + text;
       console.log("addtext", section, text);
       this.doc.setTextColor(section.fontColor);
       this.doc.setFont(section.font, section.fontType);
@@ -151,12 +140,22 @@ export default {
       if (section.textLength) {
         text = this.insertLineBreaks(text, section.textLength);
       }
-      if (section.x < 0){ // Margen derecho
+      if (section.x < 0) {
+        // Margen derecho
         var w = this.doc.getStringUnitWidth(text) * section.fontSize;
         var width = this.doc.internal.pageSize.getWidth();
         section.x = width - w + section.x;
       }
       this.doc.text(text, section.x, section.y);
+    },
+    insertLineBreaks(text, x) {
+      var regexp = new RegExp("(.{" + x + "}[^ ]*) ", "g");
+      return text.replace(regexp, "$1\n");
+    },
+    registerFonts (){
+        Object.keys(store.state.fonts).forEach (fontName=>{
+            this.registerFont (fontName, store.state.fonts[fontName]);
+        });
     },
     registerFont(fontName, base64) {
       // Remove extension
@@ -170,33 +169,35 @@ export default {
         this.doc.addFont(fontName, parts[0], parts[1]);
       }
     },
-    loadFont(fontName) {
-      fontName = fontName.substring(2); // Remove './' from name
-      var reader = new FileReader();
-      reader.onload = e => {
-        // .split(",").pop() => remove first part data:[<mediatype>][;base64],<data>
-        this.registerFont(fontName, e.target.result.split(",").pop());
-      };
-      var xhr = new XMLHttpRequest();
-      // fonts in public/assets
-      xhr.open("GET", "./assets/fonts/" + fontName);
-      xhr.responseType = "blob"; //force the HTTP response, response-type header to be blob
-      xhr.onload = function() {
-        reader.readAsDataURL(xhr.response); //xhr.response is now a blob object
-      };
-      xhr.send();
-    },
-    loadFonts() {
-      // Iterate over folder to find fonts
-      require
-        .context("../../public/assets/fonts/", false, /\.ttf$/)
-        .keys()
-        .forEach(key => this.loadFont(key));
-    },
-    insertLineBreaks(text, x) {
-      var regexp = new RegExp("(.{" + x + "}[^ ]*) ", "g");
-      return text.replace(regexp, "$1\n");
-    }
+    // loadFont(fontName) {
+    //   fontName = fontName.substring(2); // Remove './' from name
+    //   var reader = new FileReader();
+    //   reader.onload = e => {
+    //     // .split(",").pop() => remove first part data:[<mediatype>][;base64],<data>
+    //     var x = e.target.result.split(",").pop();
+    //     console.log ("reader.onload", x);
+    //     this.registerFont(fontName, x);
+    //   };
+    //   var xhr = new XMLHttpRequest();
+    //   // fonts in public/assets
+    //   xhr.open("GET", window.location.origin+"/assets/fonts/" + fontName);
+    //   xhr.responseType = "blob"; //force the HTTP response, response-type header to be blob
+    //   xhr.onload = function() {
+    //     console.log ("get assets fonts", xhr.response);
+    //     reader.readAsDataURL(xhr.response); //xhr.response is now a blob object
+    //   };
+    //   xhr.send();
+    // },
+    // loadFonts() {
+    //   // Iterate over folder to find fonts
+    //   require
+    //     .context("../../public/assets/fonts/", false, /\.ttf$/)
+    //     .keys()
+    //     .forEach(key => {
+    //       console.log ("key", key);
+    //       this.loadFont(key);
+    //       });
+    // },
   }
 };
 </script>

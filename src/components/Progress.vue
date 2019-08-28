@@ -24,7 +24,7 @@
             <td>{{Math.round((new Date().getTime()-project.created)/(1000*60*60*24)) }}</td>
 
             <td>{{project.status}}</td>
-            <td><pdf-export :projectid="project.id"></pdf-export></td>
+            <td><pdf-export :project="project"></pdf-export></td>
             <td class="text-center">
               <!-- <export-pdf v-bind:projectid="project.id"></export-pdf> -->
               <table>

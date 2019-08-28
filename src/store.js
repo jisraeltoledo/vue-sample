@@ -6,7 +6,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    userRole: "guest"
+    userRole: "guest",
+    fonts: {}
   },
   mutations: {
     setUserRol(state, rol) {
@@ -14,6 +15,9 @@ export default new Vuex.Store({
     },
     setUser(state, user) {
       state.user = user;
+    },
+    setFont(state, font) {
+      state.fonts[font.name] = font.data;
     }
   },
   actions: {}
