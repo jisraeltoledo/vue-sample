@@ -37,7 +37,7 @@
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
         <div class="row" style="margin: 20px;">
-          <div class="col-md-3 ">
+          <div class="col-md-3">
             <div class="input-group">
               <input
                 id="searchField"
@@ -61,14 +61,19 @@
           <div class="col-md-2 text-center">
             <button class="btn btn-info" @click="crearFamilia">Crear familia</button>
           </div>
-          <div class="col-md-1 text-center">            
+          <div class="col-md-1 text-center">
             <button class="btn btn-success" @click="changeStatus('publicado')">Publicar</button>
           </div>
-          <div class="col-md-1 text-center">            
+          <div class="col-md-1 text-center">
             <button class="btn btn-danger" @click="changeStatus('retirado')">Retirar</button>
           </div>
         </div>
-        <list-projects :filterStatus="'proceso'" @click="listClick" ref="listProjects" :products="searchResults"></list-projects>
+        <list-projects
+          :filterStatus="'proceso'"
+          @click="listClick"
+          ref="listProjects"
+          :products="searchResults"
+        ></list-projects>
       </div>
       <div
         v-for="(p, idx2) in openedProjects"
@@ -78,9 +83,20 @@
         role="tabpanel"
         :aria-labelledby="'tab-'+p.type+'-'+p.project.id"
       >
-        <form-base v-if="p.type==='edit'" :projectidSource="p.project.id" @created="tabCreated" @editFamily="editFamily"></form-base>
+        <form-base
+          v-if="p.type==='edit'"
+          :projectidSource="p.project.id"
+          @created="tabCreated"
+          @editFamily="editFamily"
+        ></form-base>
 
-        <producto v-if="p.type==='see'" :productId="p.project.id" @created="tabCreated" @clickProduct="listClick"></producto>
+        <producto
+          v-if="p.type==='see'"
+          :productId="p.project.id"
+          @created="tabCreated"
+          @clickProduct="listClick"
+          @seeFamily="seeFamily"
+        ></producto>
       </div>
     </div>
   </div>
@@ -130,26 +146,47 @@ export default {
   created() {},
   watch: {},
   methods: {
-    changeStatus (status){
-      if (confirm ("Estás seguro de llevar a cabo esta acción?")){
+    seeFamily (project){
+      db.collection("projects")
+        .doc(project.family)
+        .get()
+        .then(doc => {
+          if (doc.exists) {
+            var p = doc.data();
+            p["id"] = doc.id;
+            this.listClick({ project: p, type: "see" });
+          }
+        });
+    },
+    changeStatus(status) {
+      if (confirm("Estás seguro de llevar a cabo esta acción?")) {
         this.$refs.listProjects.changeStatus(status);
       }
     },
-    editFamily(family){
-      
-      this.listClick({ project: family, type: 'edit' });
+    editFamily(project) {
+      db.collection("projects")
+        .doc(project.family)
+        .get()
+        .then(doc => {
+          console.log("editFamily", doc);
+          if (doc.exists) {
+            var p = doc.data();
+            p["id"] = doc.id;
+            this.closeTab({ project: project, type: "edit" });
+            this.listClick({ project: p, type: "edit" });
+          }
+        });
     },
     searchChange() {
-      
       this.search($("#searchField").val());
     },
     search(word) {
-      if (word === ''){
+      if (word === "") {
         this.searchResults = null;
         return;
       }
       db.collection("projects")
-        .where("keywords", "array-contains", word.toLowerCase ())
+        .where("keywords", "array-contains", word.toLowerCase())
         .limit(10)
         .get()
         .then(docs => {
@@ -157,7 +194,7 @@ export default {
           docs.forEach(doc => {
             var p = doc.data();
             p["id"] = doc.id;
-            this.searchResults.push (p);
+            this.searchResults.push(p);
           });
         });
     },
@@ -165,25 +202,25 @@ export default {
       this.show = false;
       this.$nextTick(() => {
         this.show = true;
-        
-        this.$nextTick(() => {
-          
-        });
+
+        this.$nextTick(() => {});
       });
     },
-    crearFamilia (){
+    crearFamilia() {
       this.$refs.listProjects.crearFamilia();
     },
     crearColeccion() {
       this.$refs.listProjects.crearColeccion();
     },
     closeTab(p) {
+      console.log("close tab", p);
       this.openedProjects = jQuery.grep(this.openedProjects, value => {
         return !this.same(value, p);
       });
       this.rerender();
     },
     same(o1, o2) {
+      console.log("same", o1, o2);
       return o1.project.id === o2.project.id && o1.type === o2.type;
     },
     tabCreated(id) {

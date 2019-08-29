@@ -1,16 +1,35 @@
 <template>
   <div v-if="project && fields">
-    <h2>
-      <div v-if="project.isFamily">Familia</div>
-      <div v-else>Producto</div>
-      <i
-        :id="'heart-see-'+project.id"
-        class="fas fa-heart"
-        @click="like(project)"
-        :style="'cursor: pointer;'+colorHeart(project.id)"
-      ></i>
-    </h2>
-    
+    <div class="row" style="margin-top:10px;">
+      <div class="col-md-6">
+        <h2>
+          <div v-if="project.isFamily">Familia {{project.C03}}</div>
+          <div v-else>Producto {{project.C03}}</div>
+        </h2>
+      </div>
+      <div class="col-md-1  text-center">
+        <button class="btn btn-primary">
+          <i
+            :id="'heart-see-'+project.id"
+            class="fas fa-heart"
+            @click="like(project)"
+            :style="'cursor: pointer;'+colorHeart(project.id)"
+          ></i>
+        </button>
+      </div>
+      <div class="col-md-2 text-center" v-if="project.isFamily">
+        <button class="btn btn-primary" @click="agregarProducto">
+          <i class="fas fa-plus-circle"></i> Producto
+        </button>
+      </div>
+      <div class="col-md-1  text-center">
+        <pdf-export :project="project"></pdf-export>
+      </div>
+      <div v-if="project.family" class="col-md-1  text-center">
+        <button @click="openFamily" class="btn btn-info">Familia</button>
+      </div>
+    </div>
+
     <div class="row">
       <div class="col-md-6" v-if="project.isFamily">
         Productos en la Familia:
@@ -27,15 +46,8 @@
           </li>
         </ul>
       </div>
-      <div class="col-md-3" v-if="project.isFamily">
-        <button class="btn btn-primary" @click="agregarProducto"><i class="fas fa-plus-circle"></i> Producto</button>
-      </div>
-      <div class="col-md-3">
-        <pdf-export :project="project"></pdf-export>
-      </div>
-      
     </div>
-    <br>
+    <br />
     <div class="row">
       <div class="col-md-6" v-for="(k, idx) in keys" :key="idx">
         <div class="card mb-3" v-if="fields[k]">
@@ -133,7 +145,7 @@ import mock from "@/assets/MOCK_DATA.json";
 import TabsScreenVue from "../components/TabsScreen.vue";
 import VueBarcode from "@xkeshi/vue-barcode";
 import store from "@/store";
-import PDFExportVue from './PDFExport.vue';
+import PDFExportVue from "./PDFExport.vue";
 export default {
   name: "product",
   components: {
@@ -181,6 +193,10 @@ export default {
     }
   },
   methods: {
+    openFamily() {
+      console.log("seefamily", this.project);
+      this.$emit("seeFamily", this.project);
+    },
     guardar() {
       var arr = [];
       $("#select-products")

@@ -92,6 +92,8 @@ export default {
   },
   methods: {
     preview() {
+      console.log ("id", this.id);
+      console.log ("document id", document.getElementById(this.id));
       var files = document.getElementById(this.id).files;
       console.log("files.length", files.length);
       if (files.length > 0) this.empty = false;

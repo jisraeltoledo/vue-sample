@@ -218,6 +218,7 @@ export default {
       .get()
       .then(doc => {
         this.project = doc.data();
+        this.project["id"] = doc.id;
         console.log(this.project);
       }).then (()=>{
         return db.collection("forms").doc(this.project.form).get();
@@ -236,12 +237,8 @@ export default {
   methods: {
     editFamily (){
       console.log ("editFamily", this.project.family);
-      db.collection ("projects").doc (this.project.family).get().then (doc => {
-        console.log ("editFamily", doc.data ());
-        var p = doc.data ();
-        p["id"] = doc.id;
-        this.$emit("editFamily", p);
-      });
+      this.$emit("editFamily", this.project);
+      
     },
     removeSpecialChars(cadena) {
       return cadena.replace(/[^A-Z0-9]/ig, "_");
