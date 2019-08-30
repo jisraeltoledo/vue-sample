@@ -4,9 +4,26 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import firebase from "firebase";
+import { roles } from "@/router";
 
 Vue.config.productionTip = false;
 Vue.config.devtools = true;
+
+Vue.mixin({
+  created: function() {},
+  methods: {
+    hasRol(rol) {
+      return (
+        store.state.userRole === rol ||
+        store.state.userRole === roles.super_admin
+      );
+    },
+    notHasRol(rol) {
+      return store.state.userRole !== rol;
+    }
+  }
+});
+
 let app = "";
 const firebaseConfig = {
   apiKey: "AIzaSyCb0lXfuHx5yQTzKb40gsLKvVo0dVqAfpk",

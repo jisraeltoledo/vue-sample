@@ -55,19 +55,19 @@
               </div>
             </div>
           </div>
-          <div class="col-md-2 text-center">
+          <div class="col-md-2 text-center" v-if="hasRol('ventas')">
             <button class="btn btn-primary" @click="crearColeccion">
               <i class="fas fa-plus-circle"></i> Colección</button>
           </div>
-          <div class="col-md-2 text-center">
+          <div class="col-md-2 text-center" v-if="hasRol('moderador')">
             <button class="btn btn-info" @click="crearFamilia">
               <i class="fas fa-plus-circle"></i> Familia</button>
           </div>
-          <div class="col-md-2 text-center">
+          <div class="col-md-2 text-center"  v-if="hasRol('moderador')">
             <button class="btn btn-success" @click="changeStatus('publicado')">
               <i class="fas fa-globe-americas"></i> Publicar</button>
           </div>
-          <div class="col-md-2 text-center">
+          <div class="col-md-2 text-center"  v-if="hasRol('moderador')">
             <button class="btn btn-danger" @click="changeStatus('retirado')">
               <i class="fas fa-minus-circle"></i> Retirar</button>
           </div>
@@ -133,6 +133,7 @@ import { db } from "@/main";
 import FormBase from "@/components/FormBase";
 import { without } from "underscore";
 import ProductoVue from "./Producto.vue";
+import { roles } from "@/router";
 export default {
   name: "tab-screen",
   components: {

@@ -8,7 +8,7 @@
     <menu-diseno-industrial v-if="hasRol('diseno_industrial')"></menu-diseno-industrial>
     <menu-ing-electrica v-if="hasRol('ingenieria_electrica')"></menu-ing-electrica>-->
 
-    <li class="nav-item">
+    <li class="nav-item" v-if="!hasRol(myroles.ventas)">
       <router-link tag="li" to="/projects/all">
         <a class="nav-link">
           <i class="fas fa-list"></i>
@@ -17,7 +17,7 @@
       </router-link>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item" v-if="notHasRol(myroles.ventas)">
       <router-link tag="li" to="/projects/proceso">
         <a class="nav-link">
           <i class="fas fa-spinner"></i>
@@ -26,7 +26,7 @@
       </router-link>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item" v-if="notHasRol(myroles.ventas)">
       <router-link tag="li" to="/projects/revision">
         <a class="nav-link">
           <i class="fas fa-check-double"></i>
@@ -35,7 +35,16 @@
       </router-link>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item" v-if="hasRol(myroles.ventas) && notHasRol(myroles.super_admin)">
+      <router-link tag="li" to="/projects/publicado">
+        <a class="nav-link">
+          <i class="fas fa-globe-americas"></i>
+          <span> Productos </span>
+        </a>
+      </router-link>
+    </li>
+
+    <li class="nav-item" v-if="notHasRol(myroles.ventas)">
       <router-link tag="li" to="/projects/publicado">
         <a class="nav-link">
           <i class="fas fa-globe-americas"></i>
@@ -44,7 +53,7 @@
       </router-link>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item"  v-if="hasRol(myroles.moderador)">
       <router-link tag="li" to="/projects/retirado">
         <a class="nav-link">
           <i class="fas fa-minus-circle"></i>
@@ -62,7 +71,7 @@
       </router-link>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item" v-if="hasRol(myroles.ventas)">
       <router-link tag="li" to="/collections">
         <a class="nav-link">
           <i class="fas fa-layer-group"></i>
@@ -116,12 +125,7 @@ export default {
     }
   },
   methods: {
-    hasRol(rol) {
-      return (
-        store.state.userRole === rol ||
-        store.state.userRole === roles.super_admin
-      );
-    }
+    
   }
 };
 </script>

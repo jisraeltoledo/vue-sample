@@ -20,7 +20,6 @@ import Privacy from "@/views/Privacy";
 import Claves from "@/views/Claves";
 import Collections from "@/components/Collections";
 import Collection from "@/components/Collection";
-import ProgresBar from "@/components/ProgressBar";
 import PDFExport from "@/components/PDFExport";
 
 Vue.use(Router);
@@ -32,7 +31,8 @@ export const roles = {
   diseno_industrial: "diseño industrial",
   ingenieria_electrica: "ingenieria electrica",
   fotometria: "fotometria",
-  super_admin: "super admin"
+  super_admin: "super admin",
+  ventas: "ventas"
 };
 
 const router = new Router({

@@ -11,7 +11,7 @@
         <button class="btn btn-primary">
           <i
             :id="'heart-see-'+project.id"
-            class="fas fa-heart"
+            class="fas fa-star"
             @click="like(project)"
             :style="'cursor: pointer;'+colorHeart(project.id)"
           ></i>
@@ -253,7 +253,7 @@ export default {
     },
     colorHeart(projectid) {
       return store.state.user.likes.includes(projectid)
-        ? "color: red;"
+        ? "color: #FFD700;"
         : "color: black;";
     },
     like(project) {
@@ -267,8 +267,8 @@ export default {
         $("#heart-" + projectid).css("color", "black");
       } else {
         user.likes.push(projectid);
-        $("#heart-see-" + projectid).css("color", "red");
-        $("#heart-" + projectid).css("color", "red");
+        $("#heart-see-" + projectid).css("color", "#FFD700");
+        $("#heart-" + projectid).css("color", "#FFD700");
       }
       store.commit("setUser", user);
 

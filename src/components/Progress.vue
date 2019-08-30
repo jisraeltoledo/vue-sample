@@ -8,7 +8,7 @@
             <th scope="col">Nombre</th>
             <th scope="col">Descripción</th>
             <th scope="col">Versión</th>
-            <th scope="col">Días publicado</th>
+            <th scope="col">Días en proceso</th>
             <th scope="col">Status</th>
             <th scope="col">PDF</th>
             <th scope="col">Opciones</th>
@@ -42,7 +42,7 @@
                   <td>
                     <i
                       :id="'heart-'+project.id"
-                      class="fas fa-heart"
+                      class="fas fa-star"
                       @click="like(project)"
                       :style="'cursor: pointer;'+colorHeart(project.id)"
                     ></i>
@@ -282,16 +282,18 @@ export default {
     crearColeccion() {
       this.titleModal = "Crear colección";
       this.labelModal = "Nombre";
+      this.flagModalColeccion = true;
       $("#exampleModal").modal("show");
     },
     crearFamilia() {
       this.titleModal = "Crear familia";
       this.labelModal = "Clave";
+      this.flagModalColeccion = false;
       $("#exampleModal").modal("show");
     },
     colorHeart(projectid) {
       return store.state.user.likes.includes(projectid)
-        ? "color: red;"
+        ? "color: #FFD700;"
         : "color: black;";
     },
     like(project) {
@@ -303,7 +305,7 @@ export default {
         $("#heart-" + projectid).css("color", "black");
       } else {
         user.likes.push(projectid);
-        $("#heart-" + projectid).css("color", "red");
+        $("#heart-" + projectid).css("color", "#FFD700");
       }
       store.commit("setUser", user);
       db.collection("users")

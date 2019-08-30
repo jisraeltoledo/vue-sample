@@ -32,6 +32,8 @@
 
         <!-- Navbar -->
         <ul class="navbar-nav ml-auto ml-md-0">
+          <li class="nav-item pull-left" style="color: white;margi-top:15px;">{{rol}}</li>
+
           <li class="nav-item dropdown no-arrow mx-1">
             <a
               class="nav-link dropdown-toggle"
@@ -233,23 +235,40 @@ import firebase from "firebase";
 import LoginVue from "@/views/Login.vue";
 import Sidebar from "@/components/Sidebar.vue";
 import jsPDF from "jspdf";
+import store from "./store";
 export default {
   name: "app",
   components: {
     login: LoginVue,
     "side-bar": Sidebar
   },
-  data (){
+  data() {
     return {
       doc: null,
       publicPath: process.env.BASE_URL
+    };
+  },
+  computed: {
+    rol() {
+      return this.titleCase (store.state.userRole);
     }
   },
-  created (){
+  created() {
     console.log(window.location.origin);
     this.doc = new jsPDF("p", "pt", "letter");
   },
   methods: {
+    titleCase(str) {
+      str = str.toLowerCase().split(" ");
+
+      let final = [];
+
+      for (let word of str) {
+        final.push(word.charAt(0).toUpperCase() + word.slice(1));
+      }
+
+      return final.join(" ");
+    },
     logout() {
       firebase
         .auth()
@@ -258,7 +277,7 @@ export default {
           $("#logoutModal").modal("toggle");
           this.$router.replace("login");
         });
-    },
+    }
   }
 };
 </script>
