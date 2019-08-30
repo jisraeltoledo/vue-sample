@@ -70,9 +70,11 @@ export default {
     return {
       empty: true,
       downloadUrl: null,
+      urls: [],
       base64: null,
       ext: "",
-      imgs: []
+      imgs: [],
+      promises: [],
     };
   },
   created() {},
@@ -138,7 +140,7 @@ export default {
       const lastDot = name.lastIndexOf(".");
       const fileName = name.substring(0, lastDot);
       this.ext = name.substring(lastDot + 1);
-
+      var p;
       var ref = firebase
         .storage()
         .ref()
@@ -163,19 +165,25 @@ export default {
         () => {
           // Handle successful uploads on complete
           // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-          uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
-            this.downloadUrl = downloadURL;
-            this.$emit("uploaded:url", downloadURL);
-          });
-        }
-      );
+          p = uploadTask.snapshot.ref.getDownloadURL();
+      });
+      return uploadTask.then (snap => {
+        return snap.ref.getDownloadURL ();
+      });
     },
     upload() {
+      this.promises = [];
       var files = document.getElementById(this.id).files;
       var cont = 1;
       Array.from(files).forEach(file => {
-        this.uploadFile(file, cont++);
+        this.promises.push (this.uploadFile(file, cont++));
       });
+      Promise.all (this.promises).then (res => {
+        console.log ("res", res);        
+        this.$emit ("uploaded", res);
+      }).catch (err=>{
+        console.log (err);
+      });      
     }
   }
 };

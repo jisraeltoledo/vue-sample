@@ -204,6 +204,9 @@ export default {
         .forEach(element => {
           arr.push(element);
         });
+        if (!this.project.products){
+          this.project.products = [];
+        }
       this.project.products = Array.from(
         new Set(this.project.products.concat(arr))
       );

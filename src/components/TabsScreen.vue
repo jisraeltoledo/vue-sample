@@ -37,7 +37,7 @@
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
         <div class="row" style="margin: 20px;">
-          <div class="col-md-3">
+          <div class="col-md-4">
             <div class="input-group">
               <input
                 id="searchField"
@@ -55,17 +55,21 @@
               </div>
             </div>
           </div>
-          <div class="col-md-2 offset-md-3 text-center">
-            <button class="btn btn-primary" @click="crearColeccion">Crear colección</button>
+          <div class="col-md-2 text-center">
+            <button class="btn btn-primary" @click="crearColeccion">
+              <i class="fas fa-plus-circle"></i> Colección</button>
           </div>
           <div class="col-md-2 text-center">
-            <button class="btn btn-info" @click="crearFamilia">Crear familia</button>
+            <button class="btn btn-info" @click="crearFamilia">
+              <i class="fas fa-plus-circle"></i> Familia</button>
           </div>
-          <div class="col-md-1 text-center">
-            <button class="btn btn-success" @click="changeStatus('publicado')">Publicar</button>
+          <div class="col-md-2 text-center">
+            <button class="btn btn-success" @click="changeStatus('publicado')">
+              <i class="fas fa-globe-americas"></i> Publicar</button>
           </div>
-          <div class="col-md-1 text-center">
-            <button class="btn btn-danger" @click="changeStatus('retirado')">Retirar</button>
+          <div class="col-md-2 text-center">
+            <button class="btn btn-danger" @click="changeStatus('retirado')">
+              <i class="fas fa-minus-circle"></i> Retirar</button>
           </div>
         </div>
         <list-projects
