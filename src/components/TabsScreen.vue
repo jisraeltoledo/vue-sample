@@ -199,7 +199,9 @@ export default {
           docs.forEach(doc => {
             var p = doc.data();
             p["id"] = doc.id;
-            this.searchResults.push(p);
+            if (p.isFamily){} else {
+              this.searchResults.push(p);
+            }
           });
         });
     },

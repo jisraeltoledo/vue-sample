@@ -17,7 +17,7 @@
           ></i>
         </button>
       </div>
-      <div class="col-md-2 text-center" v-if="project.isFamily">
+      <div class="col-md-2 text-center" v-if="project.isFamily && hasRol ('moderador')">
         <button class="btn btn-primary" @click="agregarProducto">
           <i class="fas fa-plus-circle"></i> Producto
         </button>

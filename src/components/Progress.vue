@@ -24,7 +24,9 @@
             <td>{{Math.round((new Date().getTime()-project.created)/(1000*60*60*24)) }}</td>
 
             <td>{{project.status}}</td>
-            <td><pdf-export :project="project"></pdf-export></td>
+            <td>
+              <pdf-export :project="project"></pdf-export>
+            </td>
             <td class="text-center">
               <!-- <export-pdf v-bind:projectid="project.id"></export-pdf> -->
               <table>
@@ -106,7 +108,7 @@ import router from "@/router";
 import store from "@/store";
 import ExportPDFVue from "./ExportPDF.vue";
 import ProgressBarVue from "./ProgressBar.vue";
-import PDFExportVue from './PDFExport.vue';
+import PDFExportVue from "./PDFExport.vue";
 
 export default {
   name: "list-project-progress",
@@ -191,11 +193,12 @@ export default {
     },
     changeStatus(status) {
       var _this = this;
-
+      var data = { status: status };
+      data[status] = new Date().getTime();
       $(".form-check-input:checked").each(function() {
         db.collection("projects")
           .doc($(this).val())
-          .update({ status: status });
+          .update(data);
         for (var i = 0; i < _this.projects.length; i++) {
           if (_this.projects[i].id === $(this).val()) {
             _this.projects[i].status = status;
@@ -316,7 +319,9 @@ export default {
       this.$emit("click", { project: project, type: type });
     },
     getProjects() {
+      console.log ("getProjects");
       var ref = db.collection("projects");
+      //ref = ref.where("isFamily", "==", undefined);
       if (this.status) {
         ref = ref.where("status", "==", this.status);
       }
@@ -329,7 +334,9 @@ export default {
         snap.forEach(element => {
           let p = element.data();
           p["id"] = element.id;
-          this.projects.push(p);
+          if (p.isFamily){}else{
+            this.projects.push(p);
+          }          
         });
       });
     }
