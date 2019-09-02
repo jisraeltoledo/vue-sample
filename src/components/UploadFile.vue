@@ -180,7 +180,7 @@ export default {
       });
       Promise.all (this.promises).then (res => {
         console.log ("res", res);        
-        this.$emit ("uploaded", res);
+        this.$emit ("uploaded", res, this.id);
       }).catch (err=>{
         console.log (err);
       });      

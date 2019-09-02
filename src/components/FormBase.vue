@@ -145,7 +145,7 @@
             v-bind:fileType="f.fileType"
             v-bind:description="f.descripcion"
             v-bind:width="100"
-            @uploaded:url="files[f.id] = $event"
+            @uploaded="uploaded"
             :disabled="project.family && !f.editableIfFamily"
           ></upload-file>
         </div>
@@ -159,7 +159,7 @@
             v-bind:width="100"
             v-bind:multiple="true"
             v-bind:description="f.descripcion"
-            @uploaded:url="files[f.id] = $event"
+            @uploaded="uploaded"
             :disabled="project.family && !f.editableIfFamily"
           ></upload-file>
         </div>
@@ -189,7 +189,7 @@ export default {
       rol: null,
       projectid: "",
       project: {},
-      files: [],
+      files: {},
       message: "No hay datos para ti"
     };
   },
@@ -235,6 +235,10 @@ export default {
       });
   },
   methods: {
+    uploaded (urls, id){
+      console.log ("urls", urls, id);
+      this.files[id] = urls;
+    },
     editFamily (){
       console.log ("editFamily", this.project.family);
       this.$emit("editFamily", this.project);
@@ -264,7 +268,8 @@ export default {
             if ($("#" + this.removeSpecialChars(f.id + "_" + o)).is(":checked"))
               values[f.id] = o;
           });
-        } else if (f.tipo === "file") {
+        } else if (f.tipo === "file" || f.tipo === "files") {
+          console.log ("files",this.files);
           if (this.files[f.id]) {
             values[f.id] = this.files[f.id];
           }
@@ -280,6 +285,7 @@ export default {
         if (values.C03) delete values.C03;
         if (values.C04) delete values.C04;
         this.project.products.forEach (p=>{
+          console.log (p);
           db.collection("projects")
                   .doc(p)
                   .update(values);
