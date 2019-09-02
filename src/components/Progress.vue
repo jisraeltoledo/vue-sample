@@ -89,7 +89,7 @@
           </div>
           <div class="modal-body">
             <label for="colectionName">{{labelModal}}</label>
-            <input class="form-control" id="colectionName" placeholder="Escribe el nombre aquí" />
+            <input class="form-control" id="colectionName" placeholder="Escribe el nombre aquí" v-if="flagModalColeccion"/>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-primary" @click="guardar">Guardar</button>
@@ -219,29 +219,31 @@ export default {
       var project = this.projects.filter(e => {
         return e.id === data.checks[0];
       })[0];
-      project["C01"] = data.nombre;
+      let newRef = db.collection('projects').doc();
+      project["C01"] = newRef.id;
       project["products"] = data.checks;
       project["created"] = new Date().getTime();
       project["user"] = store.state.user.email;
       project["isFamily"] = true;
       project.keywords = project.keywords.concat(this.createKey(data.nombre));
       delete project["id"];
-      db.collection("projects")
-        .add(project)
-        .then(ref => {
+      newRef.set(project)
+        .then(() => {
           data.checks.forEach(id => {
             db.collection("projects")
               .doc(id)
-              .update({ family: ref.id });
+              .update({ family: newRef.id });
           });
-          return ref;
+          return true;
         })
-        .then(ref => {
+        .then(() => {
+          $("#exampleModal").modal("hide");
+          console.log ("familia:", newRef.id);
           this.$router.replace(`/home`);
         });
-      $("#exampleModal").modal("hide");
     },
     createKey(name) {
+      if (name === undefined || name === null || name === "") return "";
       const arrName = [];
       let curName = "";
       name
@@ -256,7 +258,7 @@ export default {
     getModalData() {
       var checked = [];
       var nombre = $("#colectionName").val();
-      if (nombre === "") alert(this.labelModal + " está vacío");
+      if (nombre === "" && this.flagModalColeccion) alert(this.labelModal + " está vacío");
       else {
         $(".form-check-input:checked").each(function() {
           checked.push($(this).val());
@@ -290,7 +292,7 @@ export default {
     },
     crearFamilia() {
       this.titleModal = "Crear familia";
-      this.labelModal = "Clave";
+      this.labelModal = "¿Estás seguro de crear la familia?";
       this.flagModalColeccion = false;
       $("#exampleModal").modal("show");
     },
