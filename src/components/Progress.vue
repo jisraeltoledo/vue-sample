@@ -297,9 +297,12 @@ export default {
       $("#exampleModal").modal("show");
     },
     colorHeart(projectid) {
-      return store.state.user.likes.includes(projectid)
+      if (store.state.user.likes){
+        return store.state.user.likes.includes(projectid)
         ? "color: #FFD700;"
         : "color: black;";
+      }
+      return "color: black;";
     },
     like(project) {
       var projectid = project.id;

@@ -73,14 +73,21 @@ firebase.auth().onAuthStateChanged(user => {
     initApp();
     return;
   }
+  console.log(user.email);
   return db
     .collection("users")
-    .doc(user.uid)
+    .where("email", "==", user.email)
     .get()
-    .then(userdb => {
-      var userdata = userdb.data();
+    .then(snap => {
+      if (snap.empty) {
+        store.commit("setUserRol", "guest");
+        initApp();
+        return;
+      }
+      console.log();
+      var userdata = snap.docs[0].data();
       userdata.id = user.uid;
-      store.commit("setUserRol", userdb.data().rol);
+      store.commit("setUserRol", userdata.rol);
       store.commit("setUser", userdata);
       initApp();
     });
