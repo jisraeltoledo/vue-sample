@@ -65,7 +65,7 @@
     <li class="nav-item">
       <router-link tag="li" to="/projects/favorites">
         <a class="nav-link">
-          <i class="fas fa-heart"></i>
+          <i class="fas fa-star"></i>
           <span> Favoritos</span>
         </a>
       </router-link>

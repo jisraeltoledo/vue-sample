@@ -236,13 +236,10 @@ export default {
   },
   methods: {
     uploaded (urls, id){
-      console.log ("urls", urls, id);
       this.files[id] = urls;
     },
     editFamily (){
-      console.log ("editFamily", this.project.family);
       this.$emit("editFamily", this.project);
-      
     },
     removeSpecialChars(cadena) {
       return cadena.replace(/[^A-Z0-9]/ig, "_");
@@ -275,7 +272,6 @@ export default {
           }
         }
       });
-      console.log(values);
       db.collection("projects")
         .doc(this.projectid)
         .update(values);
@@ -285,7 +281,6 @@ export default {
         if (values.C03) delete values.C03;
         if (values.C04) delete values.C04;
         this.project.products.forEach (p=>{
-          console.log (p);
           db.collection("projects")
                   .doc(p)
                   .update(values);
