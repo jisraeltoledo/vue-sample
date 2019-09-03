@@ -251,11 +251,6 @@ export default {
       this.$emit("clickProduct", { project: p, type: "see" });
       e.preventDefault();
     },
-    colorHeart(projectid) {
-      return store.state.user.likes.includes(projectid)
-        ? "color: #FFD700;"
-        : "color: black;";
-    },
     like(project) {
       var projectid = project.id;
       var user = store.state.user;

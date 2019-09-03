@@ -296,14 +296,6 @@ export default {
       this.flagModalColeccion = false;
       $("#exampleModal").modal("show");
     },
-    colorHeart(projectid) {
-      if (store.state.user.likes){
-        return store.state.user.likes.includes(projectid)
-        ? "color: #FFD700;"
-        : "color: black;";
-      }
-      return "color: black;";
-    },
     like(project) {
       var projectid = project.id;
       var user = store.state.user;

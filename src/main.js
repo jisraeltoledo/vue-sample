@@ -20,6 +20,14 @@ Vue.mixin({
     },
     notHasRol(rol) {
       return store.state.userRole !== rol;
+    },
+    colorHeart(projectid) {
+      if (store.state.user.likes) {
+        return store.state.user.likes.includes(projectid)
+          ? "color: #FFD700;"
+          : "color: black;";
+      }
+      return "color: black;";
     }
   }
 });
