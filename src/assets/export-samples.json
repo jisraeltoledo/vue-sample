@@ -1,70 +1,247 @@
 [
     {
         "field": "C01",
-        "fontSize": "24",
+        "fontSize": "30",
         "fontColor": "#000000",
-        "fontType": "demi",
-        "font": "ITC Avant Garde Gothic LT",
-        "type":"text-field",
-        "x": 36,
-        "y": 46
-    },
-    {
-        "field": "C03",
-        "fontSize": "24",
-        "fontColor": "#000000",
-        "fontType": "demi",
-        "font": "ITC Avant Garde Gothic LT",
-        "type":"text-field",
-        "x": -36,
-        "y": 46
-    },
-    {
-        "field": "C02",
-        "fontSize": "8",
-        "fontColor": "#2D2E2D",
         "fontType": "regular",
-        "font": "Montserrat",
+        "font": "DIN Next Rounded LT",
         "type":"text-field",
-        "x": 36,
-        "y": 162
+        "x": 43,
+        "y": 30
+    },
+    {
+        "type":"image",
+        "x": 449,
+        "y": 20.5,
+        "h": 40,
+        "w": 120,
+        "src": "https://firebasestorage.googleapis.com/v0/b/decimal-fic-tec.appspot.com/o/Magg-e1422925294234.png?alt=media&token=329f884d-f38e-439e-8ae0-a9ad50511bf1"
+    },    
+    {
+        "type":"line",
+        "x": 43,
+        "y": 80,
+        "h": 80,
+        "w": 569 
+    },   
+    {
+        "text": "4. FUENTE LUMINOSA",
+        "type":"text",
+        "fontSize": "12",
+        "fontColor": "#000000",
+        "fontType": "regular",
+        "font": "DIN Next Rounded LT",
+        "underline": true,
+        "x": 43,
+        "y": 100
+    },
+    {
+        "text": "4.1 TIPO:",
+        "type":"text",
+        "fontSize": "8",
+        "fontColor": "#000000",
+        "fontType": "bold",
+        "font": "DIN Next Rounded LT",
+        "x": 45,
+        "y": 130
+    },
+    {
+        "text": "• LED",
+        "fontSize": "8",
+        "fontColor": "#000000",
+        "fontType": "regular",
+        "font": "DIN Next Rounded LT",
+        "type":"text",
+        "x": 170,
+        "y": 130
+    },
+    {
+        "text": "4.2 TEMPERATURA DE COLOR",
+        "type":"text",
+        "fontSize": "8",
+        "fontColor": "#000000",
+        "fontType": "bold",
+        "font": "DIN Next Rounded LT",
+        "x": 45,
+        "y": 150
+    },
+    {
+        "field": "C50",
+        "fontSize": "8",
+        "fontColor": "#000000",
+        "fontType": "regular",
+        "font": "DIN Next Rounded LT",
+        "type":"text-field",
+        "x": 170,
+        "y": 150
+    },
+    {
+        "text": "4.3 FLUJO LUMINOSO",
+        "type":"text",
+        "fontSize": "8",
+        "fontColor": "#000000",
+        "fontType": "bold",
+        "font": "DIN Next Rounded LT",
+        "x": 45,
+        "y": 170
+    },
+    {
+        "field": "C49",
+        "fontSize": "8",
+        "fontColor": "#000000",
+        "fontType": "regular",
+        "font": "DIN Next Rounded LT",
+        "type":"text-field",
+        "x": 170,
+        "y": 170
+    },
+    {
+        "text": "4.4 IRC",
+        "type":"text",
+        "fontSize": "8",
+        "fontColor": "#000000",
+        "fontType": "bold",
+        "font": "DIN Next Rounded LT",
+        "x": 45,
+        "y": 190
+    },
+    {
+        "field": "C51",
+        "fontSize": "8",
+        "fontColor": "#000000",
+        "fontType": "regular",
+        "font": "DIN Next Rounded LT",
+        "type":"text-field",
+        "x": 170,
+        "y": 190
+    },
+    {
+        "text": "4.5 VIDA ÚTIL",
+        "type":"text",
+        "fontSize": "8",
+        "fontColor": "#000000",
+        "fontType": "bold",
+        "font": "DIN Next Rounded LT",
+        "x": 45,
+        "y": 210
+    },
+    {
+        "field": "C34",
+        "fontSize": "8",
+        "fontColor": "#000000",
+        "fontType": "regular",
+        "font": "DIN Next Rounded LT",
+        "type":"text-field",
+        "x": 170,
+        "y": 210
+    },
+    {
+        "text": "6. FOTOMETRÍA",
+        "type":"text",
+        "fontSize": "11",
+        "fontColor": "#000000",
+        "fontType": "regular",
+        "font": "DIN Next Rounded LT",
+        "underline": true,
+        "x": 43,
+        "y": 300
     },
     {
         "field": "C42",
         "type":"image-field",
-        "x": -274,
-        "y": 282,
-        "h": 300,
-        "w": 254
+        "x": 100,
+        "y": 330,
+        "w": 100,
+        "h": 100
     },
     {
-        "text": "Descripción",
+        "text": "5. OPCIÓN DE INSTALACIÓN",
         "type":"text",
-        "fontSize": "10",
-        "fontColor": "#B6B6B5",
-        "fontType": "demi",
-        "font": "ITC Avant Garde Gothic LT",
-        "x": 36,
-        "y": 142
-    },
-    {
-        "text": "Descripcion producto de ficha",
-        "type":"text",
-        "fontSize": "10",
-        "fontColor": "#B6B6B5",
-        "fontType": "demi",
-        "font": "ITC Avant Garde Gothic LT",
-        "x": 36,
-        "y": 282
-    },
-    {
-        "field": "C14",
-        "fontSize": "8",
-        "fontColor": "#2D2E2D",
+        "fontSize": "12",
+        "fontColor": "#000000",
         "fontType": "regular",
-        "font": "Montserrat",
-        "type":"text-field",
-        "x": 36,
-        "y": 292
+        "font": "DIN Next Rounded LT",
+        "underline": true,
+        "x": 306,
+        "y": 100
+    },
+    {
+        "field": "C47",
+        "type":"image-field",
+        "x": 330,
+        "y": 140,
+        "w": 180,
+        "h": 100
+    },
+    {
+        "text": "7. DIMENSIONES",
+        "type":"text",
+        "fontSize": "11",
+        "fontColor": "#000000",
+        "fontType": "regular",
+        "font": "DIN Next Rounded LT",
+        "underline": true,
+        "x": 306,
+        "y": 300
+    },
+    {
+        "field": "C17",
+        "type":"image-field",
+        "x": 306,
+        "y": 320,
+        "w": 180,
+        "h": 150
+    },
+    {
+        "text": "7. CLAVES DE PRODUCTO",
+        "type":"text",
+        "fontSize": "11",
+        "fontColor": "#000000",
+        "fontType": "regular",
+        "font": "DIN Next Rounded LT",
+        "underline": true,
+        "x": 43,
+        "y": 450
+    }, {
+        "type":"line",
+        "x": 43,
+        "y": 730,
+        "h": 730,
+        "w": 569 
+    },
+    {
+        "text": "San Luis Tlatilco No. 30 Col. Parque Industrial Naucalpan. Naucalpan de Juárez, Edo. de México. C.P. 53489 Tel.: 01.55.5300.0646 • Fax: 01.55.5300.6965",
+        "type":"text",
+        "fontSize": "6",
+        "fontColor": "#000000",
+        "fontType": "regular",
+        "font": "DIN Next Rounded LT",
+        "textLength": 80,
+        "x": 43,
+        "y": 740
+    },
+    {
+        "text": "magg.com.mx",
+        "type":"text",
+        "fontSize": "6",
+        "fontColor": "#000000",
+        "fontType": "bold",
+        "font": "DIN Next Rounded LT",
+        "x": 43,
+        "y": 755
+    },
+    {
+        "text": "La información contenida en esta ficha técnica es propiedad de Electro Mag S.A. de C.V. Todos los derechos reservados. Nos reservamos el derecho de hacer modificaciones sin previo aviso.",
+        "type":"text",
+        "fontSize": "6",
+        "fontColor": "#000000",
+        "fontType": "regular",
+        "font": "DIN Next Rounded LT",
+        "textLength": 80,
+        "x": 306,
+        "y": 740
+    },
+    {
+        "type":"newPage"
     }
 ]

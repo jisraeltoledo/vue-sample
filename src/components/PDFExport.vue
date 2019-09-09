@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <button  @click="click" class="btn btn-primary">
+    <button @click="click" class="btn btn-primary">
       <i class="fas fa-download"></i>
     </button>
   </div>
@@ -47,7 +47,7 @@ export default {
         .then(() => {
           this.doc = new jsPDF("p", "pt", "letter");
           this.registerFonts();
-          this.exportPdf ();
+          this.exportPdf();
         });
     },
     readFile(file) {
@@ -88,13 +88,15 @@ export default {
         request.send();
       });
     },
-    exportPdf() {
-      this.exportData.sections.forEach(sec => {
+    async exportPdf() {
+      // this.exportData.sections.forEach(async sec => {
+        for (let sec of this.exportData.sections){
+        console.log ("type:", sec.type);
         if (sec.type === "text-field") {
           this.addText(sec, this.project[sec.field]);
         }
         if (sec.type === "image-field") {
-          this.addImage(sec, this.project[sec.field]);
+          await this.addImage(sec, this.project[sec.field]);
         }
         if (sec.type === "image") {
           this.addImage(sec, sec.src);
@@ -102,7 +104,13 @@ export default {
         if (sec.type === "text") {
           this.addText(sec, sec.text);
         }
-      });
+        if (sec.type === "line") {
+          this.doc.line(sec.x, sec.y, sec.w, sec.h);
+        }
+        if (sec.type === "newPage") {
+          this.doc.addPage ();
+        }
+      }
       Promise.all(this.promises).then(res => {
         this.doc.save("export.pdf");
       });
@@ -131,14 +139,16 @@ export default {
           return false;
         });
       this.promises.push(p);
+      return p;
     },
     addText(section, text) {
       if (!text) return;
       text = "" + text;
-      console.log("addtext", section, text);
+      console.log("addtext", section, text, dim);
       this.doc.setTextColor(section.fontColor);
       this.doc.setFont(section.font, section.fontType);
       this.doc.setFontSize(section.fontSize);
+      var dim = this.doc.getTextDimensions(text);
       if (section.textLength) {
         text = this.insertLineBreaks(text, section.textLength);
       }
@@ -148,7 +158,18 @@ export default {
         var width = this.doc.internal.pageSize.getWidth();
         section.x = width - w + section.x;
       }
-      this.doc.text(text, section.x, section.y);
+      this.doc.text(text, section.x, section.y + dim.h);
+      if (section.underline) {
+        var w = this.doc.getStringUnitWidth(text) * section.fontSize;
+
+        console.log("w, dim", w, dim, text);
+        this.doc.line(
+          section.x,
+          section.y + dim.h + 5,
+          section.x + w,
+          section.y + dim.h + 5
+        );
+      }
     },
     insertLineBreaks(text, x) {
       var regexp = new RegExp("(.{" + x + "}[^ ]*) ", "g");
@@ -156,8 +177,10 @@ export default {
     },
     registerFonts() {
       Object.keys(store.state.fonts).forEach(fontName => {
+        console.log(fontName);
         this.registerFont(fontName, store.state.fonts[fontName]);
       });
+      console.log("Fonts", this.doc.getFontList());
     },
     registerFont(fontName, base64) {
       // Remove extension
