@@ -11,7 +11,9 @@ import firebase from "firebase";
 // @ is an alias to /src
 import { db } from "@/main";
 import store from "@/store";
-import jsPDF from "jspdf";
+// import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+import * as jsPDF from "jspdf";
 export default {
   name: "pdf-export",
   props: {
@@ -90,8 +92,8 @@ export default {
     },
     async exportPdf() {
       // this.exportData.sections.forEach(async sec => {
-        for (let sec of this.exportData.sections){
-        console.log ("type:", sec.type);
+      for (let sec of this.exportData.sections) {
+        console.log("type:", sec.type);
         if (sec.type === "text-field") {
           this.addText(sec, this.project[sec.field]);
         }
@@ -108,7 +110,7 @@ export default {
           this.doc.line(sec.x, sec.y, sec.w, sec.h);
         }
         if (sec.type === "newPage") {
-          this.doc.addPage ();
+          this.doc.addPage();
         }
       }
       Promise.all(this.promises).then(res => {
@@ -149,6 +151,7 @@ export default {
       this.doc.setFont(section.font, section.fontType);
       this.doc.setFontSize(section.fontSize);
       var dim = this.doc.getTextDimensions(text);
+      text = text.replace(/\\n/g, "\n");
       if (section.textLength) {
         text = this.insertLineBreaks(text, section.textLength);
       }
@@ -157,6 +160,9 @@ export default {
         var w = this.doc.getStringUnitWidth(text) * section.fontSize;
         var width = this.doc.internal.pageSize.getWidth();
         section.x = width - w + section.x;
+      }
+      if (section.bullet){
+        text = section.bullet+" "+text;
       }
       this.doc.text(text, section.x, section.y + dim.h);
       if (section.underline) {

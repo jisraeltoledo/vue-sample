@@ -19,7 +19,7 @@
           <tr v-for="(project, idx) in projects" :key="idx">
             <td>{{project.C01}}</td>
             <td>{{project.C03}}</td>
-            <td>{{project.C02}}</td>
+            <td><small>{{project.C02.substring (0, 30)}}...</small></td>
             <td>{{project.version}}</td>
             <td>{{Math.round((new Date().getTime()-project.created)/(1000*60*60*24)) }}</td>
 
