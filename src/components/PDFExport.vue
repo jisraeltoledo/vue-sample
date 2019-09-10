@@ -151,7 +151,12 @@ export default {
       this.doc.setFont(section.font, section.fontType);
       this.doc.setFontSize(section.fontSize);
       var dim = this.doc.getTextDimensions(text);
-      text = text.replace(/\\n/g, "\n");
+      text = text.replace(/<p>/g, "\n");
+      text = text.replace(/<\/p>/g, "\n");
+      text = text.replace(/<\/li>/g, "\n");
+      text = text.replace(/<\/ul>/g, "");
+      text = text.replace(/<ul>/g, "");
+      text = text.replace(/<li>/g, "   •");
       if (section.textLength) {
         text = this.insertLineBreaks(text, section.textLength);
       }

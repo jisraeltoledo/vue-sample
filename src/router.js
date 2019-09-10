@@ -21,7 +21,7 @@ import Claves from "@/views/Claves";
 import Collections from "@/components/Collections";
 import Collection from "@/components/Collection";
 import PDFExport from "@/components/PDFExport";
-
+import RichText from "@/components/RichText";
 Vue.use(Router);
 
 export const roles = {
@@ -87,6 +87,10 @@ const router = new Router({
       path: "/about",
       name: "About",
       component: About
+    },
+    {
+      path: "/rich",
+      component: RichText
     },
     {
       path: "/pdf-export",

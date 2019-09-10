@@ -5,7 +5,9 @@ import router from "./router";
 import store from "./store";
 import firebase from "firebase";
 import { roles } from "@/router";
+import CKEditor from "@ckeditor/ckeditor5-vue";
 
+Vue.use(CKEditor);
 Vue.config.productionTip = false;
 Vue.config.devtools = true;
 
