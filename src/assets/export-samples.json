@@ -1,6 +1,6 @@
 [
   {
-    "field": "C01",
+    "field": "C03",
     "fontSize": "30",
     "fontColor": "#000000",
     "fontType": "regular",
@@ -8,6 +8,16 @@
     "type": "text-field",
     "x": 43,
     "y": 30
+  },
+  {
+    "field": "C01",
+    "fontSize": "24",
+    "fontColor": "#000000",
+    "fontType": "regular",
+    "font": "DIN Next Rounded LT",
+    "type": "text-field",
+    "x": 43,
+    "y": 60
   },
   {
     "type": "image",
@@ -20,8 +30,8 @@
   {
     "type": "line",
     "x": 43,
-    "y": 80,
-    "h": 80,
+    "y": 90,
+    "h": 90,
     "w": 569
   },
   {
@@ -166,7 +176,7 @@
     "y": 100
   },
   {
-    "field": "C47",
+    "field": "C41",
     "type": "image-field",
     "x": 330,
     "y": 140,
@@ -185,7 +195,7 @@
     "y": 300
   },
   {
-    "field": "C17",
+    "field": "C38",
     "type": "image-field",
     "x": 306,
     "y": 320,
@@ -291,7 +301,7 @@
     "h": 730,
     "w": 306
   },{
-    "field": "C41",
+    "field": "C39",
     "type": "image-field",
     "x": 313,
     "y": 106,
@@ -317,7 +327,7 @@
     "fontType": "regular",
     "font": "DIN Next Rounded LT",
     "x": 315,
-    "y": 390
+    "y": 380
   },
   {
     "field": "C80",
@@ -329,7 +339,7 @@
     "textLength":30,
     "bullet": "•",
     "x": 430,
-    "y": 390
+    "y": 380
   },
   {
     "text": "2.2 PANTALLA",
@@ -441,7 +451,7 @@
     "y": 540
   },
   {
-    "field": "C81",
+    "field": "C82",
     "fontSize": "7.5",
     "fontColor": "#000000",
     "fontType": "regular",

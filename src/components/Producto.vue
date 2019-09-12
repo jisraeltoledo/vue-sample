@@ -70,7 +70,7 @@
               <i v-if="project[k]" class="fas fa-check-square fa-5x"></i>
               <i v-else class="fas fa-times-circle fa-5x"></i>
             </div>
-            <div v-else>{{project[k]}}</div>
+            <div v-else v-html="project[k]"></div>
           </div>
           <!-- <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div> -->
         </div>

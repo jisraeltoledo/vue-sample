@@ -30,6 +30,15 @@ Vue.mixin({
           : "color: black;";
       }
       return "color: black;";
+    },
+    removeHTMLTags(text) {
+      text = text.replace(/<p>/g, "\n");
+      text = text.replace(/<\/p>/g, "\n");
+      text = text.replace(/<\/li>/g, "\n");
+      text = text.replace(/<\/ul>/g, "");
+      text = text.replace(/<ul>/g, "");
+      text = text.replace(/<li>/g, "   •");
+      return text;
     }
   }
 });

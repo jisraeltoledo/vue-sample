@@ -3,7 +3,7 @@
    <table border="1"> 
        <tr>
            <td v-for="(p, id) in Object.keys(progress)" :key="id" :bgcolor="color(progress[p])" >
-               {{p}}
+               <small>{{p}} {{progress[p]}}%</small>
            </td>
        </tr>
    </table>

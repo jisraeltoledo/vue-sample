@@ -140,6 +140,7 @@
         <div v-else-if="f.tipo==='file'">
           <upload-file
             v-bind:id="f.id"
+            v-bind:project="project"
             v-bind:path="projectid"
             v-bind:label="f.nombre"
             v-bind:fileType="f.fileType"
@@ -153,6 +154,7 @@
         <div v-else-if="f.tipo==='files'">
           <upload-file
             v-bind:id="f.id"
+            v-bind:project="project"
             v-bind:path="projectid"
             v-bind:label="f.nombre"
             v-bind:fileType="f.fileType"

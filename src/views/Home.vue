@@ -30,6 +30,16 @@ export default {
     //   db.collection("projects").add(elements);
     // });
 
+    Array.prototype.forEach.call(fields, elements => {
+      db.collection("fields").doc(elements.id).set(elements);
+    });
+
+    // db.collection ("forms").doc ("F02").set ({fields: [
+    // "C01", "C02", "C04", "C05", "C06", "C07", "C15",
+    // "C17", "C18", "C20", "C25", "C27", "C30", "C31",
+    // "C32", "C33", "C34", "C40", "C41", "C42", "C47",
+    // "C49", "C50", "C51", "C80", "C81", "C83"]});
+
     Array.prototype.forEach.call(exportSamples, f => {
       db.collection ("export").doc ("GPRhnpTy77demsHh1tHB").set ({sections:exportSamples});
     });

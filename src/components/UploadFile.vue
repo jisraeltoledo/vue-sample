@@ -36,6 +36,11 @@
           style="width:0%"
         ></div>
       </div>
+      <div v-if="isImage && project[id]">
+        <template v-for="(img, i) in project[id]">
+          <img :src="img" :key="'img'+i" width="100">
+        </template>
+      </div>
       <!-- <small>
         <a target="blank" v-if="downloadUrl" :href="downloadUrl">{{downloadUrl}}</a>
       </small> -->
@@ -64,6 +69,7 @@ export default {
     fileType: String,
     multiple: Boolean,
     disabled: Boolean,
+    project: Object
   },
   components: {},
   data: function() {
@@ -77,16 +83,19 @@ export default {
       promises: [],
     };
   },
-  created() {},
+  created() {
+    console.log (this.project[this.id]);
+  },
   watch: {},
   computed: {
     projectid() {
       return this.$route.params.projectid;
     },
     isImage() {
+      console.log ("this.fileType",this.fileType);
       return (
         this.fileType !== undefined &&
-        (this.fileType === "image/*" ||
+        (this.fileType === "images/*" ||
           this.fileType.includes(".jpg") ||
           this.fileType.includes(".png"))
       );

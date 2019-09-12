@@ -122,7 +122,7 @@ const router = new Router({
       name: "Create Project",
       component: CreateProject,
       meta: {
-        roles: [roles.moderador]
+        roles: [roles.moderador, roles.estructuras]
       }
     },
     {
