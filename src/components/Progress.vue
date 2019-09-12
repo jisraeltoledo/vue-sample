@@ -173,6 +173,7 @@ export default {
   methods: {
     getFavorites() {
       var promises = [];
+      if (store.state.user.likes)
       store.state.user.likes.forEach(like => {
         var p = db
           .collection("projects")
