@@ -42,12 +42,13 @@
             Descripción
             <small>*</small>
           </label>
-          <textarea
+          <ckeditor :editor="editor" v-model="descripcion" :config="editorConfig"></ckeditor>
+          <!-- <textarea
             v-model="descripcion"
             class="form-control"
             id="exampleFormControlTextarea1"
             rows="3"
-          ></textarea>
+          ></textarea>-->
         </div>
         <div class="form-group">
           <label for="formGroupExampleInput">
@@ -67,11 +68,9 @@
             Formulario
             <small>*</small>
           </label>
-          <select
-            v-model="form"
-            class="form-control"
-            id="select-form"
-          ><option v-for="f in forms" :key="f"> {{f}}</option></select>
+          <select v-model="form" class="form-control" id="select-form">
+            <option v-for="f in forms" :key="f">{{f}}</option>
+          </select>
         </div>
         <div>
           <div class="form-check">
@@ -85,7 +84,7 @@
             <label class="form-check-label" for="isFamily">Es familia</label>
           </div>
         </div>
-        <br>
+        <br />
         <button class="btn btn-success" @click="guardar">Guardar</button>
         <button class="btn" @click="cancelar">Cancelar</button>
       </form>
@@ -98,6 +97,7 @@
 <script>
 import { db } from "@/main";
 import router from "@/router";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 export default {
   name: "create-project",
   props: {},
@@ -110,11 +110,17 @@ export default {
       errors: [],
       disenador: "",
       title: "Crear producto",
-      barCode:"",
+      barCode: "",
       isFamily: false,
       forms: [],
-      form:""
+      form: "",
+      editor: ClassicEditor,
+      editorData: "",
+      editorConfig: {}
     };
+  },
+  mounted (){
+    this.editor.resize( '100%', '350', true );
   },
   created() {
     if (this.$route.params.projectid) {
@@ -126,22 +132,22 @@ export default {
           this.nombre = doc.data().C03;
           this.modelo = doc.data().C01;
           this.descripcion = doc.data().C02;
-          this.barCode = doc.data ().C04;
+          this.barCode = doc.data().C04;
         });
     }
-    db.collection ("forms").get ().then (docs => {
-      docs.forEach (doc => {
-        this.forms.push (doc.id);
+    db.collection("forms")
+      .get()
+      .then(docs => {
+        docs.forEach(doc => {
+          this.forms.push(doc.id);
+        });
+      })
+      .then(() => {
+        this.form = this.forms[0];
       });
-    }).then (()=>{
-      this.form = this.forms[0];
-    });
-    
   },
   watch: {
-    isFamily: function (nV, oV){
-      
-    }
+    isFamily: function(nV, oV) {}
   },
   methods: {
     cancelar() {
@@ -182,9 +188,9 @@ export default {
 
       e.preventDefault();
       var keywords = [];
-      keywords = keywords.concat (this.createKey(this.descripcion));
-      keywords = keywords.concat (this.createKey(this.nombre));
-      
+      keywords = keywords.concat(this.createKey(this.descripcion));
+      keywords = keywords.concat(this.createKey(this.nombre));
+
       if (this.errors.length == 0) {
         db.collection("projects")
           .add({
@@ -194,10 +200,10 @@ export default {
             C04: this.barCode,
             status: "proceso",
             step: "estructuras",
-            created: new Date ().getTime (),
+            created: new Date().getTime(),
             form: this.form,
             isFamily: this.isFamily,
-            keywords: Array.from(new Set (keywords))                
+            keywords: Array.from(new Set(keywords))
           })
           .then(ref => {
             alert("se guardó el proyecto correctamente");
@@ -208,3 +214,9 @@ export default {
   }
 };
 </script>
+
+<style>
+  .ck-editor__editable {
+    min-height: 300px;
+   }
+</style>

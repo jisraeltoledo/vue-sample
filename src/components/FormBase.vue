@@ -5,10 +5,9 @@
       <div class="col-md-6">
         <h3>Clave: {{project.C01}}</h3>
         <h4>Nombre: {{project.C03}}</h4>
-    
       </div>
       <div class="col-md-6" v-if="project.family">
-        <button @click="editFamily" class="btn btn-primary"> Editar familia </button>
+        <button @click="editFamily" class="btn btn-primary">Editar familia</button>
       </div>
     </div>
     <div v-if="message">{{message}}</div>
@@ -40,8 +39,8 @@
               <strong>{{f.nombre}}</strong>
               <small v-if="f.obligatorio">*</small>
             </label>
-
-            <textarea
+            <ckeditor :editor="editor" v-model="editorData[f.id]" :config="editorConfig"></ckeditor>
+            <!-- <textarea
               class="form-control"
               rows="3"
               :id="f.id"
@@ -49,7 +48,7 @@
               :placeholder="f.descripcion"
               :value="project[f.id]?project[f.id]:''"
               :disabled="project.family && !f.editableIfFamily"
-            ></textarea>
+            ></textarea>-->
           </div>
         </div>
         <!--  ************ NUMERO ************ -->
@@ -179,7 +178,8 @@ import { db } from "@/main";
 import UploadFileVue from "./UploadFile.vue";
 import store from "@/store";
 import VueBarcode from "@xkeshi/vue-barcode";
-import {roles } from "@/router";
+import { roles } from "@/router";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 export default {
   name: "form-base",
   props: {
@@ -192,7 +192,12 @@ export default {
       projectid: "",
       project: {},
       files: {},
-      message: "No hay datos para ti"
+      message: "No hay datos para ti",
+      editor: ClassicEditor,
+      editorData: {},
+      editorConfig: {
+          // The configuration of the rich-text editor.
+      }
     };
   },
   components: {
@@ -210,7 +215,7 @@ export default {
   },
   created() {
     this.rol = store.state.userRole;
-    console.log ("rol", this.rol);
+    console.log("rol", this.rol);
     if (this.$route.params.projectid)
       this.projectid = this.$route.params.projectid;
     else if (this.projectidSource) this.projectid = this.projectidSource;
@@ -222,9 +227,14 @@ export default {
         this.project = doc.data();
         this.project["id"] = doc.id;
         console.log(this.project);
-      }).then (()=>{
-        return db.collection("forms").doc(this.project.form).get();
-      }).then(doc => {
+      })
+      .then(() => {
+        return db
+          .collection("forms")
+          .doc(this.project.form)
+          .get();
+      })
+      .then(doc => {
         return doc.data().fields;
       })
       .then(fields => {
@@ -237,24 +247,25 @@ export default {
       });
   },
   methods: {
-    uploaded (urls, id){
+    uploaded(urls, id) {
       this.files[id] = urls;
     },
-    editFamily (){
+    editFamily() {
       this.$emit("editFamily", this.project);
     },
     removeSpecialChars(cadena) {
-      return cadena.replace(/[^A-Z0-9]/ig, "_");
+      return cadena.replace(/[^A-Z0-9]/gi, "_");
     },
     guardar() {
       var values = {};
       this.fields.forEach(f => {
         if (f.tipo === "boolean") {
           if ($("#" + f.id).is(":checked")) values[f.id] = true;
+        } else if (f.tipo === "textarea") {
+          values[f.id] = this.editorData[f.id];
         } else if (
           f.tipo === "texto" ||
-          f.tipo === "numero" ||
-          f.tipo === "textarea" 
+          f.tipo === "numero"           
         ) {
           if ($("#" + f.id).val()) values[f.id] = $("#" + f.id).val();
         } else if (f.tipo === "check") {
@@ -268,7 +279,7 @@ export default {
               values[f.id] = o;
           });
         } else if (f.tipo === "file" || f.tipo === "files") {
-          console.log ("files",this.files);
+          console.log("files", this.files);
           if (this.files[f.id]) {
             values[f.id] = this.files[f.id];
           }
@@ -277,18 +288,18 @@ export default {
       db.collection("projects")
         .doc(this.projectid)
         .update(values);
-      if (this.project.isFamily){
+      if (this.project.isFamily) {
         if (values.C01) delete values.C01;
         if (values.C02) delete values.C02;
         if (values.C03) delete values.C03;
         if (values.C04) delete values.C04;
-        this.project.products.forEach (p=>{
+        this.project.products.forEach(p => {
           db.collection("projects")
-                  .doc(p)
-                  .update(values);
+            .doc(p)
+            .update(values);
         });
       }
-      alert ("Los cambios se han guardado");
+      alert("Los cambios se han guardado");
     },
     addField(f) {
       db.collection("fields")
@@ -296,9 +307,14 @@ export default {
         .get()
         .then(doc => {
           if (!doc.exists) return;
-          if ( doc.data().departamento === this.rol || this.rol == roles.super_admin) {
+          if (
+            doc.data().departamento === this.rol ||
+            this.rol == roles.super_admin
+          ) {
+            this.editorData[doc.id] = this.project[doc.id];
             this.fields.push(doc.data());
           }
+          console.log (this.editorData);
           return true;
         });
     }
