@@ -275,7 +275,7 @@ export default {
         .signOut()
         .then(() => {
           $("#logoutModal").modal("toggle");
-          this.$router.replace("login");
+          this.$router.replace("/login");
         });
     }
   }

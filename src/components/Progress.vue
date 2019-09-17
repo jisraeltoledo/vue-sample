@@ -133,7 +133,12 @@ export default {
     };
   },
   created() {
+    console.log ("created progressvue")
+     console.log ("filterStatus", this.filterStatus)
+     console.log ("this.$route.params.status", this.$route.params.status)
+     console.log ("this.filterStep",this.filterStep);
     if (this.filterStatus) {
+
       this.status = this.filterStatus;
     } else if (this.$route.params.status) {
       this.status = this.$route.params.status;
@@ -147,12 +152,14 @@ export default {
       //this.getFavorites ();
       return;
     }
+    console.log ("status", this.status);
     this.getProjects();
   },
   watch: {
     products: function(newV, oldV) {
       this.projects = newV;
       if (this.projects === null) {
+        console.log ("whatch products");
         this.getProjects();
       }
     },
@@ -164,6 +171,7 @@ export default {
         }
         if (status === "all") this.status = null;
         else this.status = status;
+        console.log ("route.params.status");
         this.getProjects();
       },
       deep: true,
@@ -317,7 +325,7 @@ export default {
       this.$emit("click", { project: project, type: type });
     },
     getProjects() {
-      console.log ("getProjects");
+      console.log ("getProjects", this.status);
       var ref = db.collection("projects");
       //ref = ref.where("isFamily", "==", undefined);
       if (this.status) {

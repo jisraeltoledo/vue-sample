@@ -26,7 +26,7 @@
         </div>
         <div class="form-group">
           <label for="formGroupExampleInput">
-            Modelo
+            Clave
             <small>*</small>
           </label>
           <input

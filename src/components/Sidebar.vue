@@ -75,7 +75,7 @@
       <router-link tag="li" to="/collections">
         <a class="nav-link">
           <i class="fas fa-layer-group"></i>
-          <span> Collecciones</span>
+          <span> Colecciones</span>
         </a>
       </router-link>
     </li>

@@ -73,7 +73,6 @@
           </div>
         </div>
         <list-projects
-          :filterStatus="'proceso'"
           @click="listClick"
           ref="listProjects"
           :products="searchResults"
