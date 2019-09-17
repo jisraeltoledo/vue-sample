@@ -37,6 +37,7 @@ export default {
       },
       progress (){
           var object = {};
+          
           Object.keys (this.deptos).forEach (depto => {
               var fieldsByDepto = this.deptos[depto];
               object[depto] = 0;
@@ -46,6 +47,7 @@ export default {
                   }
               });
               object[depto] = (object[depto] / fieldsByDepto.length *100).toFixed(); 
+              
           });
           return object;
       }

@@ -82,7 +82,7 @@
 
     
 
-    <li class="nav-item" v-if="hasRol(myroles.estructuras)">
+    <li class="nav-item" v-if="hasRol(myroles.estructuras) || hasRol(myroles.moderador)">
       <router-link tag="li" to="/create-project">
         <a class="nav-link">
           <button class="btn btn-success">
