@@ -80,7 +80,14 @@
       </router-link>
     </li>
 
-    
+    <li class="nav-item" v-if="hasRol(myroles.moderador)">
+      <router-link tag="li" to="/fields">
+        <a class="nav-link">
+          <i class="fas fa-align-justify"></i>
+          <span> Campos </span>
+        </a>
+      </router-link>
+    </li>
 
     <li class="nav-item" v-if="hasRol(myroles.estructuras) || hasRol(myroles.moderador)">
       <router-link tag="li" to="/create-project">
@@ -88,6 +95,17 @@
           <button class="btn btn-success">
             <i class="fas fa-plus-circle"></i>
             <small> Producto | Familia</small>
+          </button>
+        </a>
+      </router-link>
+    </li>
+
+    <li class="nav-item" v-if="hasRol(myroles.moderador)">
+      <router-link tag="li" to="/fields/new">
+        <a class="nav-link">
+          <button class="btn btn-success">
+            <i class="fas fa-plus-circle"></i>
+            <small> Campo</small>
           </button>
         </a>
       </router-link>

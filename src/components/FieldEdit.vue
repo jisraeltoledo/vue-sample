@@ -121,7 +121,9 @@ export default {
         .then(snap => {
           if (snap.exists){
             this.data = snap.data();
-            this.options = this.data.options.join ('\n');
+            if (this.data.options){
+              this.options = this.data.options.join ('\n');
+            }            
           }          
         });
     }
