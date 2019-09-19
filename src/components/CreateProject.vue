@@ -119,9 +119,7 @@ export default {
       editorConfig: {}
     };
   },
-  mounted (){
-    this.editor.resize( '100%', '350', true );
-  },
+  mounted() {},
   created() {
     if (this.$route.params.projectid) {
       this.title = "Editar proyecto";
@@ -216,7 +214,7 @@ export default {
 </script>
 
 <style>
-  .ck-editor__editable {
-    min-height: 300px;
-   }
+.ck-editor__editable {
+  min-height: 300px;
+}
 </style>

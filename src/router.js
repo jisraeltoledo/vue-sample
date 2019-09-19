@@ -22,6 +22,9 @@ import Collections from "@/components/Collections";
 import Collection from "@/components/Collection";
 import PDFExport from "@/components/PDFExport";
 import RichText from "@/components/RichText";
+import FieldList from "@/components/FieldList.vue";
+import FieldEdit from "@/components/FieldEdit.vue";
+
 Vue.use(Router);
 
 export const roles = {
@@ -106,6 +109,14 @@ const router = new Router({
       path: "/collections",
       name: "Collections",
       component: Collections
+    },
+    {
+      path: "/fields",
+      component: FieldList
+    },
+    {
+      path: "/fields/:id",
+      component: FieldEdit
     },
     {
       path: "/edit/:projectid?",

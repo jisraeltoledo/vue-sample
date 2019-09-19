@@ -40,15 +40,6 @@
               <small v-if="f.obligatorio">*</small>
             </label>
             <ckeditor :editor="editor" v-model="editorData[f.id]" :config="editorConfig"></ckeditor>
-            <!-- <textarea
-              class="form-control"
-              rows="3"
-              :id="f.id"
-              :required="f.obligatorio"
-              :placeholder="f.descripcion"
-              :value="project[f.id]?project[f.id]:''"
-              :disabled="project.family && !f.editableIfFamily"
-            ></textarea>-->
           </div>
         </div>
         <!--  ************ NUMERO ************ -->
