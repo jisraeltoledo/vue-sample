@@ -24,6 +24,7 @@ import PDFExport from "@/components/PDFExport";
 import RichText from "@/components/RichText";
 import FieldList from "@/components/FieldList.vue";
 import FieldEdit from "@/components/FieldEdit.vue";
+import FontCreate from "@/components/FontCreate.vue";
 
 Vue.use(Router);
 
@@ -113,6 +114,10 @@ const router = new Router({
     {
       path: "/fields",
       component: FieldList
+    },
+    {
+      path: "/font-create",
+      component: FontCreate
     },
     {
       path: "/fields/:id",

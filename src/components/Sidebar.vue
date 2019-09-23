@@ -110,6 +110,18 @@
         </a>
       </router-link>
     </li>
+
+    <li class="nav-item" v-if="hasRol(myroles.moderador)">
+      <router-link tag="li" to="/font-create">
+        <a class="nav-link">
+          <button class="btn btn-success">
+            <i class="fas fa-plus-circle"></i>
+            <small> Fuente </small>
+          </button>
+        </a>
+      </router-link>
+    </li>
+    
   </ul>
 </template>
 

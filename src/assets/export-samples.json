@@ -25,7 +25,7 @@
     "y": 20.5,
     "h": 40,
     "w": 120,
-    "src": "https://firebasestorage.googleapis.com/v0/b/decimal-fic-tec.appspot.com/o/Magg-e1422925294234.png?alt=media&token=329f884d-f38e-439e-8ae0-a9ad50511bf1"
+    "src": "https://firebasestorage.googleapis.com/v0/b/decimal-fic-tec.appspot.com/o/undefined%2FLogo%20Magg%202018.png?alt=media&token=26ebb529-ceca-4ec0-97cc-7239c6d25bb2"
   },
   {
     "type": "line",
@@ -159,9 +159,9 @@
   {
     "field": "C42",
     "type": "image-field",
-    "x": 100,
+    "x": 43,
     "y": 330,
-    "w": 100,
+    "w": 250,
     "h": 100
   },
   {
@@ -199,8 +199,8 @@
     "type": "image-field",
     "x": 306,
     "y": 320,
-    "w": 180,
-    "h": 150
+    "w": 300,
+    "h": 280
   },
   {
     "text": "7. CLAVES DE PRODUCTO",
