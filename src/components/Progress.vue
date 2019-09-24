@@ -106,7 +106,6 @@
 import { db } from "@/main";
 import router from "@/router";
 import store from "@/store";
-import ExportPDFVue from "./ExportPDF.vue";
 import ProgressBarVue from "./ProgressBar.vue";
 import PDFExportVue from "./PDFExport.vue";
 
@@ -118,7 +117,6 @@ export default {
     products: Array
   },
   components: {
-    "export-pdf": ExportPDFVue,
     "progress-bar": ProgressBarVue,
     "pdf-export": PDFExportVue
   },

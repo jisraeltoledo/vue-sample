@@ -9,7 +9,6 @@
             <th scope="col">Modelo</th>
             <th scope="col">Descripción</th>
             <th scope="col">Biografía</th>
-            
           </tr>
         </thead>
         <tbody>
@@ -26,7 +25,6 @@
             <td v-if="!project.descripcion"></td>
             <td v-if="project.bio">{{project.bio.substring(0, 10)}}</td>
             <td v-if="!project.bio"></td>
-            
           </tr>
         </tbody>
       </table>
@@ -38,13 +36,11 @@
 <script>
 import { db } from "@/main";
 import router from "@/router";
-import ExportPDFVue from '@/components/ExportPDF.vue';
+
 export default {
   name: "list-project",
   props: {},
-  components: {
-      "export-pdf": ExportPDFVue
-  },
+  components: {},
   data() {
     return {
       projects: []
@@ -54,8 +50,8 @@ export default {
     console.log("proyectos", this.projects);
     db.collection("projects").onSnapshot(snap => {
       snap.forEach(element => {
-          let p = element.data();
-          p["id"] = element.id;
+        let p = element.data();
+        p["id"] = element.id;
         this.projects.push(p);
       });
     });
@@ -63,7 +59,7 @@ export default {
   },
   methods: {
     clickList(project) {
-      this.$router.push('/'+this.$route.params.next_path+'/'+project.id);
+      this.$router.push("/" + this.$route.params.next_path + "/" + project.id);
     }
   }
 };
