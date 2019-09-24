@@ -1,5 +1,11 @@
 # fichas-tecnicas
 
+## Clone project
+```
+git clone https://github.com/jisraeltoledo/vue-sample.git
+cd vue-sample
+```
+
 ## Project setup
 ```
 npm install
