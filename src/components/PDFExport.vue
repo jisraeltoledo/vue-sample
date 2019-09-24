@@ -129,24 +129,21 @@ export default {
     addJson(sec) {
       var newSec = JSON.parse(JSON.stringify(sec));
       var y = sec.y;
-      console.log("addjson", this.project[sec.field]);
-      console.log("addjson", Object.keys(this.project[sec.field]));
       Object.keys(this.project[sec.field]).forEach(k => {
-        console.log("add key", k, newSec);
         newSec.y = y;
         newSec.x = sec.x;
         newSec.bullet = false;
         this.addText(newSec, k);
+        
         newSec.x = sec.xv;
         newSec.bullet = sec.bullet;
-        console.log("add val", this.project[sec.field][k], newSec);
         this.addText(newSec, this.project[sec.field][k]);
-        y += this.getHeight(
+        
+        y += 3 + this.getHeight(
           this.doc,
           this.insertLineBreaks(this.project[sec.field][k], sec.textLength),
           sec.fontSize
         );
-        console.log("y", y);
       });
     },
     addImage(section, src) {
