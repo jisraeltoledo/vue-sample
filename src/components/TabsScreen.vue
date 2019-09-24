@@ -59,7 +59,7 @@
             <button class="btn btn-primary" @click="crearColeccion">
               <i class="fas fa-plus-circle"></i> Colección</button>
           </div>
-          <div class="col-md-2 text-center" v-if="hasRol('moderador')">
+          <div class="col-md-2 text-center" v-if="hasRol('moderador') || hasRol('estructuras')">
             <button class="btn btn-info" @click="crearFamilia">
               <i class="fas fa-plus-circle"></i> Familia</button>
           </div>

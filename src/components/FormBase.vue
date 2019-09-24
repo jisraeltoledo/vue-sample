@@ -155,6 +155,18 @@
             :disabled="project.family && !f.editableIfFamily"
           ></upload-file>
         </div>
+        <!--  ************ Json ************ -->
+        <div v-else-if="f.tipo==='json'">
+          <strong>{{f.nombre}}</strong>
+          <JsonEditor
+            :options="{
+            confirmText: 'Confirmar',
+            cancelText: 'Cancelar',
+            }"
+            :objData="jsonData"
+            v-model="jsonData"
+          ></JsonEditor>
+        </div>
         <div v-else>{{f}}</div>
       </div>
     </div>
@@ -178,6 +190,10 @@ export default {
   },
   data() {
     return {
+      jsonData: {
+        "2.1 Cuerpo":"...",
+        "2.2 Pantalla":"...",
+      },
       fields: [],
       rol: null,
       projectid: "",
@@ -187,7 +203,7 @@ export default {
       editor: ClassicEditor,
       editorData: {},
       editorConfig: {
-          // The configuration of the rich-text editor.
+        // The configuration of the rich-text editor.
       }
     };
   },
@@ -254,10 +270,7 @@ export default {
           if ($("#" + f.id).is(":checked")) values[f.id] = true;
         } else if (f.tipo === "textarea") {
           values[f.id] = this.editorData[f.id];
-        } else if (
-          f.tipo === "texto" ||
-          f.tipo === "numero"           
-        ) {
+        } else if (f.tipo === "texto" || f.tipo === "numero") {
           if ($("#" + f.id).val()) values[f.id] = $("#" + f.id).val();
         } else if (f.tipo === "check") {
           values[f.id] = [];
@@ -274,6 +287,8 @@ export default {
           if (this.files[f.id]) {
             values[f.id] = this.files[f.id];
           }
+        } else if (f.tipo === "json"){
+          values[f.id] = this.jsonData;
         }
       });
       db.collection("projects")
@@ -305,7 +320,7 @@ export default {
             this.editorData[doc.id] = this.project[doc.id];
             this.fields.push(doc.data());
           }
-          console.log (this.editorData);
+          console.log(this.editorData);
           return true;
         });
     }

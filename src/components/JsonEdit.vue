@@ -1,8 +1,8 @@
 <template>
     <JsonEditor
         :options="{
-            confirmText: 'confirm',
-            cancelText: 'cancel',
+            confirmText: 'Confirmar',
+            cancelText: 'Cancelar',
         }"
         :objData="jsonData" 
         v-model="jsonData" >
@@ -11,9 +11,17 @@
 <script>
 
 export default {
-    
+
+    created (){
+        this.id = this.$route.params.id;
+        db.collection ("export").doc (this.id).get ().then ( doc => {
+            this.jsonData = doc.data ().sections;
+            this.name = doc.data ().name;
+        });
+    },
     data: function() {
         return {
+            id: "",
             jsonData: {
                 name: 'mike',
                 age: 23,

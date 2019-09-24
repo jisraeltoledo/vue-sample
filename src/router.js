@@ -119,7 +119,7 @@ const router = new Router({
       component: FontCreate
     },
     {
-      path: "/json-edit",
+      path: "/json-edit/:id?",
       component: JsonEdit
     },
     {

@@ -320,70 +320,17 @@
     "y": 360
   },
   {
-    "text": "2.1 CUERPO",
-    "type": "text",
+    "type": "json-field",
+    "field": "C84",
     "fontSize": "7.5",
     "fontColor": "#000000",
     "fontType": "regular",
     "font": "DIN Next Rounded LT",
+    "textLength":30,
+    "bullet": "•",
     "x": 315,
+    "xv": 430,
     "y": 380
-  },
-  {
-    "field": "C80",
-    "fontSize": "7.5",
-    "fontColor": "#000000",
-    "fontType": "regular",
-    "font": "DIN Next Rounded LT",
-    "type": "text-field",
-    "textLength":30,
-    "bullet": "•",
-    "x": 430,
-    "y": 380
-  },
-  {
-    "text": "2.2 PANTALLA",
-    "type": "text",
-    "fontSize": "7.5",
-    "fontColor": "#000000",
-    "fontType": "regular",
-    "font": "DIN Next Rounded LT",
-    "x": 315,
-    "y": 430
-  },
-  {
-    "field": "C81",
-    "fontSize": "7.5",
-    "fontColor": "#000000",
-    "fontType": "regular",
-    "font": "DIN Next Rounded LT",
-    "type": "text-field",
-    "textLength":30,
-    "bullet": "•",
-    "x": 430,
-    "y": 430
-  },
-  {
-    "text": "2.3 MONTAJE O INSTALACIÓN",
-    "type": "text",
-    "fontSize": "7.5",
-    "fontColor": "#000000",
-    "fontType": "regular",
-    "font": "DIN Next Rounded LT",
-    "x": 315,
-    "y": 450
-  },
-  {
-    "field": "C15",
-    "fontSize": "7.5",
-    "fontColor": "#000000",
-    "fontType": "regular",
-    "font": "DIN Next Rounded LT",
-    "type": "text-field",
-    "textLength":30,
-    "bullet": "•",
-    "x": 430,
-    "y": 450
   },
   {
     "text": "2.4 GRADO DE PROTECCIÓN",

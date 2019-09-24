@@ -48,9 +48,9 @@ export default {
         })
         .then(() => {
           this.doc = new jsPDF("p", "pt", "letter");
-          this.registerFonts().then (()=>{
+          this.registerFonts().then(() => {
             this.exportPdf();
-          });          
+          });
         });
     },
     readFile(file) {
@@ -94,7 +94,6 @@ export default {
     async exportPdf() {
       // this.exportData.sections.forEach(async sec => {
       for (let sec of this.exportData.sections) {
-        console.log("type:", sec.type);
         if (sec.type === "text-field") {
           this.addText(sec, this.project[sec.field]);
         }
@@ -116,12 +115,38 @@ export default {
           }
           this.doc.addPage();
         }
+        if (sec.type === "json-field") {
+          this.addJson(sec);
+        }
       }
       Promise.all(this.promises).then(res => {
         if (this.project.status != "publicado") {
           this.doc.addImage(watermark, "PNG", 100, 100, 400, 400);
         }
         this.doc.save("export.pdf");
+      });
+    },
+    addJson(sec) {
+      var newSec = JSON.parse(JSON.stringify(sec));
+      var y = sec.y;
+      console.log("addjson", this.project[sec.field]);
+      console.log("addjson", Object.keys(this.project[sec.field]));
+      Object.keys(this.project[sec.field]).forEach(k => {
+        console.log("add key", k, newSec);
+        newSec.y = y;
+        newSec.x = sec.x;
+        newSec.bullet = false;
+        this.addText(newSec, k);
+        newSec.x = sec.xv;
+        newSec.bullet = sec.bullet;
+        console.log("add val", this.project[sec.field][k], newSec);
+        this.addText(newSec, this.project[sec.field][k]);
+        y += this.getHeight(
+          this.doc,
+          this.insertLineBreaks(this.project[sec.field][k], sec.textLength),
+          sec.fontSize
+        );
+        console.log("y", y);
       });
     },
     addImage(section, src) {
@@ -153,7 +178,6 @@ export default {
     addText(section, text) {
       if (!text) return;
       text = "" + text;
-      console.log("addtext", section, text, dim);
       this.doc.setTextColor(section.fontColor);
       this.doc.setFont(section.font, section.fontType);
       this.doc.setFontSize(section.fontSize);
@@ -179,8 +203,6 @@ export default {
       this.doc.text(text, section.x, section.y + dim.h);
       if (section.underline) {
         var w = this.doc.getStringUnitWidth(text) * section.fontSize;
-
-        console.log("w, dim", w, dim, text);
         this.doc.line(
           section.x,
           section.y + dim.h + 5,
@@ -194,21 +216,26 @@ export default {
       return text.replace(regexp, "$1\n");
     },
     registerFonts() {
-      return db.collection("fonts")
+      return db
+        .collection("fonts")
         .get()
         .then(snapshot => {
           snapshot.forEach(doc => {
-            console.log(doc.id, "=>", doc.data());
-            let data = doc.data()
+            let data = doc.data();
             this.doc.addFileToVFS(data.nombre, data.base64);
             this.doc.addFont(data.nombre, data.nombre, data.tipo);
           });
-          console.log("Fonts", this.doc.getFontList());
           return true;
         })
         .catch(err => {
           console.log("Error getting documents", err);
         });
+    },
+    getHeight(doc, str, fontSize) {
+      var lineHeight = doc.internal.getLineHeightFactor();
+      var numberOfLines = str.split(/\r\n|\r|\n/).length;
+      var height = fontSize * numberOfLines * lineHeight;
+      return height;
     }
   }
 };
