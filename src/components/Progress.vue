@@ -19,7 +19,9 @@
           <tr v-for="(project, idx) in projects" :key="idx">
             <td>{{project.C01}}</td>
             <td>{{project.C03}}</td>
-            <td><small>{{removeHTMLTags (project.C02).substring (0, 30)}}...</small></td>
+            <td>
+              <small>{{removeHTMLTags (project.C02).substring (0, 30)}}...</small>
+            </td>
             <td>{{project.version}}</td>
             <td>{{Math.round((new Date().getTime()-project.created)/(1000*60*60*24)) }}</td>
 
@@ -89,7 +91,12 @@
           </div>
           <div class="modal-body">
             <label for="colectionName">{{labelModal}}</label>
-            <input class="form-control" id="colectionName" placeholder="Escribe el nombre aquí" v-if="flagModalColeccion"/>
+            <input
+              class="form-control"
+              id="colectionName"
+              placeholder="Escribe el nombre aquí"
+              v-if="flagModalColeccion"
+            />
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-primary" @click="guardar">Guardar</button>
@@ -131,12 +138,7 @@ export default {
     };
   },
   created() {
-    console.log ("created progressvue")
-     console.log ("filterStatus", this.filterStatus)
-     console.log ("this.$route.params.status", this.$route.params.status)
-     console.log ("this.filterStep",this.filterStep);
     if (this.filterStatus) {
-
       this.status = this.filterStatus;
     } else if (this.$route.params.status) {
       this.status = this.$route.params.status;
@@ -150,14 +152,13 @@ export default {
       //this.getFavorites ();
       return;
     }
-    console.log ("status", this.status);
+
     this.getProjects();
   },
   watch: {
     products: function(newV, oldV) {
       this.projects = newV;
       if (this.projects === null) {
-        console.log ("whatch products");
         this.getProjects();
       }
     },
@@ -169,7 +170,7 @@ export default {
         }
         if (status === "all") this.status = null;
         else this.status = status;
-        console.log ("route.params.status");
+
         this.getProjects();
       },
       deep: true,
@@ -180,13 +181,13 @@ export default {
     getFavorites() {
       var promises = [];
       if (store.state.user.likes)
-      store.state.user.likes.forEach(like => {
-        var p = db
-          .collection("projects")
-          .doc(like)
-          .get();
-        promises.push(p);
-      });
+        store.state.user.likes.forEach(like => {
+          var p = db
+            .collection("projects")
+            .doc(like)
+            .get();
+          promises.push(p);
+        });
       this.projects = [];
       Promise.all(promises).then(docs => {
         docs.forEach(doc => {
@@ -226,7 +227,7 @@ export default {
       var project = this.projects.filter(e => {
         return e.id === data.checks[0];
       })[0];
-      let newRef = db.collection('projects').doc();
+      let newRef = db.collection("projects").doc();
       project["C01"] = newRef.id;
       project["products"] = data.checks;
       project["created"] = new Date().getTime();
@@ -234,7 +235,8 @@ export default {
       project["isFamily"] = true;
       project.keywords = project.keywords.concat(this.createKey(data.nombre));
       delete project["id"];
-      newRef.set(project)
+      newRef
+        .set(project)
         .then(() => {
           data.checks.forEach(id => {
             db.collection("projects")
@@ -245,7 +247,7 @@ export default {
         })
         .then(() => {
           $("#exampleModal").modal("hide");
-          console.log ("familia:", newRef.id);
+          console.log("familia:", newRef.id);
           this.$router.replace(`/home`);
         });
     },
@@ -265,7 +267,8 @@ export default {
     getModalData() {
       var checked = [];
       var nombre = $("#colectionName").val();
-      if (nombre === "" && this.flagModalColeccion) alert(this.labelModal + " está vacío");
+      if (nombre === "" && this.flagModalColeccion)
+        alert(this.labelModal + " está vacío");
       else {
         $(".form-check-input:checked").each(function() {
           checked.push($(this).val());
@@ -323,9 +326,7 @@ export default {
       this.$emit("click", { project: project, type: type });
     },
     getProjects() {
-      console.log ("getProjects", this.status);
       var ref = db.collection("projects");
-      //ref = ref.where("isFamily", "==", undefined);
       if (this.status) {
         ref = ref.where("status", "==", this.status);
       }
@@ -338,9 +339,10 @@ export default {
         snap.forEach(element => {
           let p = element.data();
           p["id"] = element.id;
-          if (p.isFamily){}else{
+          if (p.isFamily) {
+          } else {
             this.projects.push(p);
-          }          
+          }
         });
       });
     }

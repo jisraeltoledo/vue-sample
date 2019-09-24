@@ -176,11 +176,6 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   let rolNeeded = to.meta.roles ? to.meta.roles : ["guest"];
 
-  // console.log(
-  //   store.state.userRole === roles.super_admin ||
-  //     rolNeeded.includes(store.state.userRole) ||
-  //     rolNeeded.includes("guest")
-  // );
   if (
     store.state.userRole === roles.super_admin ||
     rolNeeded.includes(store.state.userRole) ||
@@ -188,7 +183,6 @@ router.beforeEach((to, from, next) => {
   )
     next();
   else {
-    console.log("else");
     next("login");
   }
 });
