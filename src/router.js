@@ -9,8 +9,6 @@ import About from "@/views/About";
 import store from "@/store";
 import CreateProject from "@/components/CreateProject";
 import ListProject from "@/components/ListProject";
-import DisenoGrafico from "@/components/DisenoGrafico";
-import DisenoIndustrial from "@/components/DisenoIndustrial";
 import CreateTemplate from "@/components/CreateTemplate";
 import IngenieriaElectrica from "@/components/IngenieriaElectrica";
 import FormBase from "@/components/FormBase";
@@ -25,6 +23,7 @@ import RichText from "@/components/RichText";
 import FieldList from "@/components/FieldList.vue";
 import FieldEdit from "@/components/FieldEdit.vue";
 import FontCreate from "@/components/FontCreate.vue";
+import JsonEdit from "@/components/JsonEdit.vue";
 
 Vue.use(Router);
 
@@ -120,6 +119,10 @@ const router = new Router({
       component: FontCreate
     },
     {
+      path: "/json-edit",
+      component: JsonEdit
+    },
+    {
       path: "/fields/:id",
       component: FieldEdit
     },
@@ -153,22 +156,6 @@ const router = new Router({
       component: ListProject,
       meta: {
         roles: []
-      }
-    },
-    {
-      path: "/diseno-grafico/:projectid",
-      name: "Diseño Gráfico",
-      component: DisenoGrafico,
-      meta: {
-        roles: [roles.diseno_grafico]
-      }
-    },
-    {
-      path: "/diseno-industrial/:projectid",
-      name: "Diseño Industrial",
-      component: DisenoIndustrial,
-      meta: {
-        roles: [roles.diseno_industrial]
       }
     },
     {

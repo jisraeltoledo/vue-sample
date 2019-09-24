@@ -6,7 +6,9 @@ import store from "./store";
 import firebase from "firebase";
 import { roles } from "@/router";
 import CKEditor from "@ckeditor/ckeditor5-vue";
+import JsonEditor from "vue-json-edit";
 
+Vue.use(JsonEditor);
 Vue.use(CKEditor);
 Vue.config.productionTip = false;
 Vue.config.devtools = true;
