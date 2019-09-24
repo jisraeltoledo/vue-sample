@@ -158,7 +158,12 @@
         <!--  ************ Json ************ -->
         <div v-else-if="f.tipo==='json'">
           <strong>{{f.nombre}}</strong>
-          <JsonEditor
+          <div v-if="project.family && !f.editableIfFamily">
+            <pre>
+              {{JSON.stringify (jsonData, null, 2).replace ("{", "").replace ("}", "")}}
+            </pre>
+          </div>
+          <JsonEditor v-if="!(project.family && !f.editableIfFamily)"
             :options="{
             confirmText: 'Confirmar',
             cancelText: 'Cancelar',
@@ -222,18 +227,18 @@ export default {
   },
   created() {
     this.rol = store.state.userRole;
-    console.log("rol", this.rol);
     if (this.$route.params.projectid)
       this.projectid = this.$route.params.projectid;
     else if (this.projectidSource) this.projectid = this.projectidSource;
-    console.log(this.projectid);
     db.collection("projects")
       .doc(this.projectid)
       .get()
       .then(doc => {
         this.project = doc.data();
         this.project["id"] = doc.id;
-        console.log(this.project);
+        if (this.project["C84"]){
+          this.jsonData = this.project["C84"];
+        }        
       })
       .then(() => {
         return db
@@ -320,7 +325,6 @@ export default {
             this.editorData[doc.id] = this.project[doc.id];
             this.fields.push(doc.data());
           }
-          console.log(this.editorData);
           return true;
         });
     }
