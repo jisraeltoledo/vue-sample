@@ -10,7 +10,6 @@ import store from "@/store";
 import CreateProject from "@/components/CreateProject";
 import ListProject from "@/components/ListProject";
 import CreateTemplate from "@/components/CreateTemplate";
-import IngenieriaElectrica from "@/components/IngenieriaElectrica";
 import FormBase from "@/components/FormBase";
 import TabsScreen from "@/components/TabsScreen";
 import Producto from "@/components/Producto";
@@ -169,14 +168,6 @@ const router = new Router({
       name: "Producto",
       component: Producto,
       meta: {}
-    },
-    {
-      path: "/ingenieria-electrica/:projectid",
-      name: "Ingenieria Electrica",
-      component: IngenieriaElectrica,
-      meta: {
-        roles: [roles.ingenieria_electrica]
-      }
     }
   ],
   mode: "history"
